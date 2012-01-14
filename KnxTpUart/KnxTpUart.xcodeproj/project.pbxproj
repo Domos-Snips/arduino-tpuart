@@ -1,0 +1,69 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXFileReference section */
+		429FF42614C1A08A0024BF79 /* KnxTpUart.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KnxTpUart.cpp; sourceTree = "<group>"; };
+		429FF42714C1A08A0024BF79 /* KnxTpUart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KnxTpUart.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		421F1A2514C1A00D008F3755 = {
+			isa = PBXGroup;
+			children = (
+				429FF42614C1A08A0024BF79 /* KnxTpUart.cpp */,
+				429FF42714C1A08A0024BF79 /* KnxTpUart.h */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXProject section */
+		421F1A2714C1A00D008F3755 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 421F1A2A14C1A00D008F3755 /* Build configuration list for PBXProject "KnxTpUart" */;
+			compatibilityVersion = "Xcode 2.4";
+			hasScannedForEncodings = 0;
+			mainGroup = 421F1A2514C1A00D008F3755;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+			);
+		};
+/* End PBXProject section */
+
+/* Begin XCBuildConfiguration section */
+		421F1A2814C1A00D008F3755 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Debug;
+		};
+		421F1A2914C1A00D008F3755 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		421F1A2A14C1A00D008F3755 /* Build configuration list for PBXProject "KnxTpUart" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				421F1A2814C1A00D008F3755 /* Debug */,
+				421F1A2914C1A00D008F3755 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 421F1A2714C1A00D008F3755 /* Project object */;
+}
