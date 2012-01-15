@@ -20,6 +20,11 @@
 #define KNX_COMMAND_WRITE B0010
 #define KNX_COMMAND_ANSWER B0001
 
+// Size of KNX message without payload (header + checksum byte)
+#define KNX_FRAME_SIZE 7
+
+#define SERIAL_READ_TIMEOUT_MS 50
+
 enum KnxTpUartSerialEventType {
 	TPUART_RESET_INDICATION,
 	TPUART_STATE_INDICATION,
@@ -47,22 +52,33 @@ struct KNXTelegram {
 
 class KnxTpUart {
 public:
-	KnxTpUart(HardwareSerial*);
+	KnxTpUart(HardwareSerial*, int, int, int);
 	void uartReset();
 	void uartStateRequest();
 	KnxTpUartSerialEventType serialEvent();
 	KNXTelegram* getReceivedTelegram();
 	
+	void sendAck();
+	
 	void groupWriteBoolean(int, int, int, boolean);
+	
+	void groupAnswerBoolean(int, int, int, boolean);
 private:
 	HardwareSerial* _serialport;
 	KNXTelegram _tg;
+	int _source_area;
+	int _source_line;
+	int _source_member;
+	
 	
 	boolean isKNXControlByte(int);
 	void checkErrors();
 	void printByte(int);
 	void readKNXTelegram();
+	int* createKNXMessageFrame(int, int, int, int, int, int);
+	void sendMessage(int*, int);
 	int calculateTelegramChecksum(int*, int);
+	int serialRead();
 };
 
 

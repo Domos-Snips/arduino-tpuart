@@ -1,7 +1,11 @@
 #include <KnxTpUart.h>
 
+// Define group address to react on
+int my_main_group = 0;
+int my_middle_group = 0;
+int my_sub_group = 100;
+
 // Initialize the KNX TP-UART library on the Serial1 port of Arduino Mega
-// and with KNX physical address 15.15.20
 KnxTpUart knx(&Serial1, 15, 15, 20);
 
 void setup() {
@@ -29,17 +33,23 @@ void loop() {
 
 void serialEvent1() {
   KnxTpUartSerialEventType eType = knx.serialEvent();
-  if (eType == TPUART_RESET_INDICATION) {
-     Serial.println("Event TPUART_RESET_INDICATION"); 
-  } else if (eType == TPUART_STATE_INDICATION) {
-     Serial.println("Event TPUART_STATE_INDICATION"); 
-  } else if (eType == UNKNOWN) {
-    Serial.println("Event UNKNOWN");
-  } else if (eType == KNX_TELEGRAM) {
+  if (eType == KNX_TELEGRAM) {
      Serial.println("Event KNX_TELEGRAM");
      KNXTelegram* telegram = knx.getReceivedTelegram();
-     
-     // Here you have the telegram and can do whatever you want
+
+     // Is the telegram for us?
+     if (telegram->target_main_group == my_main_group
+       && telegram->target_middle_group == my_middle_group
+       && telegram->target_sub_group == my_sub_group) {
+        
+       // Acknowledge
+       //knx.sendAck();
+         
+       // Is it a read request?
+       if (telegram->command == KNX_COMMAND_READ) {
+          knx.groupAnswerBoolean(my_main_group, my_middle_group, my_sub_group, true);
+       }   
+     }
   }
 }
 

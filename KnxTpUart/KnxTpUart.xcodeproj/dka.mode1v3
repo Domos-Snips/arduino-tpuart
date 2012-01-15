@@ -202,46 +202,6 @@
 			<key>Content</key>
 			<dict>
 				<key>PBXProjectModuleGUID</key>
-				<string>429FF44814C1A35A0024BF79</string>
-				<key>PBXProjectModuleLabel</key>
-				<string>KnxTpUart.cpp</string>
-				<key>PBXSplitModuleInNavigatorKey</key>
-				<dict>
-					<key>Split0</key>
-					<dict>
-						<key>PBXProjectModuleGUID</key>
-						<string>429FF44914C1A35A0024BF79</string>
-						<key>PBXProjectModuleLabel</key>
-						<string>KnxTpUart.cpp</string>
-						<key>_historyCapacity</key>
-						<integer>0</integer>
-						<key>bookmark</key>
-						<string>429FF50F14C1DBBD0024BF79</string>
-						<key>history</key>
-						<array>
-							<string>429FF43E14C1A2EE0024BF79</string>
-						</array>
-					</dict>
-					<key>SplitCount</key>
-					<string>1</string>
-				</dict>
-				<key>StatusBarVisibility</key>
-				<true/>
-			</dict>
-			<key>Geometry</key>
-			<dict>
-				<key>Frame</key>
-				<string>{{0, 20}, {1261, 901}}</string>
-				<key>PBXModuleWindowStatusBarHidden2</key>
-				<false/>
-				<key>RubberWindowFrame</key>
-				<string>208 476 1261 942 0 0 2560 1418 </string>
-			</dict>
-		</dict>
-		<dict>
-			<key>Content</key>
-			<dict>
-				<key>PBXProjectModuleGUID</key>
 				<string>429FF44B14C1A35A0024BF79</string>
 				<key>PBXProjectModuleLabel</key>
 				<string>KnxTpUart.h</string>
@@ -256,10 +216,10 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>429FF51014C1DBBD0024BF79</string>
+						<string>4228751514C37796008FC521</string>
 						<key>history</key>
 						<array>
-							<string>429FF4B114C1AD080024BF79</string>
+							<string>429FF51014C1DBBD0024BF79</string>
 						</array>
 					</dict>
 					<key>SplitCount</key>
@@ -276,6 +236,46 @@
 				<false/>
 				<key>RubberWindowFrame</key>
 				<string>1010 476 1261 942 0 0 2560 1418 </string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Content</key>
+			<dict>
+				<key>PBXProjectModuleGUID</key>
+				<string>429FF44814C1A35A0024BF79</string>
+				<key>PBXProjectModuleLabel</key>
+				<string>KnxTpUart.cpp</string>
+				<key>PBXSplitModuleInNavigatorKey</key>
+				<dict>
+					<key>Split0</key>
+					<dict>
+						<key>PBXProjectModuleGUID</key>
+						<string>429FF44914C1A35A0024BF79</string>
+						<key>PBXProjectModuleLabel</key>
+						<string>KnxTpUart.cpp</string>
+						<key>_historyCapacity</key>
+						<integer>0</integer>
+						<key>bookmark</key>
+						<string>4228751614C37796008FC521</string>
+						<key>history</key>
+						<array>
+							<string>429FF50F14C1DBBD0024BF79</string>
+						</array>
+					</dict>
+					<key>SplitCount</key>
+					<string>1</string>
+				</dict>
+				<key>StatusBarVisibility</key>
+				<true/>
+			</dict>
+			<key>Geometry</key>
+			<dict>
+				<key>Frame</key>
+				<string>{{0, 20}, {1261, 901}}</string>
+				<key>PBXModuleWindowStatusBarHidden2</key>
+				<false/>
+				<key>RubberWindowFrame</key>
+				<string>962 210 1261 942 0 0 2560 1418 </string>
 			</dict>
 		</dict>
 	</array>
@@ -408,7 +408,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>429FF50D14C1DBBD0024BF79</string>
+										<string>4228751414C37796008FC521</string>
 										<key>history</key>
 										<array>
 											<string>429FF44014C1A35A0024BF79</string>
@@ -419,7 +419,7 @@
 											<string>429FF4DC14C1D4FB0024BF79</string>
 											<string>429FF4DD14C1D4FB0024BF79</string>
 											<string>429FF4DF14C1D4FB0024BF79</string>
-											<string>429FF4E114C1D4FB0024BF79</string>
+											<string>429FF50D14C1DBBD0024BF79</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -431,14 +431,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {801, 660}}</string>
+								<string>{{0, 0}, {801, 655}}</string>
 								<key>RubberWindowFrame</key>
 								<string>1371 415 1009 896 0 0 2560 1418 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>660pt</string>
+							<string>655pt</string>
 						</dict>
 						<dict>
 							<key>ContentConfiguration</key>
@@ -451,14 +451,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 665}, {801, 190}}</string>
+								<string>{{0, 660}, {801, 195}}</string>
 								<key>RubberWindowFrame</key>
 								<string>1371 415 1009 896 0 0 2560 1418 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
 							<key>Proportion</key>
-							<string>190pt</string>
+							<string>195pt</string>
 						</dict>
 					</array>
 					<key>Proportion</key>
@@ -477,9 +477,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>429FF42E14C1A0BE0024BF79</string>
+				<string>422874A514C32C19008FC521</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>429FF42F14C1A0BE0024BF79</string>
+				<string>422874A614C32C19008FC521</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -617,11 +617,9 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>1CD10A99069EF8BA00B06720</string>
-		<string>429FF4BE14C1AD100024BF79</string>
-		<string>/Users/dka/Documents/Arduino/libraries/KnxTpUart/KnxTpUart.xcodeproj</string>
-		<string>429FF44B14C1A35A0024BF79</string>
+		<string>/Users/dka/Documents/arduino-tpuart/KnxTpUart/KnxTpUart.xcodeproj</string>
 		<string>429FF44814C1A35A0024BF79</string>
+		<string>429FF44B14C1A35A0024BF79</string>
 	</array>
 	<key>WindowString</key>
 	<string>1371 415 1009 896 0 0 2560 1418 </string>
