@@ -8,7 +8,7 @@ This is a very first version of an interface between Arduino and EIB/KNX using t
 Hardware
 --------
 
-The schematic is found in the directory `Eagle-Files`. I didn't create a PCB layout (yet) - please let me know if you are interested). The schematic is largely based on the TPUART board designed at the [University of Vienna](http://www.auto.tuwien.ac.at/~mkoegler/index.php/tpuart).
+The schematic is found in the directory `Eagle-Files`. I didn't create a PCB layout (yet) - please let me know if you are interested. The schematic is largely based on the TPUART board designed at the [University of Vienna](http://www.auto.tuwien.ac.at/~mkoegler/index.php/tpuart).
 
 
 TP-UART ICs can be obtained from [Opternus Components](http://www.opternus.com/de/siemens/knx-chipset/knx-transceiver-ics-tp-uart-fze1066.html).
