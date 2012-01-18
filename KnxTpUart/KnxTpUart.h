@@ -18,9 +18,11 @@
 #define TPUART_DEBUG true
 
 // KNX commands
-#define KNX_COMMAND_READ B0000
-#define KNX_COMMAND_WRITE B0010
-#define KNX_COMMAND_ANSWER B0001
+enum KnxCommandType {
+	KNX_COMMAND_READ = B0000,
+	KNX_COMMAND_WRITE = B0010,
+	KNX_COMMAND_ANSWER = B0001
+};
 
 // Size of KNX message without payload (header + checksum byte)
 #define KNX_FRAME_SIZE 7
