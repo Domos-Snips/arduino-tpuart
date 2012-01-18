@@ -48,7 +48,7 @@ void loop() {
        
        if (!haveSent) {
            // Send the opposite of what we have sent last
-           knx.groupWriteBoolean(0,0,3, !onSent);
+           knx.groupWriteBool(0,0,3, !onSent);
            onSent = !onSent;
            haveSent = true;
        }
@@ -64,7 +64,6 @@ void serialEvent1() {
      Serial.println("Event KNX_TELEGRAM");
   }
 }
-
 
 
 

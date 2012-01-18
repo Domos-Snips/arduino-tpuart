@@ -54,8 +54,8 @@ private:
 	void checkErrors();
 	void printByte(int);
 	void readKNXTelegram();
-	int* createKNXMessageFrame(int, int, int, int, int, int);
-	void sendMessage(int*, int);
+	void createKNXMessageFrame(int, KnxCommandType, int, int, int, int);
+	void sendMessage();
 	int serialRead();
 };
 

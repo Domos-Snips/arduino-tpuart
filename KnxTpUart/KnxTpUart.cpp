@@ -79,7 +79,7 @@ void KnxTpUart::readKNXTelegram() {
 	_tg->setBufferByte(bufpos, serialRead());
 
 	// Test
-	sendAck();
+	//sendAck();
 	
 	// Print the received telegram
 	if (TPUART_DEBUG) {
@@ -98,9 +98,8 @@ void KnxTpUart::groupWriteBool(int mainGroup, int middleGroup, int subGroup, boo
 		valueAsInt = B00000001;
 	}
 	
-	int* buf = createKNXMessageFrame(2, KNX_COMMAND_WRITE, mainGroup, middleGroup, subGroup, valueAsInt);
-	int messageSize = KNX_FRAME_SIZE + 2;
-	sendMessage(buf, messageSize);	
+	createKNXMessageFrame(2, KNX_COMMAND_WRITE, mainGroup, middleGroup, subGroup, valueAsInt);
+	sendMessage();
 }
 
 void KnxTpUart::groupAnswerBool(int mainGroup, int middleGroup, int subGroup, bool value) {
@@ -109,29 +108,22 @@ void KnxTpUart::groupAnswerBool(int mainGroup, int middleGroup, int subGroup, bo
 		valueAsInt = B00000001;
 	}
 	
-	int* buf = createKNXMessageFrame(2, KNX_COMMAND_ANSWER, mainGroup, middleGroup, subGroup, valueAsInt);
-	int messageSize = KNX_FRAME_SIZE + 2;
-	sendMessage(buf, messageSize);	
+	createKNXMessageFrame(2, KNX_COMMAND_ANSWER, mainGroup, middleGroup, subGroup, valueAsInt);
+	sendMessage();
 }
 
-int* KnxTpUart::createKNXMessageFrame(int payloadlength, int command, int mainGroup, int middleGroup, int subGroup, int firstDataByte) {
-	int messageSize = KNX_FRAME_SIZE + payloadlength;
-	int* buf = (int*) malloc(sizeof(int) * messageSize);
-	
-	buf[0] = B10111100; // Control Field, Normal Priority, No Repeat
-	buf[1] = (_source_area << 4) | _source_line;	// Source Address
-	buf[2] = _source_member; // Source Address
-	buf[3] = (mainGroup << 3) | middleGroup;
-	buf[4] = subGroup;
-	buf[5] = B11100001; // Target Group Address, Routing Counter = 6, Length = 1 (= 2 Bytes)
-	buf[6] = command >> 2; // Command
-	buf[7] = (command << 6) | firstDataByte; // Command and first data
-	//buf[messageSize - 1] = calculateTelegramChecksum(buf, messageSize - 1);
-	
-	return buf;
+void KnxTpUart::createKNXMessageFrame(int payloadlength, KnxCommandType command, int mainGroup, int middleGroup, int subGroup, int firstDataByte) {
+	_tg->clear();
+	_tg->setSourceAddress(_source_area, _source_line, _source_member);
+	_tg->setTargetGroupAddress(mainGroup, middleGroup, subGroup);
+	_tg->setFirstDataByte(firstDataByte);
+	_tg->setCommand(command);
+	_tg->createChecksum();
 }
 
-void KnxTpUart::sendMessage(int* buf, int messageSize) {
+void KnxTpUart::sendMessage() {
+	int messageSize = _tg->getPayloadLength() + KNX_TELEGRAM_HEADER_SIZE + 1;
+
 	uint8_t sendbuf[2];
 	for (int i = 0; i < messageSize; i++) {
 		if (i == (messageSize - 1)) {
@@ -141,12 +133,10 @@ void KnxTpUart::sendMessage(int* buf, int messageSize) {
 		}
 		
 		sendbuf[0] |= i;
-		sendbuf[1] = buf[i];
+		sendbuf[1] = _tg->getBufferByte(i);
 		
 		_serialport->write(sendbuf, 2);
 	}
-	
-	free(buf);
 }
 
 void KnxTpUart::sendAck() {

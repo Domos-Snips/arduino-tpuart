@@ -35,24 +35,23 @@ void serialEvent1() {
   KnxTpUartSerialEventType eType = knx.serialEvent();
   if (eType == KNX_TELEGRAM) {
      Serial.println("Event KNX_TELEGRAM");
-     KNXTelegram* telegram = knx.getReceivedTelegram();
+     KnxTelegram* telegram = knx.getReceivedTelegram();
 
      // Is the telegram for us?
-     if (telegram->target_main_group == my_main_group
-       && telegram->target_middle_group == my_middle_group
-       && telegram->target_sub_group == my_sub_group) {
+     if (telegram->getTargetMainGroup() == my_main_group
+       && telegram->getTargetMiddleGroup() == my_middle_group
+       && telegram->getTargetSubGroup() == my_sub_group) {
         
        // Acknowledge
        //knx.sendAck();
          
        // Is it a read request?
-       if (telegram->command == KNX_COMMAND_READ) {
-          knx.groupAnswerBoolean(my_main_group, my_middle_group, my_sub_group, true);
+       if (telegram->getCommand() == KNX_COMMAND_READ) {
+          knx.groupAnswerBool(my_main_group, my_middle_group, my_sub_group, true);
        }   
      }
   }
 }
-
 
 
 
