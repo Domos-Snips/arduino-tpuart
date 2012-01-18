@@ -5,6 +5,7 @@ KnxTpUart::KnxTpUart(HardwareSerial* sport, int area, int line, int member) {
 	_source_area = area;
 	_source_line = line;
 	_source_member = member;
+	_tg = new KnxTelegram();
 }
 
 void KnxTpUart::uartReset() {
@@ -42,7 +43,7 @@ KnxTpUartSerialEventType KnxTpUart::serialEvent() {
 }
 
 
-boolean KnxTpUart::isKNXControlByte(int b) {
+bool KnxTpUart::isKNXControlByte(int b) {
 	return ( (b | B00101100) == B10111100 ); // Ignore repeat flag and priority flag
 }
 
@@ -66,118 +67,35 @@ void KnxTpUart::printByte(int incomingByte) {
 }
 
 void KnxTpUart::readKNXTelegram() {
-	int buf[23];
-	buf[0] = serialRead();
-	
-	// Parse Repeat Flag
-	if (buf[0] & B00100000) {
-		_tg.repeated = false; 
-	} else {
-		_tg.repeated = true; 
+	// Receive header
+	for (int i = 0; i < 6; i++) {
+		_tg->setBufferByte(i, serialRead());
 	}
-	
-	// Priority
-	_tg.priority = ((buf[0] & B00001100) >> 2);
-	
-	// Source Address
-	buf[1] = serialRead();
-	buf[2] = serialRead();
-	
-	_tg.source_area = (buf[1] >> 4);
-	_tg.source_line = (buf[1] & B00001111);
-	_tg.source_member = buf[2];
-	
-	// Target Address
-	buf[3] = serialRead();
-	buf[4] = serialRead();
-	buf[5] = serialRead();
-	
-	_tg.targetIsGroup = buf[5] & B10000000;
-	if (_tg.targetIsGroup) {
-		_tg.target_main_group = ((buf[3] & B01111000) >> 3);
-		_tg.target_middle_group = (buf[3] & B00000111);
-		_tg.target_sub_group = buf[4];
-	}
-	
-	// Routing Counter
-	_tg.routingcounter = ((buf[5] & B01110000) >> 4);
-	
-	// Payload Length
-	_tg.payload_length = (buf[5] & B00001111);
-	
+
 	int bufpos = 6;
-	for (int i = 0; i <= _tg.payload_length; i++) {
-		buf[bufpos] = serialRead();
+	for (int i = 0; i < _tg->getPayloadLength(); i++) {
+		_tg->setBufferByte(bufpos, serialRead());
 		bufpos++; 
 	}
 	
-	_tg.command = ((buf[6] & B00000011) << 2) | ((buf[7] & B11000000) >> 6);
-	
-	_tg.firstDataByte = (buf[7] & B00111111);
-	
 	// Checksum
-	buf[bufpos] = serialRead();
-	_tg.checksum = buf[bufpos];
+	_tg->setBufferByte(bufpos, serialRead());
 
 	// Test
 	sendAck();
 	
-	
-	
+	// Print the received telegram
 	if (TPUART_DEBUG) {
-		Serial.print("Repeated: ");
-		Serial.println(_tg.repeated);
-		
-		Serial.print("Priority: ");
-		Serial.println(_tg.priority);
-
-		Serial.print("Source: ");
-		Serial.print(_tg.source_area);
-		Serial.print(".");
-		Serial.print(_tg.source_line);
-		Serial.print(".");
-		Serial.println(_tg.source_member);
-		
-		Serial.print("Target Group: ");
-		Serial.print(_tg.target_main_group);
-		Serial.print("/");
-		Serial.print(_tg.target_middle_group);
-		Serial.print("/");
-		Serial.println(_tg.target_sub_group);
-		
-		Serial.print("Routing Counter: ");
-		Serial.println(_tg.routingcounter);
-
-		Serial.print("Payload Length: ");
-		Serial.println(_tg.payload_length);
-
-		Serial.print("Command: ");
-		Serial.println(_tg.command);
-
-		Serial.print("First Data Byte: ");
-		Serial.println(_tg.firstDataByte);
+		_tg->print(&Serial);
 	}
-	
-	
-	
-	int calculatedChecksum = calculateTelegramChecksum(buf, bufpos);
-	
-	if (_tg.checksum == calculatedChecksum) {
-		Serial.println("Checksum matches");
-	} else {
-		Serial.println("Checksum mismatch");
-		Serial.println(_tg.checksum, BIN);
-		Serial.println(calculatedChecksum, BIN);
-	}
-	
 	
 }
 
-KNXTelegram* KnxTpUart::getReceivedTelegram() {
-	return &_tg;
+KnxTelegram* KnxTpUart::getReceivedTelegram() {
+	return _tg;
 }
 
-void KnxTpUart::groupWriteBoolean(int mainGroup, int middleGroup, int subGroup, boolean value) {
+void KnxTpUart::groupWriteBool(int mainGroup, int middleGroup, int subGroup, bool value) {
 	int valueAsInt = 0;
 	if (value) {
 		valueAsInt = B00000001;
@@ -188,7 +106,7 @@ void KnxTpUart::groupWriteBoolean(int mainGroup, int middleGroup, int subGroup, 
 	sendMessage(buf, messageSize);	
 }
 
-void KnxTpUart::groupAnswerBoolean(int mainGroup, int middleGroup, int subGroup, boolean value) {
+void KnxTpUart::groupAnswerBool(int mainGroup, int middleGroup, int subGroup, bool value) {
 	int valueAsInt = 0;
 	if (value) {
 		valueAsInt = B00000001;
@@ -211,7 +129,7 @@ int* KnxTpUart::createKNXMessageFrame(int payloadlength, int command, int mainGr
 	buf[5] = B11100001; // Target Group Address, Routing Counter = 6, Length = 1 (= 2 Bytes)
 	buf[6] = command >> 2; // Command
 	buf[7] = (command << 6) | firstDataByte; // Command and first data
-	buf[messageSize - 1] = calculateTelegramChecksum(buf, messageSize - 1);
+	//buf[messageSize - 1] = calculateTelegramChecksum(buf, messageSize - 1);
 	
 	return buf;
 }
@@ -232,16 +150,6 @@ void KnxTpUart::sendMessage(int* buf, int messageSize) {
 	}
 	
 	free(buf);
-}
-
-int KnxTpUart::calculateTelegramChecksum(int* buf, int size) {
-	int bcc = 0xFF;
-	
-	for (int i = 0; i < size; i++) {
-		bcc ^= buf[i];
-	}
-	
-	return bcc;
 }
 
 void KnxTpUart::sendAck() {

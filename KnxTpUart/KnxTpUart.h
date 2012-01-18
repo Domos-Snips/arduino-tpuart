@@ -5,6 +5,8 @@
 #include "HardwareSerial.h"
 #include "Arduino.h"
 
+#include "KnxTelegram.h"
+
 // Services from TPUART
 #define TPUART_RESET_INDICATION_BYTE B11
 
@@ -12,10 +14,10 @@
 #define TPUART_DATA_START_CONTINUE B10000000
 #define TPUART_DATA_END B01000000
 
-
-
+// Debugging
 #define TPUART_DEBUG true
 
+// KNX commands
 #define KNX_COMMAND_READ B0000
 #define KNX_COMMAND_WRITE B0010
 #define KNX_COMMAND_ANSWER B0001
@@ -32,52 +34,33 @@ enum KnxTpUartSerialEventType {
 	UNKNOWN
 };
 
-struct KNXTelegram {
-    boolean repeated;
-    int priority;
-    int source_area;
-    int source_line;
-    int source_member;
-    boolean targetIsGroup;
-    int target_main_group;
-    int target_middle_group;
-    int target_sub_group;
-    int routingcounter;
-    int payload_length;
-    int command;
-    int firstDataByte;
-    int checksum;
-};
-
-
 class KnxTpUart {
 public:
 	KnxTpUart(HardwareSerial*, int, int, int);
 	void uartReset();
 	void uartStateRequest();
 	KnxTpUartSerialEventType serialEvent();
-	KNXTelegram* getReceivedTelegram();
+	KnxTelegram* getReceivedTelegram();
 	
 	void sendAck();
 	
-	void groupWriteBoolean(int, int, int, boolean);
+	void groupWriteBool(int, int, int, bool);
 	
-	void groupAnswerBoolean(int, int, int, boolean);
+	void groupAnswerBool(int, int, int, bool);
 private:
 	HardwareSerial* _serialport;
-	KNXTelegram _tg;
+	KnxTelegram* _tg;
 	int _source_area;
 	int _source_line;
 	int _source_member;
 	
 	
-	boolean isKNXControlByte(int);
+	bool isKNXControlByte(int);
 	void checkErrors();
 	void printByte(int);
 	void readKNXTelegram();
 	int* createKNXMessageFrame(int, int, int, int, int, int);
 	void sendMessage(int*, int);
-	int calculateTelegramChecksum(int*, int);
 	int serialRead();
 };
 
