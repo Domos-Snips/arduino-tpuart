@@ -33,9 +33,27 @@ bool KnxTelegram::isRepeated() {
 	}
 }
 
-int KnxTelegram::getPriority() {
+void KnxTelegram::setRepeated(bool repeat) {
+	if (repeat) {
+		buffer[0] = buffer[0] & B11011111;
+	} else {
+		buffer[0] = buffer[0] | B00100000;
+	}
+}
+
+void KnxTelegram::setPriority(KnxPriorityType prio) {
+	buffer[0] = buffer[0] & B11110011;
+	buffer[0] = buffer[0] | (prio << 2);
+}
+
+KnxPriorityType KnxTelegram::getPriority() {
 	// Priority
-	return ((buffer[0] & B00001100) >> 2);
+	return (KnxPriorityType) ((buffer[0] & B00001100) >> 2);
+}
+
+void KnxTelegram::setSourceAddress(int area, int line, int member) {
+	buffer[1] = (area << 4) | line;	// Source Address
+	buffer[2] = member; // Source Address
 }
 
 int KnxTelegram::getSourceArea() {
@@ -48,6 +66,12 @@ int KnxTelegram::getSourceLine() {
 
 int KnxTelegram::getSourceMember() {
 	return buffer[2];
+}
+
+void KnxTelegram::setTargetGroupAddress(int main, int middle, int sub) {
+	buffer[3] = (main << 3) | middle;
+	buffer[4] = sub;
+	buffer[5] = buffer[5] | B10000000;
 }
 
 bool KnxTelegram::isTargetGroup() {
@@ -66,20 +90,48 @@ int KnxTelegram::getTargetSubGroup() {
 	return buffer[4];
 }
 
+void KnxTelegram::setRoutingCounter(int counter) {
+	buffer[5] = buffer[5] & B10000000;
+	buffer[5] = buffer[5] | (counter << 4);
+}
+
 int KnxTelegram::getRoutingCounter() {
 	return ((buffer[5] & B01110000) >> 4);
+}
+
+void KnxTelegram::setPayloadLength(int length) {
+	buffer[5] = buffer[5] & B11110000;
+	buffer[5] = buffer[5] | (length - 1);
 }
 
 int KnxTelegram::getPayloadLength() {
 	return (buffer[5] & B00001111) + 1;
 }
 
-int KnxTelegram::getCommand() {
-	return ((buffer[6] & B00000011) << 2) | ((buffer[7] & B11000000) >> 6);
+void KnxTelegram::setCommand(KnxCommandType command) {
+	buffer[6] = buffer[6] & B11111100;
+	buffer[7] = buffer[7] & B00111111;
+
+	buffer[6] = buffer[6] | (command >> 2); // Command first two bits
+	buffer[7] = buffer[7] | (command << 6); // Command last two bits
+}
+
+KnxCommandType KnxTelegram::getCommand() {
+	return (KnxCommandType) (((buffer[6] & B00000011) << 2) | ((buffer[7] & B11000000) >> 6));
+}
+
+void KnxTelegram::setFirstDataByte(int data) {
+	buffer[7] = buffer[7] & B11000000;
+	buffer[7] = buffer[7] | data;
 }
 
 int KnxTelegram::getFirstDataByte() {
 	return (buffer[7] & B00111111);
+}
+
+void KnxTelegram::createChecksum() {
+	int checksumPos = getPayloadLength() + KNX_TELEGRAM_HEADER_SIZE;
+	buffer[checksumPos] = calculateChecksum();
 }
 
 int KnxTelegram::getChecksum() {

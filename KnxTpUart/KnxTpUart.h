@@ -17,13 +17,6 @@
 // Debugging
 #define TPUART_DEBUG true
 
-// KNX commands
-enum KnxCommandType {
-	KNX_COMMAND_READ = B0000,
-	KNX_COMMAND_WRITE = B0010,
-	KNX_COMMAND_ANSWER = B0001
-};
-
 // Size of KNX message without payload (header + checksum byte)
 #define KNX_FRAME_SIZE 7
 
@@ -31,8 +24,8 @@ enum KnxCommandType {
 
 enum KnxTpUartSerialEventType {
 	TPUART_RESET_INDICATION,
-	TPUART_STATE_INDICATION,
 	KNX_TELEGRAM,
+	IRRELEVANT_KNX_TELEGRAM,
 	UNKNOWN
 };
 

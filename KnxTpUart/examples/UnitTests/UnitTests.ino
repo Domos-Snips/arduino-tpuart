@@ -35,6 +35,74 @@ test(knxTelegramClear) {
   assertEquals(B11100001, knxTelegram->getBufferByte(5)); 
 }
 
+test(repeatProperty) {
+  knxTelegram->setRepeated(true);
+  assertTrue(knxTelegram->isRepeated());
+  
+  knxTelegram->setRepeated(false);
+  assertTrue(! knxTelegram->isRepeated());
+}
+
+test(priorityProperty) {
+  knxTelegram->setPriority(KNX_PRIORITY_NORMAL);
+  assertEquals(KNX_PRIORITY_NORMAL, knxTelegram->getPriority()); 
+
+  knxTelegram->setPriority(KNX_PRIORITY_HIGH);
+  assertEquals(KNX_PRIORITY_HIGH, knxTelegram->getPriority()); 
+
+  knxTelegram->setPriority(KNX_PRIORITY_ALARM);
+  assertEquals(KNX_PRIORITY_ALARM, knxTelegram->getPriority()); 
+
+  knxTelegram->setPriority(KNX_PRIORITY_SYSTEM);
+  assertEquals(KNX_PRIORITY_SYSTEM, knxTelegram->getPriority()); 
+}
+
+test(sourceAddressProperties) {
+  knxTelegram->setSourceAddress(15, 12, 20);
+  assertEquals(15, knxTelegram->getSourceArea());
+  assertEquals(12, knxTelegram->getSourceLine());
+  assertEquals(20, knxTelegram->getSourceMember()); 
+}
+
+test(targetAddressProperties) {
+  knxTelegram->setTargetGroupAddress(0, 3, 15);
+  assertTrue(knxTelegram->isTargetGroup());
+  assertEquals(0, knxTelegram->getTargetMainGroup());
+  assertEquals(3, knxTelegram->getTargetMiddleGroup());
+  assertEquals(15, knxTelegram->getTargetSubGroup()); 
+}
+
+test(routingCounterProperty) {
+  knxTelegram->setRoutingCounter(5);
+  assertEquals(5, knxTelegram->getRoutingCounter()); 
+}
+
+test(payloadLengthProperty) {
+  knxTelegram->setPayloadLength(5);
+  assertEquals(5, knxTelegram->getPayloadLength()); 
+}
+
+test(commandProperty) {
+  knxTelegram->setCommand(KNX_COMMAND_READ);
+  assertEquals(KNX_COMMAND_READ, knxTelegram->getCommand()); 
+
+  knxTelegram->setCommand(KNX_COMMAND_WRITE);
+  assertEquals(KNX_COMMAND_WRITE, knxTelegram->getCommand()); 
+
+  knxTelegram->setCommand(KNX_COMMAND_ANSWER);
+  assertEquals(KNX_COMMAND_ANSWER, knxTelegram->getCommand()); 
+}
+
+test(firstDataByteProperty) {
+  knxTelegram->setFirstDataByte(B1100);
+  assertEquals(B1100, knxTelegram->getFirstDataByte()); 
+}
+
+test(checksumProperty) {
+  knxTelegram->createChecksum();
+  assertTrue(knxTelegram->verifyChecksum()); 
+}
+
 void loop() {
   suite.run();
 }

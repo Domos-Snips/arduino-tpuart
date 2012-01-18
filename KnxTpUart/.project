@@ -76,4 +76,11 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>arduino</name>
+			<type>2</type>
+			<location>D:/Privat/arduino-1.0/hardware/arduino/cores/arduino</location>
+		</link>
+	</linkedResources>
 </projectDescription>

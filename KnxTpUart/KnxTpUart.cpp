@@ -32,9 +32,6 @@ KnxTpUartSerialEventType KnxTpUart::serialEvent() {
 		} else if (incomingByte == TPUART_RESET_INDICATION_BYTE) {
 			serialRead();
 			return TPUART_RESET_INDICATION;
-		} else if (incomingByte & B00000111) {
-			serialRead();
-			return TPUART_STATE_INDICATION;
 		} else {
 			serialRead();
 			return UNKNOWN;
