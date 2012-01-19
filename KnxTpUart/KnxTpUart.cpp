@@ -5,6 +5,7 @@ KnxTpUart::KnxTpUart(HardwareSerial* sport, int area, int line, int member) {
 	_source_area = area;
 	_source_line = line;
 	_source_member = member;
+	_listen_group_address_count = 0;
 	_tg = new KnxTelegram();
 }
 
@@ -69,6 +70,15 @@ void KnxTpUart::readKNXTelegram() {
 		_tg->setBufferByte(i, serialRead());
 	}
 
+	// Verify if we are interested in this message
+	bool interested = isListeningToGroupAddress(_tg->getTargetMainGroup(), _tg->getTargetMiddleGroup(), _tg->getTargetSubGroup());
+
+	if (interested) {
+		sendAck();
+	} else {
+		sendNotAddressed();
+	}
+
 	int bufpos = 6;
 	for (int i = 0; i < _tg->getPayloadLength(); i++) {
 		_tg->setBufferByte(bufpos, serialRead());
@@ -77,9 +87,6 @@ void KnxTpUart::readKNXTelegram() {
 	
 	// Checksum
 	_tg->setBufferByte(bufpos, serialRead());
-
-	// Test
-	//sendAck();
 	
 	// Print the received telegram
 	if (TPUART_DEBUG) {
@@ -144,6 +151,11 @@ void KnxTpUart::sendAck() {
 	_serialport->write(sendByte);
 }
 
+void KnxTpUart::sendNotAddressed() {
+	byte sendByte = B00010000;
+	_serialport->write(sendByte);
+}
+
 int KnxTpUart::serialRead() {
 	unsigned long startTime = millis();
 	
@@ -157,4 +169,29 @@ int KnxTpUart::serialRead() {
 	}
 	
 	return _serialport->read();
+}
+
+void KnxTpUart::addListenGroupAddress(int main, int middle, int sub) {
+	if (_listen_group_address_count >= MAX_LISTEN_GROUP_ADDRESSES) {
+		if (TPUART_DEBUG) Serial.println("Already listening to MAX_LISTEN_GROUP_ADDRESSES, cannot listen to another");
+		return;
+	}
+
+	_listen_group_addresses[_listen_group_address_count][0] = main;
+	_listen_group_addresses[_listen_group_address_count][1] = middle;
+	_listen_group_addresses[_listen_group_address_count][2] = sub;
+
+	_listen_group_address_count++;
+}
+
+bool KnxTpUart::isListeningToGroupAddress(int main, int middle, int sub) {
+	for (int i = 0; i < _listen_group_address_count; i++) {
+		if ( (_listen_group_addresses[i][0] == main)
+				&& (_listen_group_addresses[i][1] == middle)
+				&& (_listen_group_addresses[i][2] == sub)) {
+			return true;
+		}
+	}
+
+	return false;
 }

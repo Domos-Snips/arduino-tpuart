@@ -103,6 +103,13 @@ test(checksumProperty) {
   assertTrue(knxTelegram->verifyChecksum()); 
 }
 
+test(receivingGroupAddresses) {
+  knx.addListenGroupAddress(15, 15, 100);
+  assertTrue(knx.isListeningToGroupAddress(15, 15, 100));
+  assertTrue(! knx.isListeningToGroupAddress(15, 3, 28)); 
+}
+
+
 void loop() {
   suite.run();
 }

@@ -25,6 +25,7 @@ void setup() {
   Serial.println(UCSR1C, BIN);
 
   knx.uartReset();
+  knx.addListenGroupAddress(my_main_group, my_middle_group, my_sub_group);
 }
 
 
@@ -37,19 +38,10 @@ void serialEvent1() {
      Serial.println("Event KNX_TELEGRAM");
      KnxTelegram* telegram = knx.getReceivedTelegram();
 
-     // Is the telegram for us?
-     if (telegram->getTargetMainGroup() == my_main_group
-       && telegram->getTargetMiddleGroup() == my_middle_group
-       && telegram->getTargetSubGroup() == my_sub_group) {
-        
-       // Acknowledge
-       //knx.sendAck();
-         
-       // Is it a read request?
-       if (telegram->getCommand() == KNX_COMMAND_READ) {
-          knx.groupAnswerBool(my_main_group, my_middle_group, my_sub_group, true);
-       }   
-     }
+     // Is it a read request?
+     if (telegram->getCommand() == KNX_COMMAND_READ) {
+        knx.groupAnswerBool(my_main_group, my_middle_group, my_sub_group, true);
+     }   
   }
 }
 
