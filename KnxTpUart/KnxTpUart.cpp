@@ -28,8 +28,12 @@ KnxTpUartSerialEventType KnxTpUart::serialEvent() {
 		
 		if (isKNXControlByte(incomingByte)) {
 			if (TPUART_DEBUG) Serial.println("KNX Control Byte received");
-			readKNXTelegram();
-			return KNX_TELEGRAM;
+			bool interested = readKNXTelegram();
+			if (interested) {
+				return KNX_TELEGRAM;
+			} else {
+				return IRRELEVANT_KNX_TELEGRAM;
+			}
 		} else if (incomingByte == TPUART_RESET_INDICATION_BYTE) {
 			serialRead();
 			return TPUART_RESET_INDICATION;
@@ -38,6 +42,8 @@ KnxTpUartSerialEventType KnxTpUart::serialEvent() {
 			return UNKNOWN;
 		}
 	}
+
+	return UNKNOWN;
 }
 
 
@@ -64,7 +70,7 @@ void KnxTpUart::printByte(int incomingByte) {
 	Serial.println();
 }
 
-void KnxTpUart::readKNXTelegram() {
+bool KnxTpUart::readKNXTelegram() {
 	// Receive header
 	for (int i = 0; i < 6; i++) {
 		_tg->setBufferByte(i, serialRead());
@@ -93,6 +99,8 @@ void KnxTpUart::readKNXTelegram() {
 		_tg->print(&Serial);
 	}
 	
+	// Returns if we are interested in this diagram
+	return interested;
 }
 
 KnxTelegram* KnxTpUart::getReceivedTelegram() {

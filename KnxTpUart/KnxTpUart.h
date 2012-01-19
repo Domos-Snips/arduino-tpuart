@@ -59,7 +59,7 @@ private:
 	bool isKNXControlByte(int);
 	void checkErrors();
 	void printByte(int);
-	void readKNXTelegram();
+	bool readKNXTelegram();
 	void createKNXMessageFrame(int, KnxCommandType, int, int, int, int);
 	void sendMessage();
 	int serialRead();
