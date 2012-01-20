@@ -35,7 +35,6 @@ void loop() {
 void serialEvent1() {
   KnxTpUartSerialEventType eType = knx.serialEvent();
   if (eType == KNX_TELEGRAM) {
-     Serial.println("Event KNX_TELEGRAM");
      KnxTelegram* telegram = knx.getReceivedTelegram();
 
      // Is it a read request?

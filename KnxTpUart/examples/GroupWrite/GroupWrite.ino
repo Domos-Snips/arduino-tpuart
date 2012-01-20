@@ -48,7 +48,11 @@ void loop() {
        
        if (!haveSent) {
            // Send the opposite of what we have sent last
-           knx.groupWriteBool(0,0,3, !onSent);
+           bool success = knx.groupWriteBool(0,0,3, !onSent);
+           
+           Serial.print("Successfully sent: ");
+           Serial.println(success);
+           
            onSent = !onSent;
            haveSent = true;
        }

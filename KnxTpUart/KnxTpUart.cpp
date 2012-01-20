@@ -27,22 +27,26 @@ KnxTpUartSerialEventType KnxTpUart::serialEvent() {
 		printByte(incomingByte);
 		
 		if (isKNXControlByte(incomingByte)) {
-			if (TPUART_DEBUG) Serial.println("KNX Control Byte received");
 			bool interested = readKNXTelegram();
 			if (interested) {
+				if (TPUART_DEBUG) Serial.println("Event KNX_TELEGRAM");
 				return KNX_TELEGRAM;
 			} else {
+				if (TPUART_DEBUG) Serial.println("Event IRRELEVANT_KNX_TELEGRAM");
 				return IRRELEVANT_KNX_TELEGRAM;
 			}
 		} else if (incomingByte == TPUART_RESET_INDICATION_BYTE) {
 			serialRead();
+			if (TPUART_DEBUG) Serial.println("Event TPUART_RESET_INDICATION");
 			return TPUART_RESET_INDICATION;
 		} else {
 			serialRead();
+			if (TPUART_DEBUG) Serial.println("Event UNKNOWN");
 			return UNKNOWN;
 		}
 	}
 
+	if (TPUART_DEBUG) Serial.println("Event UNKNOWN");
 	return UNKNOWN;
 }
 
@@ -107,24 +111,24 @@ KnxTelegram* KnxTpUart::getReceivedTelegram() {
 	return _tg;
 }
 
-void KnxTpUart::groupWriteBool(int mainGroup, int middleGroup, int subGroup, bool value) {
+bool KnxTpUart::groupWriteBool(int mainGroup, int middleGroup, int subGroup, bool value) {
 	int valueAsInt = 0;
 	if (value) {
 		valueAsInt = B00000001;
 	}
 	
 	createKNXMessageFrame(2, KNX_COMMAND_WRITE, mainGroup, middleGroup, subGroup, valueAsInt);
-	sendMessage();
+	return sendMessage();
 }
 
-void KnxTpUart::groupAnswerBool(int mainGroup, int middleGroup, int subGroup, bool value) {
+bool KnxTpUart::groupAnswerBool(int mainGroup, int middleGroup, int subGroup, bool value) {
 	int valueAsInt = 0;
 	if (value) {
 		valueAsInt = B00000001;
 	}
 	
 	createKNXMessageFrame(2, KNX_COMMAND_ANSWER, mainGroup, middleGroup, subGroup, valueAsInt);
-	sendMessage();
+	return sendMessage();
 }
 
 void KnxTpUart::createKNXMessageFrame(int payloadlength, KnxCommandType command, int mainGroup, int middleGroup, int subGroup, int firstDataByte) {
@@ -136,7 +140,7 @@ void KnxTpUart::createKNXMessageFrame(int payloadlength, KnxCommandType command,
 	_tg->createChecksum();
 }
 
-void KnxTpUart::sendMessage() {
+bool KnxTpUart::sendMessage() {
 	int messageSize = _tg->getTotalLength();
 
 	uint8_t sendbuf[2];
@@ -152,6 +156,21 @@ void KnxTpUart::sendMessage() {
 		
 		_serialport->write(sendbuf, 2);
 	}
+
+	// We'll receive the message immediately back from TP-UART
+	for (int i = 0; i < messageSize; i++) {
+		serialRead();
+	}
+
+	// Receive the confirmation byte
+	int confirmation = serialRead();
+
+	if (confirmation == B10001011) {
+		return true; // Sent successfully
+	} else {
+		return false;
+	}
+
 }
 
 void KnxTpUart::sendAck() {

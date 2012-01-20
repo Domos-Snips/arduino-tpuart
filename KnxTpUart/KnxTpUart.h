@@ -41,9 +41,9 @@ public:
 	void sendAck();
 	void sendNotAddressed();
 	
-	void groupWriteBool(int, int, int, bool);
+	bool groupWriteBool(int, int, int, bool);
 	
-	void groupAnswerBool(int, int, int, bool);
+	bool groupAnswerBool(int, int, int, bool);
 
 	void addListenGroupAddress(int, int, int);
 	bool isListeningToGroupAddress(int, int, int);
@@ -61,7 +61,7 @@ private:
 	void printByte(int);
 	bool readKNXTelegram();
 	void createKNXMessageFrame(int, KnxCommandType, int, int, int, int);
-	void sendMessage();
+	bool sendMessage();
 	int serialRead();
 };
 
