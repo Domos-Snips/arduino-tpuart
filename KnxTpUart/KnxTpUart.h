@@ -42,8 +42,10 @@ public:
 	void sendNotAddressed();
 	
 	bool groupWriteBool(int, int, int, bool);
+	bool groupWrite2ByteFloat(int, int, int, float);
 	
 	bool groupAnswerBool(int, int, int, bool);
+	bool groupAnswer2ByteFloat(int, int, int, float);
 
 	void addListenGroupAddress(int, int, int);
 	bool isListeningToGroupAddress(int, int, int);

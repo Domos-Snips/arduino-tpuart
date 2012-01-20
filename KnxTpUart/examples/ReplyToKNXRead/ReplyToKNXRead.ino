@@ -39,7 +39,8 @@ void serialEvent1() {
 
      // Is it a read request?
      if (telegram->getCommand() == KNX_COMMAND_READ) {
-        knx.groupAnswerBool(my_main_group, my_middle_group, my_sub_group, true);
+        //knx.groupAnswerBool(my_main_group, my_middle_group, my_sub_group, true);
+        knx.groupAnswer2ByteFloat(my_main_group, my_middle_group, my_sub_group, 25.28);
      }   
   }
 }

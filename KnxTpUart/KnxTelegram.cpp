@@ -177,6 +177,14 @@ void KnxTelegram::print(HardwareSerial* serial) {
 	serial->print("First Data Byte: ");
 	serial->println(getFirstDataByte());
 
+	for (int i = 2; i < getPayloadLength(); i++) {
+		serial->print("Data Byte ");
+		serial->print(i);
+		serial->print(": ");
+		serial->println(buffer[6+i], BIN);
+	}
+
+
 	if (verifyChecksum()) {
 		serial->println("Checksum matches");
 	} else {
@@ -200,4 +208,45 @@ int KnxTelegram::calculateChecksum() {
 
 int KnxTelegram::getTotalLength() {
 	return KNX_TELEGRAM_HEADER_SIZE + getPayloadLength() + 1;
+}
+
+void KnxTelegram::set2ByteFloatValue(float value) {
+	setPayloadLength(4);
+
+	int v = value * 100.0;
+
+	if (v < 0) {
+		buffer[8] = B10000000;
+		v = abs(v);
+	} else {
+		buffer[8] = B00000000;
+	}
+
+	int exponent = 0;
+	while (0xF800 & v) {
+		v >>= 1;
+		exponent += 1;
+	}
+
+	buffer[8] = buffer[8] | ((B1111 & exponent) << 3);
+	buffer[8] = buffer[8] | (B00000111 & (v >> 8));
+	buffer[9] = v;
+}
+
+float KnxTelegram::get2ByteFloatValue() {
+	if (getPayloadLength() != 4) {
+		// Wrong payload length
+		return 0;
+	}
+
+	int exponent = (buffer[8] & B01111000) >> 3;
+	int mantissa = ((buffer[8] & B00000111) << 8) | (buffer[9]);
+
+	int sign = 1;
+
+	if (buffer[8] & B10000000) {
+		sign = -1;
+	}
+
+	return (mantissa * 0.01) * pow(2.0, exponent);
 }

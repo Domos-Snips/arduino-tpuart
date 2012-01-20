@@ -50,6 +50,8 @@ class KnxTelegram {
 		KnxCommandType getCommand();
 		void setFirstDataByte(int data);
 		int getFirstDataByte();
+		void set2ByteFloatValue(float value);
+		float get2ByteFloatValue();
 		void createChecksum();
 		bool verifyChecksum();
 		int getChecksum();

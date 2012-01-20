@@ -110,6 +110,12 @@ test(receivingGroupAddresses) {
   assertTrue(! knx.isListeningToGroupAddress(15, 3, 28)); 
 }
 
+test(floatValues) {
+  knxTelegram->set2ByteFloatValue(25.28);
+  assertEquals(4, knxTelegram->getPayloadLength());
+  assertEquals(25.28 * 100.0, knxTelegram->get2ByteFloatValue() * 100); 
+}
+
 
 void loop() {
   suite.run();
