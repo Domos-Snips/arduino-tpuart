@@ -18,7 +18,8 @@ test(knxTelegramClearAfterCreation) {
   }  
   
   assertEquals(B10111100, knxTelegram->getBufferByte(0));
-  assertEquals(B11100001, knxTelegram->getBufferByte(5));   
+  assertEquals(B11100001, knxTelegram->getBufferByte(5));
+  assertEquals(9, knxTelegram->getTotalLength());  
 }
 
 test(knxTelegramClear) {

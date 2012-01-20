@@ -54,6 +54,7 @@ class KnxTelegram {
 		bool verifyChecksum();
 		int getChecksum();
 		void print(HardwareSerial*);
+		int getTotalLength();
 	private:
 		int buffer[MAX_KNX_TELEGRAM_SIZE];
 		int calculateChecksum();

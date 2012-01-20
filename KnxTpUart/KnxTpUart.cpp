@@ -137,7 +137,7 @@ void KnxTpUart::createKNXMessageFrame(int payloadlength, KnxCommandType command,
 }
 
 void KnxTpUart::sendMessage() {
-	int messageSize = _tg->getPayloadLength() + KNX_TELEGRAM_HEADER_SIZE + 1;
+	int messageSize = _tg->getTotalLength();
 
 	uint8_t sendbuf[2];
 	for (int i = 0; i < messageSize; i++) {

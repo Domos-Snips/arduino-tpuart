@@ -197,3 +197,7 @@ int KnxTelegram::calculateChecksum() {
 
 	return bcc;
 }
+
+int KnxTelegram::getTotalLength() {
+	return KNX_TELEGRAM_HEADER_SIZE + getPayloadLength() + 1;
+}
