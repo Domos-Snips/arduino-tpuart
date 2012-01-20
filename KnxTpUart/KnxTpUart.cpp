@@ -171,20 +171,21 @@ bool KnxTpUart::sendMessage() {
 		_serialport->write(sendbuf, 2);
 	}
 
-	// We'll receive the message immediately back from TP-UART
-	for (int i = 0; i < messageSize; i++) {
-		serialRead();
+
+	int confirmation;
+	while(true) {
+		confirmation = serialRead();
+		if (confirmation == B10001011) {
+			return true; // Sent successfully
+		} else if (confirmation == B00001011) {
+			return false;
+		} else if (confirmation == -1) {
+			// Read timeout
+			return false;
+		}
 	}
 
-	// Receive the confirmation byte
-	int confirmation = serialRead();
-
-	if (confirmation == B10001011) {
-		return true; // Sent successfully
-	} else {
-		return false;
-	}
-
+	return false;
 }
 
 void KnxTpUart::sendAck() {
