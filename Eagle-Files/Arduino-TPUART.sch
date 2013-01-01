@@ -13775,8 +13775,8 @@ Siemens, Hewlett-Packard, Texas Instuments, Sharp, Motorola&lt;p&gt;
 <part name="C5" library="resistor" deviceset="CPOL-EU" device="E2.5-5" value="100µ"/>
 <part name="C3" library="resistor" deviceset="CPOL-EU" device="E2-5" value="6.8µ"/>
 <part name="R6" library="resistor" deviceset="R-EU_" device="0414/15" value="68/1W"/>
-<part name="KNX+" library="pinhead" deviceset="PINHD-1X1" device=""/>
-<part name="KNX-" library="pinhead" deviceset="PINHD-1X1" device=""/>
+<part name="+" library="pinhead" deviceset="PINHD-1X1" device=""/>
+<part name="-KNX" library="pinhead" deviceset="PINHD-1X1" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -13809,8 +13809,8 @@ Siemens, Hewlett-Packard, Texas Instuments, Sharp, Motorola&lt;p&gt;
 <instance part="C5" gate="G$1" x="20.32" y="35.56" rot="R180"/>
 <instance part="C3" gate="G$1" x="40.64" y="45.72"/>
 <instance part="R6" gate="G$1" x="-7.62" y="-2.54" rot="R90"/>
-<instance part="KNX+" gate="G$1" x="-38.1" y="25.4" rot="R180"/>
-<instance part="KNX-" gate="G$1" x="-38.1" y="-30.48" rot="R180"/>
+<instance part="+" gate="G$1" x="-38.1" y="25.4" rot="R180"/>
+<instance part="-KNX" gate="G$1" x="-38.1" y="-30.48" rot="R180"/>
 </instances>
 <busses>
 </busses>
@@ -13839,7 +13839,7 @@ Siemens, Hewlett-Packard, Texas Instuments, Sharp, Motorola&lt;p&gt;
 <junction x="-25.4" y="25.4"/>
 <wire x1="-25.4" y1="25.4" x2="-25.4" y2="2.54" width="0.1524" layer="91"/>
 <pinref part="D4" gate="1" pin="2"/>
-<pinref part="KNX+" gate="G$1" pin="1"/>
+<pinref part="+" gate="G$1" pin="1"/>
 </segment>
 </net>
 <net name="GND" class="1">
@@ -13858,7 +13858,7 @@ Siemens, Hewlett-Packard, Texas Instuments, Sharp, Motorola&lt;p&gt;
 <wire x1="17.78" y1="-30.48" x2="30.48" y2="-30.48" width="0.1524" layer="91"/>
 <wire x1="30.48" y1="-30.48" x2="30.48" y2="-12.7" width="0.1524" layer="91"/>
 <pinref part="D4" gate="1" pin="1"/>
-<pinref part="KNX-" gate="G$1" pin="1"/>
+<pinref part="-KNX" gate="G$1" pin="1"/>
 </segment>
 <segment>
 <pinref part="GND2" gate="1" pin="GND"/>
