@@ -7,6 +7,12 @@ KnxTpUart::KnxTpUart(HardwareSerial* sport, int area, int line, int member) {
 	_source_member = member;
 	_listen_group_address_count = 0;
 	_tg = new KnxTelegram();
+	_tg_ptp = new KnxTelegram();
+    _listen_to_broadcasts = false;
+}
+
+void KnxTpUart::setListenToBroadcasts(bool listen) {
+    _listen_to_broadcasts = listen;
 }
 
 void KnxTpUart::uartReset() {
@@ -17,6 +23,12 @@ void KnxTpUart::uartReset() {
 void KnxTpUart::uartStateRequest() {
 	byte sendByte = 0x02;
 	_serialport->write(sendByte);
+}
+
+void KnxTpUart::setIndividualAddress(int area, int line, int member) {
+    _source_area = area;
+    _source_line = line;
+    _source_member = member;
 }
 
 KnxTpUartSerialEventType KnxTpUart::serialEvent() {
@@ -80,24 +92,42 @@ bool KnxTpUart::readKNXTelegram() {
 		_tg->setBufferByte(i, serialRead());
 	}
 
-	// Verify if we are interested in this message
-	bool interested = isListeningToGroupAddress(_tg->getTargetMainGroup(), _tg->getTargetMiddleGroup(), _tg->getTargetSubGroup());
+	int bufpos = 6;
+	for (int i = 0; i < _tg->getPayloadLength(); i++) {
+		_tg->setBufferByte(bufpos, serialRead());
+		bufpos++; 
+	}
 
+    // Verify if we are interested in this message - GroupAddress
+	bool interested = _tg->isTargetGroup() && isListeningToGroupAddress(_tg->getTargetMainGroup(), _tg->getTargetMiddleGroup(), _tg->getTargetSubGroup());
+    
+    // Physical address
+    interested = interested || ((!_tg->isTargetGroup()) && _tg->getTargetArea() == _source_area && _tg->getTargetLine() == _source_line && _tg->getTargetMember() == _source_member);
+    
+    // Broadcast (Programming Mode)
+    interested = interested || (_listen_to_broadcasts && _tg->isTargetGroup() && _tg->getTargetMainGroup() == 0 && _tg->getTargetMiddleGroup() == 0 && _tg->getTargetSubGroup() == 0);
+    
 	if (interested) {
 		sendAck();
 	} else {
 		sendNotAddressed();
 	}
 
-	int bufpos = 6;
-	for (int i = 0; i < _tg->getPayloadLength(); i++) {
-		_tg->setBufferByte(bufpos, serialRead());
-		bufpos++; 
-	}
-	
 	// Checksum
 	_tg->setBufferByte(bufpos, serialRead());
-	
+
+    if (_tg->getCommunicationType() == KNX_COMM_UCD) {
+        if (TPUART_DEBUG) Serial.println("UCD Telegram received");
+    } else if (_tg->getCommunicationType() == KNX_COMM_NCD) {
+        if (TPUART_DEBUG) {
+            Serial.print("NCD Telegram ");
+            Serial.print(_tg->getSequenceNumber());
+            Serial.println(" received");
+        }
+        
+        sendNCDPosConfirm(_tg->getSequenceNumber(), _tg->getSourceArea(), _tg->getSourceLine(), _tg->getSourceMember());
+    }
+
 	// Print the received telegram
 	if (TPUART_DEBUG) {
 		_tg->print(&Serial);
@@ -145,13 +175,92 @@ bool KnxTpUart::groupAnswer2ByteFloat(int mainGroup, int middleGroup, int subGro
 	return sendMessage();
 }
 
+bool KnxTpUart::individualAnswerAddress() {
+    createKNXMessageFrame(2, KNX_COMMAND_INDIVIDUAL_ADDR_RESPONSE, 0, 0, 0, 0);
+	_tg->createChecksum();
+	return sendMessage();    
+}
+
+bool KnxTpUart::individualAnswerMaskVersion(int area, int line, int member) {
+    createKNXMessageFrameIndividual(4, KNX_COMMAND_MASK_VERSION_RESPONSE, area, line, member, 0);
+    _tg->setCommunicationType(KNX_COMM_NDP);
+    _tg->setBufferByte(8, 0x07); // Mask version part 1 for BIM M 112
+    _tg->setBufferByte(9, 0x01); // Mask version part 2 for BIM M 112
+    _tg->createChecksum();
+    return sendMessage();
+}
+
+bool KnxTpUart::individualAnswerAuth(int accessLevel, int sequenceNo, int area, int line, int member) {
+    createKNXMessageFrameIndividual(3, KNX_COMMAND_ESCAPE, area, line, member, KNX_EXT_COMMAND_AUTH_RESPONSE);
+    _tg->setCommunicationType(KNX_COMM_NDP);
+    _tg->setSequenceNumber(sequenceNo);
+    _tg->setBufferByte(8, accessLevel);
+    _tg->createChecksum();
+    return sendMessage();
+}
+
 void KnxTpUart::createKNXMessageFrame(int payloadlength, KnxCommandType command, int mainGroup, int middleGroup, int subGroup, int firstDataByte) {
 	_tg->clear();
 	_tg->setSourceAddress(_source_area, _source_line, _source_member);
 	_tg->setTargetGroupAddress(mainGroup, middleGroup, subGroup);
 	_tg->setFirstDataByte(firstDataByte);
 	_tg->setCommand(command);
+    _tg->setPayloadLength(payloadlength);
 	_tg->createChecksum();
+}
+
+void KnxTpUart::createKNXMessageFrameIndividual(int payloadlength, KnxCommandType command, int area, int line, int member, int firstDataByte) {
+	_tg->clear();
+	_tg->setSourceAddress(_source_area, _source_line, _source_member);
+	_tg->setTargetIndividualAddress(area, line, member);
+	_tg->setFirstDataByte(firstDataByte);
+	_tg->setCommand(command);
+    _tg->setPayloadLength(payloadlength);
+	_tg->createChecksum();
+}
+
+bool KnxTpUart::sendNCDPosConfirm(int sequenceNo, int area, int line, int member) {
+    _tg_ptp->clear();
+	_tg_ptp->setSourceAddress(_source_area, _source_line, _source_member);
+	_tg_ptp->setTargetIndividualAddress(area, line, member);
+	_tg_ptp->setSequenceNumber(sequenceNo);
+    _tg_ptp->setCommunicationType(KNX_COMM_NCD);
+    _tg_ptp->setControlData(KNX_CONTROLDATA_POS_CONFIRM);
+    _tg_ptp->setPayloadLength(1);
+	_tg_ptp->createChecksum();
+    
+    
+    int messageSize = _tg_ptp->getTotalLength();
+    
+	uint8_t sendbuf[2];
+	for (int i = 0; i < messageSize; i++) {
+		if (i == (messageSize - 1)) {
+			sendbuf[0] = TPUART_DATA_END;
+		} else {
+			sendbuf[0] = TPUART_DATA_START_CONTINUE;
+		}
+		
+		sendbuf[0] |= i;
+		sendbuf[1] = _tg_ptp->getBufferByte(i);
+		
+		_serialport->write(sendbuf, 2);
+	}
+    
+    
+	int confirmation;
+	while(true) {
+		confirmation = serialRead();
+		if (confirmation == B10001011) {
+			return true; // Sent successfully
+		} else if (confirmation == B00001011) {
+			return false;
+		} else if (confirmation == -1) {
+			// Read timeout
+			return false;
+		}
+	}
+    
+	return false;
 }
 
 bool KnxTpUart::sendMessage() {

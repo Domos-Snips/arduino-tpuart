@@ -20,15 +20,25 @@
 					<folderInfo id="0.249363491." name="/" resourcePath="">
 						<toolChain id="org.eclipse.cdt.build.core.prefbase.toolchain.261112191" name="No ToolChain" resourceTypeBasedDiscovery="false" superClass="org.eclipse.cdt.build.core.prefbase.toolchain">
 							<targetPlatform id="org.eclipse.cdt.build.core.prefbase.toolchain.261112191.1429388378" name=""/>
-							<builder id="org.eclipse.cdt.build.core.settings.default.builder.429001287" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" superClass="org.eclipse.cdt.build.core.settings.default.builder"/>
+							<builder id="org.eclipse.cdt.build.core.settings.default.builder.429001287" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" superClass="org.eclipse.cdt.build.core.settings.default.builder">
+								<outputEntries>
+									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name=""/>
+								</outputEntries>
+							</builder>
 							<tool id="org.eclipse.cdt.build.core.settings.holder.libs.1563125869" name="holder for library settings" superClass="org.eclipse.cdt.build.core.settings.holder.libs"/>
 							<tool id="org.eclipse.cdt.build.core.settings.holder.1205388721" name="Assembly" superClass="org.eclipse.cdt.build.core.settings.holder">
+								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.432319108" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
+									<listOptionValue builtIn="false" value="/Applications/Arduino.app/Contents/Resources/Java/hardware/tools/avr/avr/include"/>
+								</option>
+								<option id="org.eclipse.cdt.build.core.settings.holder.symbols.1921983595" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="__AVR_ATmega2560__"/>
+								</option>
 								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1471639253" languageId="org.eclipse.cdt.core.assembly" languageName="Assembly" sourceContentType="org.eclipse.cdt.core.asmSource" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
 							</tool>
 							<tool id="org.eclipse.cdt.build.core.settings.holder.1914495621" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder">
 								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.156773221" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;D:\Privat\arduino-1.0\hardware\arduino\cores\arduino&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;D:\Privat\arduino-1.0\hardware\tools\avr\avr\include&quot;"/>
+									<listOptionValue builtIn="false" value="/Applications/Arduino.app/Contents/Resources/Java/hardware/arduino/cores/arduino"/>
+									<listOptionValue builtIn="false" value="/Applications/Arduino.app/Contents/Resources/Java/hardware/tools/avr/avr/include"/>
 								</option>
 								<option id="org.eclipse.cdt.build.core.settings.holder.symbols.79002295" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="__AVR_ATmega2560__"/>
@@ -36,6 +46,13 @@
 								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.138212138" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
 							</tool>
 							<tool id="org.eclipse.cdt.build.core.settings.holder.371944044" name="GNU C" superClass="org.eclipse.cdt.build.core.settings.holder">
+								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.1238346280" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
+									<listOptionValue builtIn="false" value="/Applications/Arduino.app/Contents/Resources/Java/hardware/arduino/cores/arduino"/>
+									<listOptionValue builtIn="false" value="/Applications/Arduino.app/Contents/Resources/Java/hardware/tools/avr/avr/include"/>
+								</option>
+								<option id="org.eclipse.cdt.build.core.settings.holder.symbols.977653707" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="__AVR_ATmega2560__"/>
+								</option>
 								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1685560829" languageId="org.eclipse.cdt.core.gcc" languageName="GNU C" sourceContentType="org.eclipse.cdt.core.cSource,org.eclipse.cdt.core.cHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
 							</tool>
 						</toolChain>

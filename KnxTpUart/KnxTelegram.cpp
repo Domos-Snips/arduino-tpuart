@@ -74,6 +74,12 @@ void KnxTelegram::setTargetGroupAddress(int main, int middle, int sub) {
 	buffer[5] = buffer[5] | B10000000;
 }
 
+void KnxTelegram::setTargetIndividualAddress(int area, int line, int member) {
+	buffer[3] = (area << 4) | line;
+	buffer[4] = member;
+	buffer[5] = buffer[5] & B01111111;
+}
+
 bool KnxTelegram::isTargetGroup() {
 	return buffer[5] & B10000000;
 }
@@ -87,6 +93,18 @@ int KnxTelegram::getTargetMiddleGroup() {
 }
 
 int KnxTelegram::getTargetSubGroup() {
+	return buffer[4];
+}
+
+int KnxTelegram::getTargetArea() {
+	return ((buffer[3] & B11110000) >> 4);
+}
+
+int KnxTelegram::getTargetLine() {
+	return (buffer[3] & B00001111);
+}
+
+int KnxTelegram::getTargetMember() {
 	return buffer[4];
 }
 
@@ -118,6 +136,33 @@ void KnxTelegram::setCommand(KnxCommandType command) {
 
 KnxCommandType KnxTelegram::getCommand() {
 	return (KnxCommandType) (((buffer[6] & B00000011) << 2) | ((buffer[7] & B11000000) >> 6));
+}
+
+void KnxTelegram::setControlData(KnxControlDataType cd) {
+    buffer[6] = buffer[6] & B11111100;
+    buffer[6] = buffer[6] | cd;
+}
+
+KnxControlDataType KnxTelegram::getControlData() {
+    return (KnxControlDataType) (buffer[6] & B00000011);
+}
+
+KnxCommunicationType KnxTelegram::getCommunicationType() {
+    return (KnxCommunicationType) ((buffer[6] & B11000000) >> 6);
+}
+
+void KnxTelegram::setCommunicationType(KnxCommunicationType type) {
+    buffer[6] = buffer[6] & B00111111;
+    buffer[6] = buffer[6] | (type << 6);
+}
+
+int KnxTelegram::getSequenceNumber() {
+    return (buffer[6] & B00111100) >> 2;
+}
+
+void KnxTelegram::setSequenceNumber(int number) {
+    buffer[6] = buffer[6] & B11000011;
+    buffer[6] = buffer[6] | (number << 2);
 }
 
 void KnxTelegram::setFirstDataByte(int data) {
@@ -158,13 +203,22 @@ void KnxTelegram::print(HardwareSerial* serial) {
 	serial->print(".");
 	serial->println(getSourceMember());
 
-	serial->print("Target Group: ");
-	serial->print(getTargetMainGroup());
-	serial->print("/");
-	serial->print(getTargetMiddleGroup());
-	serial->print("/");
-	serial->println(getTargetSubGroup());
-
+    if (isTargetGroup()) {
+        serial->print("Target Group: ");
+        serial->print(getTargetMainGroup());
+        serial->print("/");
+        serial->print(getTargetMiddleGroup());
+        serial->print("/");
+        serial->println(getTargetSubGroup());
+    } else {
+        serial->print("Target Physical: ");
+        serial->print(getTargetArea());
+        serial->print(".");
+        serial->print(getTargetLine());
+        serial->print(".");
+        serial->println(getTargetMember());
+    }
+        
 	serial->print("Routing Counter: ");
 	serial->println(getRoutingCounter());
 

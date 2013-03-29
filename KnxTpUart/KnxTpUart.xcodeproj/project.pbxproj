@@ -3,10 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 42;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXFileReference section */
+		4206FB7616FB877C0089B0A3 /* KnxTelegram.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = KnxTelegram.cpp; sourceTree = "<group>"; };
+		4206FB7716FB87810089B0A3 /* KnxTelegram.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KnxTelegram.h; sourceTree = "<group>"; };
 		429FF42614C1A08A0024BF79 /* KnxTpUart.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KnxTpUart.cpp; sourceTree = "<group>"; };
 		429FF42714C1A08A0024BF79 /* KnxTpUart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KnxTpUart.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -17,6 +19,8 @@
 			children = (
 				429FF42614C1A08A0024BF79 /* KnxTpUart.cpp */,
 				429FF42714C1A08A0024BF79 /* KnxTpUart.h */,
+				4206FB7616FB877C0089B0A3 /* KnxTelegram.cpp */,
+				4206FB7716FB87810089B0A3 /* KnxTelegram.h */,
 			);
 			sourceTree = "<group>";
 		};
@@ -25,9 +29,16 @@
 /* Begin PBXProject section */
 		421F1A2714C1A00D008F3755 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+			};
 			buildConfigurationList = 421F1A2A14C1A00D008F3755 /* Build configuration list for PBXProject "KnxTpUart" */;
-			compatibilityVersion = "Xcode 2.4";
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
 			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
 			mainGroup = 421F1A2514C1A00D008F3755;
 			projectDirPath = "";
 			projectRoot = "";

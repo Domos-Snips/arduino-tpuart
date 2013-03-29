@@ -38,6 +38,8 @@ public:
 	KnxTpUartSerialEventType serialEvent();
 	KnxTelegram* getReceivedTelegram();
 	
+    void setIndividualAddress(int, int, int);
+    
 	void sendAck();
 	void sendNotAddressed();
 	
@@ -49,21 +51,33 @@ public:
 
 	void addListenGroupAddress(int, int, int);
 	bool isListeningToGroupAddress(int, int, int);
+    
+    bool individualAnswerAddress();
+    bool individualAnswerMaskVersion(int, int, int);
+    bool individualAnswerAuth(int, int, int, int, int);
+    
+    void setListenToBroadcasts(bool);
+    
+    
 private:
 	HardwareSerial* _serialport;
-	KnxTelegram* _tg;
+	KnxTelegram* _tg;       // for normal communication
+    KnxTelegram* _tg_ptp;   // for PTP sequence confirmation
 	int _source_area;
 	int _source_line;
 	int _source_member;
 	int _listen_group_addresses[MAX_LISTEN_GROUP_ADDRESSES][3];
 	int _listen_group_address_count;
+    bool _listen_to_broadcasts;
 	
 	bool isKNXControlByte(int);
 	void checkErrors();
 	void printByte(int);
 	bool readKNXTelegram();
 	void createKNXMessageFrame(int, KnxCommandType, int, int, int, int);
+	void createKNXMessageFrameIndividual(int, KnxCommandType, int, int, int, int);
 	bool sendMessage();
+    bool sendNCDPosConfirm(int, int, int, int);
 	int serialRead();
 };
 
