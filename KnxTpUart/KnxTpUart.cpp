@@ -1,6 +1,6 @@
 #include "KnxTpUart.h"
 
-KnxTpUart::KnxTpUart(HardwareSerial* sport, int area, int line, int member) {
+KnxTpUart::KnxTpUart(TPUART_SERIAL_CLASS* sport, int area, int line, int member) {
 	_serialport = sport;
 	_source_area = area;
 	_source_line = line;
@@ -41,24 +41,24 @@ KnxTpUartSerialEventType KnxTpUart::serialEvent() {
 		if (isKNXControlByte(incomingByte)) {
 			bool interested = readKNXTelegram();
 			if (interested) {
-				if (TPUART_DEBUG) Serial.println("Event KNX_TELEGRAM");
+				if (TPUART_DEBUG) TPUART_DEBUG_PORT.println("Event KNX_TELEGRAM");
 				return KNX_TELEGRAM;
 			} else {
-				if (TPUART_DEBUG) Serial.println("Event IRRELEVANT_KNX_TELEGRAM");
+				if (TPUART_DEBUG) TPUART_DEBUG_PORT.println("Event IRRELEVANT_KNX_TELEGRAM");
 				return IRRELEVANT_KNX_TELEGRAM;
 			}
 		} else if (incomingByte == TPUART_RESET_INDICATION_BYTE) {
 			serialRead();
-			if (TPUART_DEBUG) Serial.println("Event TPUART_RESET_INDICATION");
+			if (TPUART_DEBUG) TPUART_DEBUG_PORT.println("Event TPUART_RESET_INDICATION");
 			return TPUART_RESET_INDICATION;
 		} else {
 			serialRead();
-			if (TPUART_DEBUG) Serial.println("Event UNKNOWN");
+			if (TPUART_DEBUG) TPUART_DEBUG_PORT.println("Event UNKNOWN");
 			return UNKNOWN;
 		}
 	}
 
-	if (TPUART_DEBUG) Serial.println("Event UNKNOWN");
+	if (TPUART_DEBUG) TPUART_DEBUG_PORT.println("Event UNKNOWN");
 	return UNKNOWN;
 }
 
@@ -68,22 +68,38 @@ bool KnxTpUart::isKNXControlByte(int b) {
 }
 
 void KnxTpUart::checkErrors() {
+
+#if defined(_SAM3XA_)
+	if (USART1->US_CSR & US_CSR_OVRE) {
+		TPUART_DEBUG_PORT.println("Overrun"); 
+	}
+
+	if (USART1->US_CSR & US_CSR_FRAME) {
+		TPUART_DEBUG_PORT.println("Frame Error");
+	}
+
+	if (USART1->US_CSR & US_CSR_PARE) {
+		TPUART_DEBUG_PORT.println("Parity Error");
+	}
+#else
 	if (UCSR1A & B00010000) {
-		Serial.println("Frame Error"); 
+		TPUART_DEBUG_PORT.println("Frame Error"); 
 	}
 	
 	if (UCSR1A & B00000100) {
-		Serial.println("Parity Error"); 
+		TPUART_DEBUG_PORT.println("Parity Error"); 
 	}
-	
+#endif
 }
 
 void KnxTpUart::printByte(int incomingByte) {
-	Serial.print("Incoming Byte: ");
-	Serial.print(incomingByte, HEX);
-	Serial.print(" - ");
-	Serial.print(incomingByte, BIN);
-	Serial.println();
+	TPUART_DEBUG_PORT.print("Incoming Byte: ");
+	TPUART_DEBUG_PORT.print(incomingByte, DEC);
+	TPUART_DEBUG_PORT.print(" - ");
+	TPUART_DEBUG_PORT.print(incomingByte, HEX);
+	TPUART_DEBUG_PORT.print(" - ");
+	TPUART_DEBUG_PORT.print(incomingByte, BIN);
+	TPUART_DEBUG_PORT.println();
 }
 
 bool KnxTpUart::readKNXTelegram() {
@@ -92,10 +108,21 @@ bool KnxTpUart::readKNXTelegram() {
 		_tg->setBufferByte(i, serialRead());
 	}
 
+	TPUART_DEBUG_PORT.print("Payload Length: ");
+	TPUART_DEBUG_PORT.println(_tg->getPayloadLength());
+
 	int bufpos = 6;
 	for (int i = 0; i < _tg->getPayloadLength(); i++) {
 		_tg->setBufferByte(bufpos, serialRead());
 		bufpos++; 
+	}
+
+	// Checksum
+	_tg->setBufferByte(bufpos, serialRead());
+
+	// Print the received telegram
+	if (TPUART_DEBUG) {
+		_tg->print(&TPUART_DEBUG_PORT);
 	}
 
     // Verify if we are interested in this message - GroupAddress
@@ -113,25 +140,17 @@ bool KnxTpUart::readKNXTelegram() {
 		sendNotAddressed();
 	}
 
-	// Checksum
-	_tg->setBufferByte(bufpos, serialRead());
-
     if (_tg->getCommunicationType() == KNX_COMM_UCD) {
-        if (TPUART_DEBUG) Serial.println("UCD Telegram received");
+        if (TPUART_DEBUG) TPUART_DEBUG_PORT.println("UCD Telegram received");
     } else if (_tg->getCommunicationType() == KNX_COMM_NCD) {
         if (TPUART_DEBUG) {
-            Serial.print("NCD Telegram ");
-            Serial.print(_tg->getSequenceNumber());
-            Serial.println(" received");
+            TPUART_DEBUG_PORT.print("NCD Telegram ");
+            TPUART_DEBUG_PORT.print(_tg->getSequenceNumber());
+            TPUART_DEBUG_PORT.println(" received");
         }
         
         sendNCDPosConfirm(_tg->getSequenceNumber(), _tg->getSourceArea(), _tg->getSourceLine(), _tg->getSourceMember());
     }
-
-	// Print the received telegram
-	if (TPUART_DEBUG) {
-		_tg->print(&Serial);
-	}
 	
 	// Returns if we are interested in this diagram
 	return interested;
@@ -310,21 +329,28 @@ void KnxTpUart::sendNotAddressed() {
 int KnxTpUart::serialRead() {
 	unsigned long startTime = millis();
 	
+	TPUART_DEBUG_PORT.print("Available: ");
+	TPUART_DEBUG_PORT.println(_serialport->available());
+	
 	while (! (_serialport->available() > 0)) {
 		if (abs(millis() - startTime) > SERIAL_READ_TIMEOUT_MS) {
 			// Timeout
-			if (TPUART_DEBUG) Serial.println("Timeout while receiving message");
+			if (TPUART_DEBUG) TPUART_DEBUG_PORT.println("Timeout while receiving message");
 			return -1;
 		}
 		delay(1);
 	}
 	
-	return _serialport->read();
+	int inByte = _serialport->read();
+	checkErrors();
+	printByte(inByte);
+	
+	return inByte;
 }
 
 void KnxTpUart::addListenGroupAddress(int main, int middle, int sub) {
 	if (_listen_group_address_count >= MAX_LISTEN_GROUP_ADDRESSES) {
-		if (TPUART_DEBUG) Serial.println("Already listening to MAX_LISTEN_GROUP_ADDRESSES, cannot listen to another");
+		if (TPUART_DEBUG) TPUART_DEBUG_PORT.println("Already listening to MAX_LISTEN_GROUP_ADDRESSES, cannot listen to another");
 		return;
 	}
 

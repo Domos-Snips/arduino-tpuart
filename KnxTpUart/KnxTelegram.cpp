@@ -123,7 +123,8 @@ void KnxTelegram::setPayloadLength(int length) {
 }
 
 int KnxTelegram::getPayloadLength() {
-	return (buffer[5] & B00001111) + 1;
+	int length = (buffer[5] & B00001111) + 1;
+	return length;
 }
 
 void KnxTelegram::setCommand(KnxCommandType command) {
@@ -189,7 +190,7 @@ bool KnxTelegram::verifyChecksum() {
 	return (getChecksum() == calculatedChecksum);
 }
 
-void KnxTelegram::print(HardwareSerial* serial) {
+void KnxTelegram::print(TPUART_SERIAL_CLASS* serial) {
 	serial->print("Repeated: ");
 	serial->println(isRepeated());
 

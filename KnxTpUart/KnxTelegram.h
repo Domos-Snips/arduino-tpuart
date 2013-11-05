@@ -6,6 +6,8 @@
 #define MAX_KNX_TELEGRAM_SIZE 23
 #define KNX_TELEGRAM_HEADER_SIZE 6
 
+#define TPUART_SERIAL_CLASS Serial_
+
 // KNX priorities
 enum KnxPriorityType {
 	KNX_PRIORITY_SYSTEM = B00,
@@ -87,7 +89,7 @@ class KnxTelegram {
 		void createChecksum();
 		bool verifyChecksum();
 		int getChecksum();
-		void print(HardwareSerial*);
+		void print(TPUART_SERIAL_CLASS*);
 		int getTotalLength();
         KnxCommunicationType getCommunicationType();
         void setCommunicationType(KnxCommunicationType);
