@@ -215,7 +215,7 @@ bool KnxTpUart::groupAnswer2ByteFloat(int mainGroup, int middleGroup, int subGro
 	return sendMessage();
 }
 
-bool KnxTpUart::groupAnswer2ByteFloat(int mainGroup, int middleGroup, int subGroup, float value) {
+bool KnxTpUart::groupAnswer2ByteInt(int mainGroup, int middleGroup, int subGroup, int value) {
 	createKNXMessageFrame(2, KNX_COMMAND_ANSWER, mainGroup, middleGroup, subGroup, 0);
 	_tg->set2ByteFloatValue(value);
 	_tg->createChecksum();
