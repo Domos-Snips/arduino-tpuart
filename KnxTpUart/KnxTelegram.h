@@ -86,6 +86,13 @@ class KnxTelegram {
 		int getFirstDataByte();
 		void set2ByteFloatValue(float value);
 		float get2ByteFloatValue();
+		void set2ByteIntValue(float value);
+        float get2ByteIntValue();
+        void set4ByteFloatValue(float value);
+        float get4ByteFloatValue();
+        void set14ByteValue(String value);
+        //Ungetested - war char*
+        String get14ByteValue(String value);
 		void createChecksum();
 		bool verifyChecksum();
 		int getChecksum();
