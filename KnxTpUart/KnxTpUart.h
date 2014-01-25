@@ -1,4 +1,3 @@
-
 #ifndef KnxTpUart_h
 #define KnxTpUart_h
 
@@ -15,9 +14,12 @@
 #define TPUART_DATA_END B01000000
 
 // Debugging
+// Für UNO muss TPUART_DEBUG auf false
+
 #define TPUART_DEBUG true
 #define TPUART_DEBUG_PORT SerialUSB
 
+// Für UNO muss TPUART_SERIAL_CLASS HardwareSerial
 #define TPUART_SERIAL_CLASS USARTClass
 
 // Timeout for reading a byte from TPUART
@@ -48,9 +50,16 @@ public:
 	
 	bool groupWriteBool(int, int, int, bool);
 	bool groupWrite2ByteFloat(int, int, int, float);
-	
+	bool groupWrite2ByteInt(int, int, int, int);
+	bool groupWrite4ByteFloat(int, int, int, float);
+    bool groupWrite14Byte(int, int, int, String);
+
 	bool groupAnswerBool(int, int, int, bool);
 	bool groupAnswer2ByteFloat(int, int, int, float);
+	bool groupWrite2ByteInt(int, int, int, int);
+	bool groupAnswer4ByteFloat(int, int, int, float);
+    bool groupAnswer14Byte(int, int, int, String);
+
 
 	void addListenGroupAddress(int, int, int);
 	bool isListeningToGroupAddress(int, int, int);
