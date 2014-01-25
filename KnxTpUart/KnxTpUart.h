@@ -52,13 +52,13 @@ public:
 	bool groupWrite2ByteFloat(int, int, int, float);
 	bool groupWrite2ByteInt(int, int, int, int);
 	bool groupWrite4ByteFloat(int, int, int, float);
-    bool groupWrite14Byte(int, int, int, String);
+    bool groupWrite14ByteText(int, int, int, String);
 
 	bool groupAnswerBool(int, int, int, bool);
 	bool groupAnswer2ByteFloat(int, int, int, float);
 	bool groupWrite2ByteInt(int, int, int, int);
 	bool groupAnswer4ByteFloat(int, int, int, float);
-    bool groupAnswer14Byte(int, int, int, String);
+    bool groupAnswer14ByteText(int, int, int, String);
 
 
 	void addListenGroupAddress(int, int, int);
