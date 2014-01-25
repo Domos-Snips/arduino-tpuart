@@ -305,3 +305,85 @@ float KnxTelegram::get2ByteFloatValue() {
 
 	return (mantissa * 0.01) * pow(2.0, exponent);
 }
+
+void KnxTelegram::set4ByteFloatValue(float value) {
+  setPayloadLength(6);
+
+  byte b[4];  
+  float *f = (float*)(void*)&(b[0]);
+  *f=value;
+
+  buffer[8+3]=b[0];
+  buffer[8+2]=b[1];
+  buffer[8+1]=b[2];
+  buffer[8+0]=b[3];
+}
+
+float KnxTelegram::get4ByteFloatValue() {
+    if (getPayloadLength() != 6) {
+        // Wrong payload length
+        return 0;
+    }
+  byte b[4];
+  b[0]=buffer[8+3];
+  b[1]=buffer[8+2];
+  b[2]=buffer[8+1];
+  b[3]=buffer[8+0];
+  float *f=(float*)(void*)&(b[0]);
+  float  r=*f;
+  return r;
+}
+
+
+void KnxTelegram::set14ByteValue(String value) {
+  // load definieren
+  char _load[15];
+  
+  // load mit space leeren/initialisieren
+  for (int i=0; i<14; ++i)
+  {_load[i]= 0;}
+  setPayloadLength(16);
+  //mache aus Value das CharArray
+  value.toCharArray(_load,15); // muss 15 sein - weil mit 0 abgeschlossen wird
+  buffer[8+0]=_load [0];
+  buffer[8+1]=_load [1];
+  buffer[8+2]=_load [2];
+  buffer[8+3]=_load [3];
+  buffer[8+4]=_load [4];
+  buffer[8+5]=_load [5];
+  buffer[8+6]=_load [6];
+  buffer[8+7]=_load [7];
+  buffer[8+8]=_load [8];
+  buffer[8+9]=_load [9];
+  buffer[8+10]=_load [10];
+  buffer[8+11]=_load [11];
+  buffer[8+12]=_load [12];
+  buffer[8+13]=_load [13];
+}
+
+//
+String KnxTelegram::get14ByteValue(String value) {
+if (getPayloadLength() != 16) {
+        // Wrong payload length
+        return 0;
+    }
+    char _load[15];
+	_load[0]=buffer[8+0];
+	_load[1]=buffer[8+1];
+	_load[2]=buffer[8+2];
+	_load[3]=buffer[8+3];
+	_load[4]=buffer[8+4];
+	_load[5]=buffer[8+5];
+	_load[6]=buffer[8+6];
+	_load[7]=buffer[8+7];
+	_load[8]=buffer[8+8];
+	_load[9]=buffer[8+9];
+	_load[10]=buffer[8+10];
+	_load[11]=buffer[8+11];
+	_load[12]=buffer[8+12];
+	_load[13]=buffer[8+13];
+	return _load; 
+	// noch ungetested wie die Rückgave erfolgen muss
+	//return _load.ToString(_load[0]+_load[1]+_load[2]+_load[3]+_load[4]+_load[5]+_load[6]+_load[7]+_load[8]+_load[9]+_load[10]+_load[11]+_load[12]+_load[13]);
+	//return str(_load);
+}
