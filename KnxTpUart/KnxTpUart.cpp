@@ -177,6 +177,27 @@ bool KnxTpUart::groupWrite2ByteFloat(int mainGroup, int middleGroup, int subGrou
 	return sendMessage();
 }
 
+bool KnxTpUart::groupWrite2ByteInt(int mainGroup, int middleGroup, int subGroup, int value) {
+	createKNXMessageFrame(2, KNX_COMMAND_WRITE, mainGroup, middleGroup, subGroup, 0);
+	_tg->set2ByteFloatValue(value);
+	_tg->createChecksum();
+	return sendMessage();
+}
+
+bool KnxTpUart::groupWrite4ByteFloat(int mainGroup, int middleGroup, int subGroup, float value) {
+	createKNXMessageFrame(2, KNX_COMMAND_WRITE, mainGroup, middleGroup, subGroup, 0);
+	_tg->set4ByteFloatValue(value);
+	_tg->createChecksum();
+	return sendMessage();
+}
+
+bool KnxTpUart::groupWrite14ByteText(int mainGroup, int middleGroup, int subGroup, String value) {
+	createKNXMessageFrame(2, KNX_COMMAND_WRITE, mainGroup, middleGroup, subGroup, 0);
+	_tg->set14ByteValue(value);
+	_tg->createChecksum();
+	return sendMessage();
+}
+
 bool KnxTpUart::groupAnswerBool(int mainGroup, int middleGroup, int subGroup, bool value) {
 	int valueAsInt = 0;
 	if (value) {
@@ -190,6 +211,27 @@ bool KnxTpUart::groupAnswerBool(int mainGroup, int middleGroup, int subGroup, bo
 bool KnxTpUart::groupAnswer2ByteFloat(int mainGroup, int middleGroup, int subGroup, float value) {
 	createKNXMessageFrame(2, KNX_COMMAND_ANSWER, mainGroup, middleGroup, subGroup, 0);
 	_tg->set2ByteFloatValue(value);
+	_tg->createChecksum();
+	return sendMessage();
+}
+
+bool KnxTpUart::groupAnswer2ByteFloat(int mainGroup, int middleGroup, int subGroup, float value) {
+	createKNXMessageFrame(2, KNX_COMMAND_ANSWER, mainGroup, middleGroup, subGroup, 0);
+	_tg->set2ByteFloatValue(value);
+	_tg->createChecksum();
+	return sendMessage();
+}
+
+bool KnxTpUart::groupAnswer4ByteFloat(int mainGroup, int middleGroup, int subGroup, float value) {
+	createKNXMessageFrame(2, KNX_COMMAND_WRITE, mainGroup, middleGroup, subGroup, 0);
+	_tg->set4ByteFloatValue(value);
+	_tg->createChecksum();
+	return sendMessage();
+}
+
+bool KnxTpUart::groupAnswer14ByteText(int mainGroup, int middleGroup, int subGroup, String value) {
+	createKNXMessageFrame(2, KNX_COMMAND_ANSWER, mainGroup, middleGroup, subGroup, 0);
+	_tg->set14ByteValue(value);
 	_tg->createChecksum();
 	return sendMessage();
 }
