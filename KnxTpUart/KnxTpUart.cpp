@@ -69,7 +69,7 @@ bool KnxTpUart::isKNXControlByte(int b) {
 
 void KnxTpUart::checkErrors() {
 
-#if defined(_SAM3XA_)
+#if defined(_SAM3XA_)  // For DUE
 	if (USART1->US_CSR & US_CSR_OVRE) {
 		if (TPUART_DEBUG) TPUART_DEBUG_PORT.println("Overrun"); 
 	}
@@ -80,6 +80,14 @@ void KnxTpUart::checkErrors() {
 
 	if (USART1->US_CSR & US_CSR_PARE) {
 		if (TPUART_DEBUG) TPUART_DEBUG_PORT.println("Parity Error");
+	}
+#elif defined(__AVR_ATmega168__) || defined(__AVR_ATmega328P__) // for UNO
+	if (UCSR0A & B00010000) {
+		if (TPUART_DEBUG) TPUART_DEBUG_PORT.println("Frame Error"); 
+	}
+	
+	if (UCSR0A & B00000100) {
+		if (TPUART_DEBUG) TPUART_DEBUG_PORT.println("Parity Error"); 
 	}
 #else
 	if (UCSR1A & B00010000) {
