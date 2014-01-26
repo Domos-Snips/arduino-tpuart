@@ -56,7 +56,7 @@ public:
 
 	bool groupAnswerBool(int, int, int, bool);
 	bool groupAnswer2ByteFloat(int, int, int, float);
-	bool groupWrite2ByteInt(int, int, int, int);
+	bool groupAnswer2ByteInt(int, int, int, int);
 	bool groupAnswer4ByteFloat(int, int, int, float);
     bool groupAnswer14ByteText(int, int, int, String);
 
