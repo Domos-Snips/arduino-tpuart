@@ -365,7 +365,7 @@ void KnxTelegram::set14ByteValue(String value) {
 String KnxTelegram::get14ByteValue(String value) {
 if (getPayloadLength() != 16) {
         // Wrong payload length
-        return 0;
+        return "";
     }
     char _load[15];
 	_load[0]=buffer[8+0];
@@ -382,7 +382,9 @@ if (getPayloadLength() != 16) {
 	_load[11]=buffer[8+11];
 	_load[12]=buffer[8+12];
 	_load[13]=buffer[8+13];
-	return _load; 
+	// i have no clue how to return the required string :-( - to do.
+	return "";
+	//return _load; 
 	// noch ungetested wie die Rückgave erfolgen muss
 	//return _load.ToString(_load[0]+_load[1]+_load[2]+_load[3]+_load[4]+_load[5]+_load[6]+_load[7]+_load[8]+_load[9]+_load[10]+_load[11]+_load[12]+_load[13]);
 	//return str(_load);
