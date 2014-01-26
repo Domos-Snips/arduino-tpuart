@@ -17,7 +17,7 @@
 // Für UNO muss TPUART_DEBUG auf false
 
 #define TPUART_DEBUG true
-#define TPUART_DEBUG_PORT SerialUSB
+#define TPUART_DEBUG_PORT Serial
 
 // Für UNO muss TPUART_SERIAL_CLASS HardwareSerial / für Mega muss USARTClass
 #define TPUART_SERIAL_CLASS USARTClass
