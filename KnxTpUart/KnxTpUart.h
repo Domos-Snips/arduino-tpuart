@@ -26,7 +26,7 @@
 #define SERIAL_READ_TIMEOUT_MS 10
 
 // Maximum number of group addresses that can be listened on
-#define MAX_LISTEN_GROUP_ADDRESSES 5
+#define MAX_LISTEN_GROUP_ADDRESSES 15
 
 enum KnxTpUartSerialEventType {
 	TPUART_RESET_INDICATION,
