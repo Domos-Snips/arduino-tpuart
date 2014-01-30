@@ -265,6 +265,15 @@ int KnxTelegram::getTotalLength() {
 	return KNX_TELEGRAM_HEADER_SIZE + getPayloadLength() + 1;
 }
 
+bool KnxTelegram::getBool() {
+	if (getPayloadLength() != 2) {
+		// Wrong payload length
+		return 0;
+	}
+
+	return(buffer[8] & B00000001);
+}
+
 void KnxTelegram::set2ByteFloatValue(float value) {
 	setPayloadLength(4);
 
