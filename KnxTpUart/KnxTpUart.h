@@ -19,8 +19,8 @@
 #define TPUART_DEBUG true
 #define TPUART_DEBUG_PORT Serial
 
-// Für UNO muss TPUART_SERIAL_CLASS HardwareSerial / für Mega muss USARTClass
-#define TPUART_SERIAL_CLASS USARTClass
+// Für UNO muss TPUART_SERIAL_CLASS HardwareSerial (war mal für Mega USARTClass)
+#define TPUART_SERIAL_CLASS HardwareSerial
 
 // Timeout for reading a byte from TPUART
 #define SERIAL_READ_TIMEOUT_MS 10
