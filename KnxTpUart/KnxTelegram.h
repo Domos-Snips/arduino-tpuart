@@ -84,10 +84,13 @@ class KnxTelegram {
 		KnxCommandType getCommand();
 		void setFirstDataByte(int data);
 		int getFirstDataByte();
+		bool getBool();
 		void set2ByteFloatValue(float value);
 		float get2ByteFloatValue();
 		void set2ByteIntValue(float value);
-        float get2ByteIntValue();
+        int get1ByteIntValue();
+		void set1ByteIntValue(int value);
+		float get2ByteIntValue();
         void set4ByteFloatValue(float value);
         float get4ByteFloatValue();
         void set14ByteValue(String value);
