@@ -50,12 +50,14 @@ public:
 	
 	bool groupWriteBool(int, int, int, bool);
 	bool groupWrite2ByteFloat(int, int, int, float);
+	bool groupWrite1ByteInt(int, int, int, int);
 	bool groupWrite2ByteInt(int, int, int, int);
 	bool groupWrite4ByteFloat(int, int, int, float);
     bool groupWrite14ByteText(int, int, int, String);
 
 	bool groupAnswerBool(int, int, int, bool);
 	bool groupAnswer2ByteFloat(int, int, int, float);
+	bool groupAnswer1ByteInt(int, int, int, int);
 	bool groupAnswer2ByteInt(int, int, int, int);
 	bool groupAnswer4ByteFloat(int, int, int, float);
     bool groupAnswer14ByteText(int, int, int, String);
