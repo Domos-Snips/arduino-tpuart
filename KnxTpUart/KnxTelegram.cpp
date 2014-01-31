@@ -274,6 +274,20 @@ bool KnxTelegram::getBool() {
 	return(buffer[8] & B00000001);
 }
 
+void KnxTelegram::set1ByteIntValue(int value) {
+	setPayloadLength(3);
+	buffer[8]=value;
+}
+
+int KnxTelegram::get1ByteIntValue() {
+	if (getPayloadLength() != 3) {
+		// Wrong payload length
+		return 0;
+	}
+
+	return(buffer[8]);
+}
+
 void KnxTelegram::set2ByteFloatValue(float value) {
 	setPayloadLength(4);
 
