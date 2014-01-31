@@ -192,6 +192,13 @@ bool KnxTpUart::groupWrite2ByteInt(int mainGroup, int middleGroup, int subGroup,
 	return sendMessage();
 }
 
+bool KnxTpUart::groupWrite1ByteInt(int mainGroup, int middleGroup, int subGroup, int value) {
+	createKNXMessageFrame(2, KNX_COMMAND_WRITE, mainGroup, middleGroup, subGroup, 0);
+	_tg->set1ByteIntValue(value);
+	_tg->createChecksum();
+	return sendMessage();
+}
+
 bool KnxTpUart::groupWrite4ByteFloat(int mainGroup, int middleGroup, int subGroup, float value) {
 	createKNXMessageFrame(2, KNX_COMMAND_WRITE, mainGroup, middleGroup, subGroup, 0);
 	_tg->set4ByteFloatValue(value);
@@ -213,6 +220,13 @@ bool KnxTpUart::groupAnswerBool(int mainGroup, int middleGroup, int subGroup, bo
 	}
 	
 	createKNXMessageFrame(2, KNX_COMMAND_ANSWER, mainGroup, middleGroup, subGroup, valueAsInt);
+	return sendMessage();
+}
+
+bool KnxTpUart::groupAnswer1ByteInt(int mainGroup, int middleGroup, int subGroup, int value) {
+	createKNXMessageFrame(2, KNX_COMMAND_ANSWER, mainGroup, middleGroup, subGroup, 0);
+	_tg->set1ByteIntValue(value);
+	_tg->createChecksum();
 	return sendMessage();
 }
 
