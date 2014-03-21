@@ -19,8 +19,7 @@
 #define TPUART_DEBUG true
 #define TPUART_DEBUG_PORT Serial
 
-// Für UNO muss TPUART_SERIAL_CLASS HardwareSerial (war mal für Mega USARTClass)
-#define TPUART_SERIAL_CLASS HardwareSerial
+#define TPUART_SERIAL_CLASS Stream
 
 // Timeout for reading a byte from TPUART
 #define SERIAL_READ_TIMEOUT_MS 10
@@ -74,7 +73,7 @@ public:
     
     
 private:
-	HardwareSerial* _serialport;
+	Stream* _serialport;
 	KnxTelegram* _tg;       // for normal communication
     KnxTelegram* _tg_ptp;   // for PTP sequence confirmation
 	int _source_area;
