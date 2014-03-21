@@ -6,7 +6,7 @@
 #define MAX_KNX_TELEGRAM_SIZE 23
 #define KNX_TELEGRAM_HEADER_SIZE 6
 
-#define TPUART_SERIAL_CLASS HardwareSerial
+#define TPUART_SERIAL_CLASS Stream
 
 // KNX priorities
 enum KnxPriorityType {
