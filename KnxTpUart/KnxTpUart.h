@@ -14,9 +14,8 @@
 #define TPUART_DATA_END B01000000
 
 // Debugging
-// Für UNO muss TPUART_DEBUG auf false
-
-#define TPUART_DEBUG true
+// uncomment the following line to enable debugging
+//#define TPUART_DEBUG true
 #define TPUART_DEBUG_PORT Serial
 
 #define TPUART_SERIAL_CLASS Stream
