@@ -21,6 +21,10 @@
 
 #define TPUART_SERIAL_CLASS Stream
 
+// Delay in ms between sending of packets to the bus
+// set to 0 if you keep care of that by yourself
+#define SERIAL_WRITE_DELAY_MS 0
+
 // Timeout for reading a byte from TPUART
 #define SERIAL_READ_TIMEOUT_MS 10
 
