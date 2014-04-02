@@ -41,24 +41,33 @@ KnxTpUartSerialEventType KnxTpUart::serialEvent() {
 		if (isKNXControlByte(incomingByte)) {
 			bool interested = readKNXTelegram();
 			if (interested) {
-				if (TPUART_DEBUG) TPUART_DEBUG_PORT.println("Event KNX_TELEGRAM");
+#if defined(TPUART_DEBUG)
+				TPUART_DEBUG_PORT.println("Event KNX_TELEGRAM");
+#endif
 				return KNX_TELEGRAM;
 			} else {
-				if (TPUART_DEBUG) TPUART_DEBUG_PORT.println("Event IRRELEVANT_KNX_TELEGRAM");
+#if defined(TPUART_DEBUG)
+				TPUART_DEBUG_PORT.println("Event IRRELEVANT_KNX_TELEGRAM");
+#endif
 				return IRRELEVANT_KNX_TELEGRAM;
 			}
 		} else if (incomingByte == TPUART_RESET_INDICATION_BYTE) {
 			serialRead();
-			if (TPUART_DEBUG) TPUART_DEBUG_PORT.println("Event TPUART_RESET_INDICATION");
+#if defined(TPUART_DEBUG)
+			TPUART_DEBUG_PORT.println("Event TPUART_RESET_INDICATION");
+#endif
 			return TPUART_RESET_INDICATION;
 		} else {
 			serialRead();
-			if (TPUART_DEBUG) TPUART_DEBUG_PORT.println("Event UNKNOWN");
+#if defined(TPUART_DEBUG)
+			TPUART_DEBUG_PORT.println("Event UNKNOWN");
+#endif
 			return UNKNOWN;
 		}
 	}
-
-	if (TPUART_DEBUG) TPUART_DEBUG_PORT.println("Event UNKNOWN");
+#if defined(TPUART_DEBUG)
+	TPUART_DEBUG_PORT.println("Event UNKNOWN");
+#endif
 	return UNKNOWN;
 }
 
@@ -68,46 +77,49 @@ bool KnxTpUart::isKNXControlByte(int b) {
 }
 
 void KnxTpUart::checkErrors() {
-
+#if defined(TPUART_DEBUG)
 #if defined(_SAM3XA_)  // For DUE
 	if (USART1->US_CSR & US_CSR_OVRE) {
-		if (TPUART_DEBUG) TPUART_DEBUG_PORT.println("Overrun"); 
+		TPUART_DEBUG_PORT.println("Overrun"); 
 	}
 
 	if (USART1->US_CSR & US_CSR_FRAME) {
-		if (TPUART_DEBUG) TPUART_DEBUG_PORT.println("Frame Error");
+		TPUART_DEBUG_PORT.println("Frame Error");
 	}
 
 	if (USART1->US_CSR & US_CSR_PARE) {
-		if (TPUART_DEBUG) TPUART_DEBUG_PORT.println("Parity Error");
+		TPUART_DEBUG_PORT.println("Parity Error");
 	}
 #elif defined(__AVR_ATmega168__) || defined(__AVR_ATmega328P__) // for UNO
 	if (UCSR0A & B00010000) {
-		if (TPUART_DEBUG) TPUART_DEBUG_PORT.println("Frame Error"); 
+		TPUART_DEBUG_PORT.println("Frame Error"); 
 	}
 	
 	if (UCSR0A & B00000100) {
-		if (TPUART_DEBUG) TPUART_DEBUG_PORT.println("Parity Error"); 
+		TPUART_DEBUG_PORT.println("Parity Error"); 
 	}
 #else
 	if (UCSR1A & B00010000) {
-		if (TPUART_DEBUG) TPUART_DEBUG_PORT.println("Frame Error"); 
+		TPUART_DEBUG_PORT.println("Frame Error"); 
 	}
 	
 	if (UCSR1A & B00000100) {
-		if (TPUART_DEBUG) TPUART_DEBUG_PORT.println("Parity Error"); 
+		TPUART_DEBUG_PORT.println("Parity Error"); 
 	}
+#endif
 #endif
 }
 
 void KnxTpUart::printByte(int incomingByte) {
-	if (TPUART_DEBUG) TPUART_DEBUG_PORT.print("Incoming Byte: ");
-	if (TPUART_DEBUG) TPUART_DEBUG_PORT.print(incomingByte, DEC);
-	if (TPUART_DEBUG) TPUART_DEBUG_PORT.print(" - ");
-	if (TPUART_DEBUG) TPUART_DEBUG_PORT.print(incomingByte, HEX);
-	if (TPUART_DEBUG) TPUART_DEBUG_PORT.print(" - ");
-	if (TPUART_DEBUG) TPUART_DEBUG_PORT.print(incomingByte, BIN);
-	if (TPUART_DEBUG) TPUART_DEBUG_PORT.println();
+#if defined(TPUART_DEBUG)
+	TPUART_DEBUG_PORT.print("Incoming Byte: ");
+	TPUART_DEBUG_PORT.print(incomingByte, DEC);
+	TPUART_DEBUG_PORT.print(" - ");
+	TPUART_DEBUG_PORT.print(incomingByte, HEX);
+	TPUART_DEBUG_PORT.print(" - ");
+	TPUART_DEBUG_PORT.print(incomingByte, BIN);
+	TPUART_DEBUG_PORT.println();
+#endif
 }
 
 bool KnxTpUart::readKNXTelegram() {
@@ -116,9 +128,10 @@ bool KnxTpUart::readKNXTelegram() {
 		_tg->setBufferByte(i, serialRead());
 	}
 
-	if (TPUART_DEBUG) TPUART_DEBUG_PORT.print("Payload Length: ");
-	if (TPUART_DEBUG) TPUART_DEBUG_PORT.println(_tg->getPayloadLength());
-
+#if defined(TPUART_DEBUG)
+	TPUART_DEBUG_PORT.print("Payload Length: ");
+	TPUART_DEBUG_PORT.println(_tg->getPayloadLength());
+#endif
 	int bufpos = 6;
 	for (int i = 0; i < _tg->getPayloadLength(); i++) {
 		_tg->setBufferByte(bufpos, serialRead());
@@ -128,10 +141,10 @@ bool KnxTpUart::readKNXTelegram() {
 	// Checksum
 	_tg->setBufferByte(bufpos, serialRead());
 
+#if defined(TPUART_DEBUG)
 	// Print the received telegram
-	if (TPUART_DEBUG) {
-		_tg->print(&TPUART_DEBUG_PORT);
-	}
+	_tg->print(&TPUART_DEBUG_PORT);
+#endif
 
     // Verify if we are interested in this message - GroupAddress
 	bool interested = _tg->isTargetGroup() && isListeningToGroupAddress(_tg->getTargetMainGroup(), _tg->getTargetMiddleGroup(), _tg->getTargetSubGroup());
@@ -149,13 +162,15 @@ bool KnxTpUart::readKNXTelegram() {
 	}
 
     if (_tg->getCommunicationType() == KNX_COMM_UCD) {
-        if (TPUART_DEBUG) TPUART_DEBUG_PORT.println("UCD Telegram received");
+#if defined(TPUART_DEBUG)
+      TPUART_DEBUG_PORT.println("UCD Telegram received");
+#endif
     } else if (_tg->getCommunicationType() == KNX_COMM_NCD) {
-        if (TPUART_DEBUG) {
-            TPUART_DEBUG_PORT.print("NCD Telegram ");
-            TPUART_DEBUG_PORT.print(_tg->getSequenceNumber());
-            TPUART_DEBUG_PORT.println(" received");
-        }
+#if defined(TPUART_DEBUG)
+        TPUART_DEBUG_PORT.print("NCD Telegram ");
+        TPUART_DEBUG_PORT.print(_tg->getSequenceNumber());
+        TPUART_DEBUG_PORT.println(" received");
+#endif
         
         sendNCDPosConfirm(_tg->getSequenceNumber(), _tg->getSourceArea(), _tg->getSourceLine(), _tg->getSourceMember());
     }
@@ -397,14 +412,17 @@ void KnxTpUart::sendNotAddressed() {
 
 int KnxTpUart::serialRead() {
 	unsigned long startTime = millis();
-	
-	if (TPUART_DEBUG) TPUART_DEBUG_PORT.print("Available: ");
-	if (TPUART_DEBUG) TPUART_DEBUG_PORT.println(_serialport->available());
+#if defined(TPUART_DEBUG)
+	TPUART_DEBUG_PORT.print("Available: ");
+	TPUART_DEBUG_PORT.println(_serialport->available());
+#endif
 	
 	while (! (_serialport->available() > 0)) {
 		if (abs(millis() - startTime) > SERIAL_READ_TIMEOUT_MS) {
 			// Timeout
-			if (TPUART_DEBUG) TPUART_DEBUG_PORT.println("Timeout while receiving message");
+#if defined(TPUART_DEBUG)
+			TPUART_DEBUG_PORT.println("Timeout while receiving message");
+#endif
 			return -1;
 		}
 		delay(1);
@@ -419,7 +437,9 @@ int KnxTpUart::serialRead() {
 
 void KnxTpUart::addListenGroupAddress(int main, int middle, int sub) {
 	if (_listen_group_address_count >= MAX_LISTEN_GROUP_ADDRESSES) {
-		if (TPUART_DEBUG) TPUART_DEBUG_PORT.println("Already listening to MAX_LISTEN_GROUP_ADDRESSES, cannot listen to another");
+#if defined(TPUART_DEBUG)
+		TPUART_DEBUG_PORT.println("Already listening to MAX_LISTEN_GROUP_ADDRESSES, cannot listen to another");
+#endif
 		return;
 	}
 
