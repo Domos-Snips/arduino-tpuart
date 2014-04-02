@@ -368,11 +368,14 @@ bool KnxTpUart::sendMessage() {
 	while(true) {
 		confirmation = serialRead();
 		if (confirmation == B10001011) {
+			delay (SERIAL_WRITE_DELAY_MS);
 			return true; // Sent successfully
 		} else if (confirmation == B00001011) {
+			delay (SERIAL_WRITE_DELAY_MS);
 			return false;
 		} else if (confirmation == -1) {
 			// Read timeout
+			delay (SERIAL_WRITE_DELAY_MS);
 			return false;
 		}
 	}
@@ -383,11 +386,13 @@ bool KnxTpUart::sendMessage() {
 void KnxTpUart::sendAck() {
 	byte sendByte = B00010001;
 	_serialport->write(sendByte);
+	delay(SERIAL_WRITE_DELAY_MS);
 }
 
 void KnxTpUart::sendNotAddressed() {
 	byte sendByte = B00010000;
 	_serialport->write(sendByte);
+	delay(SERIAL_WRITE_DELAY_MS);
 }
 
 int KnxTpUart::serialRead() {
