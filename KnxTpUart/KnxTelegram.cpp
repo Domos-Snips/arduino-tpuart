@@ -272,7 +272,7 @@ bool KnxTelegram::getBool() {
 		return 0;
 	}
 
-	return(buffer[8] & B00000001);
+	return(getFirstDataByte() & B00000001);
 }
 
 void KnxTelegram::set1ByteIntValue(int value) {
