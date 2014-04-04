@@ -292,24 +292,15 @@ int KnxTelegram::get1ByteIntValue() {
 void KnxTelegram::set2ByteFloatValue(float value) {
 	setPayloadLength(4);
 
-	int v = value * 100.0;
-
-	if (v < 0) {
-		buffer[8] = B10000000;
-		v = abs(v);
-	} else {
-		buffer[8] = B00000000;
-	}
-
-	int exponent = 0;
-	while (0xF800 & v) {
-		v >>= 1;
-		exponent += 1;
-	}
-
-	buffer[8] = buffer[8] | ((B1111 & exponent) << 3);
-	buffer[8] = buffer[8] | (B00000111 & (v >> 8));
-	buffer[9] = v;
+	float v = value * 100.0f;
+    int exponent = 0;
+    for (; v < -2048.0f; v /= 2) exponent++;
+	for (; v > 2047.0f; v /= 2) exponent++;
+	long m = round(v) & 0x7FF;
+	short msb = (short) (exponent << 3 | m >> 8);
+	if (value < 0.0f) msb |= 0x80;
+	buffer[8] = msb;
+	buffer[9] = (byte)m;
 }
 
 float KnxTelegram::get2ByteFloatValue() {
