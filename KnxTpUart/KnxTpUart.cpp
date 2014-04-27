@@ -273,6 +273,13 @@ bool KnxTpUart::groupAnswer14ByteText(int mainGroup, int middleGroup, int subGro
 	return sendMessage();
 }
 
+bool KnxTpUart::groupWriteTime(int mainGroup, int middleGroup, int subGroup, int day, int hours, int minutes, int seconds) {
+	createKNXMessageFrame(2, KNX_COMMAND_WRITE, mainGroup, middleGroup, subGroup, 0);
+	_tg->setKNXTime(day, hours, minutes, seconds);
+	_tg->createChecksum();
+	return sendMessage();
+}
+
 bool KnxTpUart::individualAnswerAddress() {
     createKNXMessageFrame(2, KNX_COMMAND_INDIVIDUAL_ADDR_RESPONSE, 0, 0, 0, 0);
 	_tg->createChecksum();
