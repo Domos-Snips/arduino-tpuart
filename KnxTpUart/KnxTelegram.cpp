@@ -399,3 +399,19 @@ if (getPayloadLength() != 16) {
 	_load[13]=buffer[8+13];
 	return (_load); 
 }
+
+void KnxTelegram::setKNXTime(int day, int hours, int minutes, int seconds) {
+    setPayloadLength(3);
+
+    // Day um 5 byte nach links verschieben
+    day = day << 5;
+    // Buffer[8] füllen: die ersten 3 Bits day, die nächsten 5 hour
+    buffer[8] = (day & B11100000) + (hours & B00011111);
+
+    // buffer[9] füllen: 2 bits leer dann 6 bits für minuten
+    buffer[9] =  minutes & B00111111;
+    
+    // buffer[10] füllen: 2 bits leer dann 6 bits für sekunden
+    buffer[10] = seconds & B00111111;
+}
+
