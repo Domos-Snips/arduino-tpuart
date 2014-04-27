@@ -94,6 +94,7 @@ class KnxTelegram {
         void set4ByteFloatValue(float value);
         float get4ByteFloatValue();
         void set14ByteValue(String value);
+		void setKNXTime(int day, int hours, int minutes, int seconds);
         //Ungetested - war char*
         String get14ByteValue(String value);
 		void createChecksum();
