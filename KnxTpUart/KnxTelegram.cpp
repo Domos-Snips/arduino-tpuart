@@ -401,7 +401,8 @@ if (getPayloadLength() != 16) {
 }
 
 void KnxTelegram::setKNXTime(int day, int hours, int minutes, int seconds) {
-    setPayloadLength(3);
+    // Payload (3 byte) + 2
+	setPayloadLength(5);
 
     // Day um 5 byte nach links verschieben
     day = day << 5;
