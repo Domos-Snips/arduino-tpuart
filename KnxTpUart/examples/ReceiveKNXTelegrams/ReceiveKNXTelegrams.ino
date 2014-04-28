@@ -2,7 +2,7 @@
 
 // Initialize the KNX TP-UART library on the Serial1 port of Arduino Mega
 // and with KNX physical address 15.15.20
-KnxTpUart knx(&Serial1, 15, 15, 20);
+KnxTpUart knx(&Serial1, "15.15.20");
 
 void setup() {
   Serial.begin(9600);
@@ -40,10 +40,3 @@ void serialEvent1() {
      // Here you have the telegram and can do whatever you want
   }
 }
-
-
-
-
-
-
-
