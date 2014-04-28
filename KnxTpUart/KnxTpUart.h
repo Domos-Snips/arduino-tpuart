@@ -39,7 +39,7 @@ enum KnxTpUartSerialEventType {
 
 class KnxTpUart {
 public:
-	KnxTpUart(TPUART_SERIAL_CLASS*, int, int, int);
+	KnxTpUart(TPUART_SERIAL_CLASS*, String);
 	void uartReset();
 	void uartStateRequest();
 	KnxTpUartSerialEventType serialEvent();
@@ -50,28 +50,28 @@ public:
 	void sendAck();
 	void sendNotAddressed();
 	
-	bool groupWriteBool(int, int, int, bool);
-	bool groupWrite2ByteFloat(int, int, int, float);
-	bool groupWrite1ByteInt(int, int, int, int);
-	bool groupWrite2ByteInt(int, int, int, int);
-	bool groupWrite4ByteFloat(int, int, int, float);
-    bool groupWrite14ByteText(int, int, int, String);
+	bool groupWriteBool(String, bool);
+	bool groupWrite2ByteFloat(String, float);
+	bool groupWrite1ByteInt(String, int);
+	bool groupWrite2ByteInt(String, int);
+	bool groupWrite4ByteFloat(String, float);
+    bool groupWrite14ByteText(String, String);
 
-	bool groupAnswerBool(int, int, int, bool);
-	bool groupAnswer2ByteFloat(int, int, int, float);
-	bool groupAnswer1ByteInt(int, int, int, int);
-	bool groupAnswer2ByteInt(int, int, int, int);
-	bool groupAnswer4ByteFloat(int, int, int, float);
-    bool groupAnswer14ByteText(int, int, int, String);
+	bool groupAnswerBool(String, bool);
+	bool groupAnswer2ByteFloat(String, float);
+	bool groupAnswer1ByteInt(String, int);
+	bool groupAnswer2ByteInt(String, int);
+	bool groupAnswer4ByteFloat(String, float);
+    bool groupAnswer14ByteText(String, String);
 	
-	bool groupWriteTime(int, int, int, int, int, int, int);
+	bool groupWriteTime(String, int, int, int, int);
 
-	void addListenGroupAddress(int, int, int);
+	void addListenGroupAddress(String);
 	bool isListeningToGroupAddress(int, int, int);
     
     bool individualAnswerAddress();
-    bool individualAnswerMaskVersion(int, int, int);
-    bool individualAnswerAuth(int, int, int, int, int);
+    bool individualAnswerMaskVersion(String);
+    bool individualAnswerAuth(int, int, String);
     
     void setListenToBroadcasts(bool);
     
@@ -91,8 +91,8 @@ private:
 	void checkErrors();
 	void printByte(int);
 	bool readKNXTelegram();
-	void createKNXMessageFrame(int, KnxCommandType, int, int, int, int);
-	void createKNXMessageFrameIndividual(int, KnxCommandType, int, int, int, int);
+	void createKNXMessageFrame(int, KnxCommandType, String, int);
+	void createKNXMessageFrameIndividual(int, KnxCommandType, String, int);
 	bool sendMessage();
     bool sendNCDPosConfirm(int, int, int, int);
 	int serialRead();
