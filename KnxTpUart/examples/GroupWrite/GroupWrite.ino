@@ -1,7 +1,7 @@
 #include <KnxTpUart.h>
 
 // Initialize the KNX TP-UART library on the Serial1 port of Arduino Mega
-KnxTpUart knx(&Serial1, 15, 15, 20);
+KnxTpUart knx(&Serial1, "15/15/20");
 
 // Define input pin
 int inPin = 32;
@@ -48,7 +48,7 @@ void loop() {
        
        if (!haveSent) {
            // Send the opposite of what we have sent last
-           bool success = knx.groupWriteBool(0,0,3, !onSent);
+           bool success = knx.groupWriteBool("0/0/3", !onSent);
            
            Serial.print("Successfully sent: ");
            Serial.println(success);
@@ -68,10 +68,3 @@ void serialEvent1() {
      Serial.println("Event KNX_TELEGRAM");
   }
 }
-
-
-
-
-
-
-
