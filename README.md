@@ -25,10 +25,14 @@ Supported commands / telegram types
 -----------------------------------
 
 Bool (DPT 1 - 0 oder 1)
+
 knx.groupWriteBool("1/2/3", bool);
 
+
 2 ByteFloat (DPT9 - -671 088,64 to 670 760,96 )
+
 knx.groupWrite2ByteFloat("1/2/3", float);
+
 
 1 Byte Int (DTP 5 - 0...255)
 knx.groupWrite1ByteInt("1/2/3", int);
