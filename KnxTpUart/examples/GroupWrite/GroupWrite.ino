@@ -1,7 +1,7 @@
 #include <KnxTpUart.h>
 
-// Initialize the KNX TP-UART library on the Serial1 port of Arduino Mega
-KnxTpUart knx(&Serial1, "15/15/20");
+// Initialize the KNX TP-UART library on the Serial1 port of Arduino 
+KnxTpUart knx(&Serial1, "15.15.20");
 
 // Define input pin
 int inPin = 32;
