@@ -1,12 +1,10 @@
 #include <KnxTpUart.h>
 
 // Define group address to react on
-int my_main_group = 0;
-int my_middle_group = 0;
-int my_sub_group = 100;
+String my_address = "0/0/100";
 
 // Initialize the KNX TP-UART library on the Serial1 port of Arduino Mega
-KnxTpUart knx(&Serial1, 15, 15, 20);
+KnxTpUart knx(&Serial1, "15.15.20");
 
 void setup() {
   Serial.begin(9600);
@@ -25,7 +23,7 @@ void setup() {
   Serial.println(UCSR1C, BIN);
 
   knx.uartReset();
-  knx.addListenGroupAddress(my_main_group, my_middle_group, my_sub_group);
+  knx.addListenGroupAddress(my_address);
 }
 
 
@@ -39,8 +37,8 @@ void serialEvent1() {
 
      // Is it a read request?
      if (telegram->getCommand() == KNX_COMMAND_READ) {
-        //knx.groupAnswerBool(my_main_group, my_middle_group, my_sub_group, true);
-        knx.groupAnswer2ByteFloat(my_main_group, my_middle_group, my_sub_group, 25.28);
+        //knx.groupAnswerBool(my_address, true);
+        knx.groupAnswer2ByteFloat(my_address, 25.28);
      }   
   }
 }
