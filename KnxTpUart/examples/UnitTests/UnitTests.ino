@@ -2,7 +2,7 @@
 #include <ArduinoUnit.h>
 
 TestSuite suite;
-KnxTpUart knx(&Serial1, 15, 15, 20);
+KnxTpUart knx(&Serial1, "15.15.20");
 KnxTelegram* knxTelegram = new KnxTelegram();
 
 void setup() {
@@ -105,7 +105,7 @@ test(checksumProperty) {
 }
 
 test(receivingGroupAddresses) {
-  knx.addListenGroupAddress(15, 15, 100);
+  knx.addListenGroupAddress("15/15/100");
   assertTrue(knx.isListeningToGroupAddress(15, 15, 100));
   assertTrue(! knx.isListeningToGroupAddress(15, 3, 28)); 
 }
