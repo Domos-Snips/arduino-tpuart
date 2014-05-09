@@ -286,8 +286,8 @@ bool KnxTpUart::individualAnswerAddress() {
 	return sendMessage();    
 }
 
-bool KnxTpUart::individualAnswerMaskVersion(String address) {
-    createKNXMessageFrameIndividual(4, KNX_COMMAND_MASK_VERSION_RESPONSE, address, 0);
+bool KnxTpUart::individualAnswerMaskVersion(int area, int line, int member) {
+    createKNXMessageFrameIndividual(4, KNX_COMMAND_MASK_VERSION_RESPONSE, String(area)+"/"+String(line)+"/"+String(member), 0);
     _tg->setCommunicationType(KNX_COMM_NDP);
     _tg->setBufferByte(8, 0x07); // Mask version part 1 for BIM M 112
     _tg->setBufferByte(9, 0x01); // Mask version part 2 for BIM M 112
@@ -295,8 +295,8 @@ bool KnxTpUart::individualAnswerMaskVersion(String address) {
     return sendMessage();
 }
 
-bool KnxTpUart::individualAnswerAuth(int accessLevel, int sequenceNo, String address) {
-    createKNXMessageFrameIndividual(3, KNX_COMMAND_ESCAPE, address, KNX_EXT_COMMAND_AUTH_RESPONSE);
+bool KnxTpUart::individualAnswerAuth(int accessLevel, int sequenceNo, int area, int line, int member) {
+    createKNXMessageFrameIndividual(3, KNX_COMMAND_ESCAPE, String(area)+"/"+String(line)+"/"+String(member), KNX_EXT_COMMAND_AUTH_RESPONSE);
     _tg->setCommunicationType(KNX_COMM_NDP);
     _tg->setSequenceNumber(sequenceNo);
     _tg->setBufferByte(8, accessLevel);
