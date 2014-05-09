@@ -70,8 +70,8 @@ public:
 	bool isListeningToGroupAddress(int, int, int);
     
     bool individualAnswerAddress();
-    bool individualAnswerMaskVersion(String);
-    bool individualAnswerAuth(int, int, String);
+    bool individualAnswerMaskVersion(int, int, int);
+    bool individualAnswerAuth(int, int, int, int, int);
     
     void setListenToBroadcasts(bool);
     
