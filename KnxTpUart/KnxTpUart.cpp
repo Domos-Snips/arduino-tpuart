@@ -171,8 +171,9 @@ bool KnxTpUart::readKNXTelegram() {
         TPUART_DEBUG_PORT.print(_tg->getSequenceNumber());
         TPUART_DEBUG_PORT.println(" received");
 #endif
-        
-        sendNCDPosConfirm(_tg->getSequenceNumber(), _tg->getSourceArea(), _tg->getSourceLine(), _tg->getSourceMember());
+        if (interested) {
+        	sendNCDPosConfirm(_tg->getSequenceNumber(), _tg->getSourceArea(), _tg->getSourceLine(), _tg->getSourceMember());
+		}
     }
 	
 	// Returns if we are interested in this diagram
