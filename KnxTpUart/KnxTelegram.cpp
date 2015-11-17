@@ -303,6 +303,24 @@ void KnxTelegram::set2ByteFloatValue(float value) {
 	buffer[9] = (byte)m;
 }
 
+void KnxTelegram::set2ByteIntValue(int value) {
+	setPayloadLength(4);
+
+	buffer[8] = byte(value >> 8);
+	buffer[9] = byte(value & 0x00FF);
+}
+
+int KnxTelegram::get2ByteIntValue() {
+	if (getPayloadLength() != 4) {
+		// Wrong payload length
+		return 0;
+	}
+	int value = int(buffer[8] << 8) + int(buffer[9]);
+
+	return (value);
+}
+
+
 float KnxTelegram::get2ByteFloatValue() {
 	if (getPayloadLength() != 4) {
 		// Wrong payload length
@@ -401,8 +419,7 @@ if (getPayloadLength() != 16) {
 }
 
 void KnxTelegram::setKNXTime(int day, int hours, int minutes, int seconds) {
-    // Payload (3 byte) + 2
-	setPayloadLength(5);
+    setPayloadLength(5);
 
     // Day um 5 byte nach links verschieben
     day = day << 5;
@@ -415,4 +432,3 @@ void KnxTelegram::setKNXTime(int day, int hours, int minutes, int seconds) {
     // buffer[10] füllen: 2 bits leer dann 6 bits für sekunden
     buffer[10] = seconds & B00111111;
 }
-
