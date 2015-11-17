@@ -203,7 +203,7 @@ bool KnxTpUart::groupWrite2ByteFloat(String Address, float value) {
 
 bool KnxTpUart::groupWrite2ByteInt(String Address, int value) {
 	createKNXMessageFrame(2, KNX_COMMAND_WRITE, Address, 0);
-	_tg->set2ByteFloatValue(value);
+	_tg->set2ByteIntValue(value);
 	_tg->createChecksum();
 	return sendMessage();
 }
@@ -255,7 +255,7 @@ bool KnxTpUart::groupAnswer2ByteFloat(String Address, float value) {
 
 bool KnxTpUart::groupAnswer2ByteInt(String Address, int value) {
 	createKNXMessageFrame(2, KNX_COMMAND_ANSWER, Address, 0);
-	_tg->set2ByteFloatValue(value);
+	_tg->set2ByteIntValue(value);
 	_tg->createChecksum();
 	return sendMessage();
 }
