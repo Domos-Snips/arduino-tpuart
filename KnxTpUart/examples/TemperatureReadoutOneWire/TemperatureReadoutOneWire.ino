@@ -7,6 +7,12 @@
 OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
 
+// Define group address to react on (for read requests)
+#define READ_GROUP "0/0/100""
+
+// Define group address to send temperature to
+#define WRITE_GROUP "0/0/101"
+
 // Define send interval
 #define SEND_INTERVAL_MS 5000
 
@@ -16,12 +22,6 @@ KnxTpUart knx(&Serial1, "15.15.20");
 unsigned long startTime;
 
 void setup() {
-  // Define group address to react on (for read requests)
-  String READ_GROUP = "0/0/100";
-
-  // Define group address to send temperature to
-  String WRITE_GROUP = "0/0/101";
-
   Serial.begin(9600);
   Serial.println("TP-UART Test");  
 
