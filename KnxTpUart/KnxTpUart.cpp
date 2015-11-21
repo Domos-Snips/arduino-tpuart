@@ -274,6 +274,12 @@ bool KnxTpUart::groupAnswer14ByteText(String Address, String value) {
 	return sendMessage();
 }
 
+bool KnxTpUart::groupReadBool(String Address) {
+ createKNXMessageFrame(2, KNX_COMMAND_READ, Address, 0);
+ _tg->createChecksum();
+ return sendMessage();
+}
+
 bool KnxTpUart::groupWriteTime(String Address, int day, int hours, int minutes, int seconds) {
 	createKNXMessageFrame(2, KNX_COMMAND_WRITE, Address, 0);
 	_tg->setKNXTime(day, hours, minutes, seconds);
