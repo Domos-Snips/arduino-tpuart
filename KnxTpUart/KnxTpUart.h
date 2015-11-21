@@ -63,7 +63,9 @@ public:
 	bool groupAnswer2ByteInt(String, int);
 	bool groupAnswer4ByteFloat(String, float);
     bool groupAnswer14ByteText(String, String);
-	
+
+	bool groupReadBool(String);
+
 	bool groupWriteTime(String, int, int, int, int);
 
 	void addListenGroupAddress(String);
