@@ -15,7 +15,7 @@ void KnxTpUart::setListenToBroadcasts(bool listen) {
     _listen_to_broadcasts = listen;
 }
 
-void KnxTpUart::uartReset() {
+void KnxTpUart::uartReset() 
 	byte sendByte = 0x01;
 	_serialport->write(sendByte);
 }
@@ -274,7 +274,7 @@ bool KnxTpUart::groupAnswer14ByteText(String Address, String value) {
 	return sendMessage();
 }
 
-bool KnxTpUart::groupReadBool(String Address) {
+bool KnxTpUart::groupRead(String Address) {
  createKNXMessageFrame(2, KNX_COMMAND_READ, Address, 0);
  _tg->createChecksum();
  return sendMessage();
