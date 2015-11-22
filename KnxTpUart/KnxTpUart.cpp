@@ -15,7 +15,7 @@ void KnxTpUart::setListenToBroadcasts(bool listen) {
     _listen_to_broadcasts = listen;
 }
 
-void KnxTpUart::uartReset() 
+void KnxTpUart::uartReset() {
 	byte sendByte = 0x01;
 	_serialport->write(sendByte);
 }
