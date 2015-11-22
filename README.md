@@ -66,7 +66,8 @@ groupWriteTime("1/2/3", Day, Hours, Minutes, Seconds);
 
 
 
-Also all answer requests (except Time)
+Also all answer requests (except Time):
+---------------------------------------
 
 knx.groupAnswerBool("1/2/3", bool);
 
@@ -81,11 +82,17 @@ knx.groupAnswer4ByteFloat("1/2/3", float);
 knx.groupAnswer14ByteText("1/2/3", String);
 
 
-Also all read requests (except Time):
-(see example groupRead)
+Also all read requests (except Time) - (see example groupRead):
+---------------------------------------------------------------
+
 value = telegram->getBool();
+
 value = telegram->get1ByteIntValue();
+
 value = telegram->get2ByteIntValue();
+
 value = telegram->get2ByteFloatValue();
+
 value = telegram->get4ByteFloatValue();
+
 value = telegram->get14ByteValue(String value);
