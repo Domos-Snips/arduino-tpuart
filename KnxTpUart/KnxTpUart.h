@@ -64,7 +64,7 @@ public:
 	bool groupAnswer4ByteFloat(String, float);
     bool groupAnswer14ByteText(String, String);
 
-	bool groupReadBool(String);
+	bool groupRead(String);
 
 	bool groupWriteTime(String, int, int, int, int);
 
