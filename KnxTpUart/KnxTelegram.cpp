@@ -395,7 +395,7 @@ void KnxTelegram::set14ByteValue(String value) {
 }
 
 //
-String KnxTelegram::get14ByteValue(String value) {
+String KnxTelegram::get14ByteValue() {
 if (getPayloadLength() != 16) {
         // Wrong payload length
         return "";
