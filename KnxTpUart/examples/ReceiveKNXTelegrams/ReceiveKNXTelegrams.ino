@@ -22,12 +22,12 @@ void setup() {
 
   knx.uartReset();
   
-  knx.addListenGroupAddress("15/0/0);
-  knx.addListenGroupAddress("15/0/1);
-  knx.addListenGroupAddress("15/0/2);
-  knx.addListenGroupAddress("15/0/3);
-  knx.addListenGroupAddress("15/0/4);
-  knx.addListenGroupAddress("15/0/5);
+  knx.addListenGroupAddress("15/0/0");
+  knx.addListenGroupAddress("15/0/1");
+  knx.addListenGroupAddress("15/0/2");
+  knx.addListenGroupAddress("15/0/3");
+  knx.addListenGroupAddress("15/0/4");
+  knx.addListenGroupAddress("15/0/5");
 }
 
 
