@@ -4,7 +4,12 @@
 // and with KNX physical address 15.15.20
 KnxTpUart knx(&Serial1, "15.15.20");
 
+int LED = 13;
+
 void setup() {
+  pinMode(LED, OUTPUT);
+  digitalWrite(LED, LOW);
+
   Serial.begin(9600);
   Serial.println("TP-UART Test");
 
@@ -54,9 +59,9 @@ void serialEvent1() {
     if (telegram->getCommand() == KNX_COMMAND_WRITE) {
       // Auswertung des empfangenen KNX-Telegrammes mit Schreibbefehl (Flag) -> Aktion
       if (target == "15/0/0") {
-        received_15_0_0 = telegram->getBool();
+        int received_15_0_0 = telegram->getBool();
 		Serial.print("Empfangener wert");
-		Serial.println(received_15_0_0)
+		Serial.println(received_15_0_0);
         if (received_15_0_0) {
           digitalWrite(LED, HIGH);
         }
@@ -65,29 +70,29 @@ void serialEvent1() {
         }
       }
 	  if (target == "15/0/1") {
-        received_15_0_1 = telegram->get1ByteIntValue();
+        int received_15_0_1 = telegram->get1ByteIntValue();
 		Serial.print("Empfangener Wert:");
-		Serial.println(received_15_0_1)
+		Serial.println(received_15_0_1);
       }
 	  if (target == "15/0/2") {
-        received_15_0_2 = telegram->get2ByteIntValue();
+        int received_15_0_2 = telegram->get2ByteIntValue();
 		Serial.print("Empfangener Wert:");
-		Serial.println(received_15_0_2)
+		Serial.println(received_15_0_2);
       }
 	  if (target == "15/0/3") {
-        received_15_0_3 = telegram->get2ByteFloatValue();
+        float received_15_0_3 = telegram->get2ByteFloatValue();
 		Serial.print("Empfangener Wert:");
-		Serial.println(received_15_0_3)
+		Serial.println(received_15_0_3);
       }
 	  if (target == "15/0/4") {
-        received_15_0_4 = telegram->get4ByteFloatValue();
+        float received_15_0_4 = telegram->get4ByteFloatValue();
 		Serial.print("Empfangener Wert:");
-		Serial.println(received_15_0_4)
+		Serial.println(received_15_0_4);
       }
 	  if (target == "15/0/5") {
-        received_15_0_5 = telegram->get14ByteValue();
+        String received_15_0_5 = telegram->get14ByteValue();
 		Serial.print("Empfangener Wert:");
-		Serial.println(received_15_0_5)
+		Serial.println(received_15_0_5);
       }
     }
   }
