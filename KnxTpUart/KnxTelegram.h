@@ -96,8 +96,7 @@ class KnxTelegram {
         void set14ByteValue(String value);
 		String get14ByteValue();
 		void setKNXTime(int day, int hours, int minutes, int seconds);
-        //Ungetested - war char*
-        String get14ByteValue(String value);
+        String get14ByteValue();
 		void createChecksum();
 		bool verifyChecksum();
 		int getChecksum();
