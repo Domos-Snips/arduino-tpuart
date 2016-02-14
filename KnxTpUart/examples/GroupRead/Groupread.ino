@@ -76,7 +76,7 @@ void serialEvent() {
       if (target == "2/6/0") {
         target_2_6_0 = telegram->getBool();
       
-        // Speicherung des Inhaltes in Variable "target_5_6_0" der Antwort auf die Leseanfrage der Gruppenadresse "2/6/0"
+        // Speicherung des Inhaltes in Variable "target_2_6_0" der Antwort auf die Leseanfrage der Gruppenadresse "2/6/0"
       
         if (target_2_6_0) {
           digitalWrite(LED, HIGH);
