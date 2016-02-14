@@ -95,4 +95,4 @@ value = telegram->get2ByteFloatValue();
 
 value = telegram->get4ByteFloatValue();
 
-value = telegram->get14ByteValue(String value);
+value = telegram->get14ByteValue();
