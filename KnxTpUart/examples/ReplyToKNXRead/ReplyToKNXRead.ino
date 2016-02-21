@@ -47,7 +47,7 @@ void serialEvent1() {
 
     // Ist es eine Leseanfrage ?
     if (telegram->getCommand() == KNX_COMMAND_READ) {
-    
+
       // Ist Ziel gleich Gruppenadresse 3/0/1 ?
       if (target == "3/0/1") {
         knx.groupAnswerBool("3/0/1", true);
