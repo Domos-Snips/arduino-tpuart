@@ -50,13 +50,13 @@ knx.groupWrite2ByteFloat("1/2/3", float);
 
 3 Byte Time (DTP 10)
 
-groupWriteTime("1/2/3", Weekday, Hour, Minute, Second);
+groupWrite3ByteTime("1/2/3", Weekday, Hour, Minute, Second);
 
 
 
 3 Byte Date (DTP 11)
 
-groupWriteDate("1/2/3", Day, Month, Year);
+groupWrite3ByteDate("1/2/3", Day, Month, Year);
 
 
 
