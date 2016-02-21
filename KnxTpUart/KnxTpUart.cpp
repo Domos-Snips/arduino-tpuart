@@ -219,14 +219,14 @@ bool KnxTpUart::groupWrite2ByteFloat(String Address, float value) {
 
 bool KnxTpUart::groupWrite3ByteTime(String Address, int weekday, int hour, int minute, int second) {
 	createKNXMessageFrame(2, KNX_COMMAND_WRITE, Address, 0);
-	_tg->setKNXTime(weekday, hour, minute, second);
+	_tg->set3ByteTime(weekday, hour, minute, second);
 	_tg->createChecksum();
 	return sendMessage();
 }
 
 bool KnxTpUart::groupWrite3ByteDate(String Address, int day, int month, int year) {
 	createKNXMessageFrame(2, KNX_COMMAND_WRITE, Address, 0);
-	_tg->setKNXTime(day, month, year);
+	_tg->set3ByteDate(day, month, year);
 	_tg->createChecksum();
 	return sendMessage();
 }
