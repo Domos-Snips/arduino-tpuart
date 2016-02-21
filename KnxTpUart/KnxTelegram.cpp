@@ -353,7 +353,7 @@ void KnxTelegram::set3ByteTime(int weekday, int hour, int minute, int second) {
     buffer[10] = second & B00111111;
 }
 
-int KnxTelegram::get3ByteWeekdayValue(int value) {
+int KnxTelegram::get3ByteWeekdayValue() {
   if (getPayloadLength() != 5) {
       // Wrong payload length
       return 0;
@@ -361,7 +361,7 @@ int KnxTelegram::get3ByteWeekdayValue(int value) {
   return (buffer[8] & B11100000) >> 5;
 }
 
-int KnxTelegram::get3ByteHourValue(int value) {
+int KnxTelegram::get3ByteHourValue() {
   if (getPayloadLength() != 5) {
       // Wrong payload length
       return 0;
@@ -369,7 +369,7 @@ int KnxTelegram::get3ByteHourValue(int value) {
   return (buffer[8] & B00011111);
 }
 
-int KnxTelegram::get3ByteMinuteValue(int value) {
+int KnxTelegram::get3ByteMinuteValue() {
   if (getPayloadLength() != 5) {
       // Wrong payload length
       return 0;
@@ -377,7 +377,7 @@ int KnxTelegram::get3ByteMinuteValue(int value) {
   return (buffer[9] & B00111111);
 }
 
-int KnxTelegram::get3ByteSecondValue(int value) {
+int KnxTelegram::get3ByteSecondValue() {
   if (getPayloadLength() != 5) {
       // Wrong payload length
       return 0;
@@ -398,7 +398,7 @@ void KnxTelegram::set3ByteDate(int day, int month, int year) {
     buffer[10] = year;
 }
 
-int KnxTelegram::get3ByteDayValue(int value) {
+int KnxTelegram::get3ByteDayValue() {
   if (getPayloadLength() != 5) {
       // Wrong payload length
       return 0;
@@ -406,7 +406,7 @@ int KnxTelegram::get3ByteDayValue(int value) {
   return (buffer[8] & B00011111);
 }
 
-int KnxTelegram::get3ByteMonthValue(int value) {
+int KnxTelegram::get3ByteMonthValue() {
   if (getPayloadLength() != 5) {
       // Wrong payload length
       return 0;
@@ -414,7 +414,7 @@ int KnxTelegram::get3ByteMonthValue(int value) {
   return (buffer[9] & B00001111);
 }
 
-int KnxTelegram::get3ByteYearValue(int value) {
+int KnxTelegram::get3ByteYearValue() {
   if (getPayloadLength() != 5) {
       // Wrong payload length
       return 0;
