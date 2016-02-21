@@ -33,6 +33,8 @@ void setup() {
   knx.addListenGroupAddress("15/0/3");
   knx.addListenGroupAddress("15/0/4");
   knx.addListenGroupAddress("15/0/5");
+  knx.addListenGroupAddress("15/0/6");
+  knx.addListenGroupAddress("15/0/7");
 }
 
 
@@ -84,15 +86,42 @@ void serialEvent1() {
 		Serial.print("Empfangener Wert:");
 		Serial.println(received_15_0_3);
       }
-	  if (target == "15/0/4") {
-        float received_15_0_4 = telegram->get4ByteFloatValue();
+      if (target == "15/0/4") {
+        int received_15_0_4_0 = telegram->get3ByteWeekdayValue();
+        int received_15_0_4_1 = telegram->get3ByteHourValue();
+        int received_15_0_4_2 = telegram->get3ByteMinuteValue();
+        int received_15_0_4_3 = telegram->get3ByteSecondValue();
 		Serial.print("Empfangener Wert:");
-		Serial.println(received_15_0_4);
+		Serial.println(received_15_0_4_0);
+        Serial.print("  ");
+		Serial.print(received_15_0_4_1);
+        Serial.print(":");
+		Serial.print(received_15_0_4_2);
+        Serial.print(":");
+		Serial.print(received_15_0_4_3);
+        Serial.println("");
       }
-	  if (target == "15/0/5") {
-        String received_15_0_5 = telegram->get14ByteValue();
+      if (target == "15/0/5") {
+        int received_15_0_5_0 = telegram->get3ByteDayValue();
+        int received_15_0_5_1 = telegram->get3ByteMonthValue();
+        int received_15_0_5_2 = telegram->get3ByteYearValue();
 		Serial.print("Empfangener Wert:");
-		Serial.println(received_15_0_5);
+		Serial.println(received_15_0_5_0);
+        Serial.print(".");
+		Serial.print(received_15_0_5_1);
+        Serial.print(".");
+		Serial.print(received_15_0_5_2);
+        Serial.println("");
+      }
+	  if (target == "15/0/6") {
+        float received_15_0_6 = telegram->get4ByteFloatValue();
+		Serial.print("Empfangener Wert:");
+		Serial.println(received_15_0_6);
+      }
+	  if (target == "15/0/7") {
+        String received_15_0_7 = telegram->get14ByteValue();
+		Serial.print("Empfangener Wert:");
+		Serial.println(received_15_0_7);
       }
     }
   }
