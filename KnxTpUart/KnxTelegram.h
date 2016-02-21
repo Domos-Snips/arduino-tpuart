@@ -82,20 +82,27 @@ class KnxTelegram {
 		int getRoutingCounter();
 		void setCommand(KnxCommandType command);
 		KnxCommandType getCommand();
+		
 		void setFirstDataByte(int data);
 		int getFirstDataByte();
 		bool getBool();
+		
+		void set1ByteIntValue(int value);
+		int get1ByteIntValue();
+		
+		void set2ByteIntValue(int value);
+        int get2ByteIntValue();
 		void set2ByteFloatValue(float value);
 		float get2ByteFloatValue();
-		void set2ByteIntValue(int value);
-        int get1ByteIntValue();
-		void set1ByteIntValue(int value);
-		int get2ByteIntValue();
+		
+		void set3ByteTime(int day, int hour, int minute, int second);
+		
         void set4ByteFloatValue(float value);
         float get4ByteFloatValue();
+		
         void set14ByteValue(String value);
 		String get14ByteValue();
-		void setKNXTime(int day, int hours, int minutes, int seconds);
+		
 		void createChecksum();
 		bool verifyChecksum();
 		int getChecksum();
