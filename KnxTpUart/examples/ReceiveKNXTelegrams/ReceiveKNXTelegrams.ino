@@ -110,7 +110,7 @@ void serialEvent1() {
         int received_15_0_5_2 = telegram->get3ByteYearValue();
         Serial.print("Empfangener Wert:");
         Serial.println("");
-        Serial.println(received_15_0_5_0);
+        Serial.print(received_15_0_5_0);
         Serial.print(".");
         Serial.print(received_15_0_5_1);
         Serial.print(".");
