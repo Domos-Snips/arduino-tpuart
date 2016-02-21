@@ -85,7 +85,7 @@ void serialEvent() {
           digitalWrite(LED,LOW);
         }
       
-        // Auswertung des Inhaltes und Ausgabe des Inhaltes der Gruppenadresse "2/6/0" auf PIN 13 des ARDUINO UNO
+        // Auswertung des Inhaltes und Ausgabe des Inhaltes der Gruppenadresse "5/6/0" auf PIN 13 des ARDUINO UNO
       }
       else if (target == "5/6/0") {
         target_5_6_0 = telegram->get1ByteIntValue();
