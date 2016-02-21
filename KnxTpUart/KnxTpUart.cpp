@@ -280,14 +280,14 @@ bool KnxTpUart::groupAnswer2ByteFloat(String Address, float value) {
 
 bool KnxTpUart::groupAnswer3ByteTime(String Address, int weekday, int hour, int minute, int second) {
 	createKNXMessageFrame(2, KNX_COMMAND_ANSWER, Address, 0);
-	_tg->setKNXTime(weekday, hour, minute, second);
+	_tg->set3ByteTime(weekday, hour, minute, second);
 	_tg->createChecksum();
 	return sendMessage();
 }
 
 bool KnxTpUart::groupAnswer3ByteDate(String Address, int day, int month, int year) {
 	createKNXMessageFrame(2, KNX_COMMAND_ANSWER, Address, 0);
-	_tg->setKNXTime(day, month, year);
+	_tg->set3ByteDate(day, month, year);
 	_tg->createChecksum();
 	return sendMessage();
 }
