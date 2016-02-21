@@ -184,7 +184,7 @@ KnxTelegram* KnxTpUart::getReceivedTelegram() {
 	return _tg;
 }
 
-// COMMAND WRITE
+// Command Write
 
 bool KnxTpUart::groupWriteBool(String Address, bool value) {
 	int valueAsInt = 0;
@@ -245,7 +245,7 @@ bool KnxTpUart::groupWrite14ByteText(String Address, String value) {
 	return sendMessage();
 }
 
-// COMMAND ANSWER
+// Command Answer
 
 bool KnxTpUart::groupAnswerBool(String Address, bool value) {
 	int valueAsInt = 0;
@@ -305,7 +305,7 @@ bool KnxTpUart::groupAnswer14ByteText(String Address, String value) {
 	return sendMessage();
 }
 
-// COMMAND READ
+// Command Read
 
 bool KnxTpUart::groupRead(String Address) {
  createKNXMessageFrame(2, KNX_COMMAND_READ, Address, 0);
