@@ -166,15 +166,6 @@ void KnxTelegram::setSequenceNumber(int number) {
     buffer[6] = buffer[6] | (number << 2);
 }
 
-void KnxTelegram::setFirstDataByte(int data) {
-	buffer[7] = buffer[7] & B11000000;
-	buffer[7] = buffer[7] | data;
-}
-
-int KnxTelegram::getFirstDataByte() {
-	return (buffer[7] & B00111111);
-}
-
 void KnxTelegram::createChecksum() {
 	int checksumPos = getPayloadLength() + KNX_TELEGRAM_HEADER_SIZE;
 	buffer[checksumPos] = calculateChecksum();
@@ -266,6 +257,15 @@ int KnxTelegram::getTotalLength() {
 	return KNX_TELEGRAM_HEADER_SIZE + getPayloadLength() + 1;
 }
 
+void KnxTelegram::setFirstDataByte(int data) {
+	buffer[7] = buffer[7] & B11000000;
+	buffer[7] = buffer[7] | data;
+}
+
+int KnxTelegram::getFirstDataByte() {
+	return (buffer[7] & B00111111);
+}
+
 bool KnxTelegram::getBool() {
 	if (getPayloadLength() != 2) {
 		// Wrong payload length
@@ -289,20 +289,6 @@ int KnxTelegram::get1ByteIntValue() {
 	return(buffer[8]);
 }
 
-void KnxTelegram::set2ByteFloatValue(float value) {
-	setPayloadLength(4);
-
-	float v = value * 100.0f;
-    int exponent = 0;
-    for (; v < -2048.0f; v /= 2) exponent++;
-	for (; v > 2047.0f; v /= 2) exponent++;
-	long m = round(v) & 0x7FF;
-	short msb = (short) (exponent << 3 | m >> 8);
-	if (value < 0.0f) msb |= 0x80;
-	buffer[8] = msb;
-	buffer[9] = (byte)m;
-}
-
 void KnxTelegram::set2ByteIntValue(int value) {
 	setPayloadLength(4);
 
@@ -320,6 +306,19 @@ int KnxTelegram::get2ByteIntValue() {
 	return (value);
 }
 
+void KnxTelegram::set2ByteFloatValue(float value) {
+	setPayloadLength(4);
+
+	float v = value * 100.0f;
+    int exponent = 0;
+    for (; v < -2048.0f; v /= 2) exponent++;
+	for (; v > 2047.0f; v /= 2) exponent++;
+	long m = round(v) & 0x7FF;
+	short msb = (short) (exponent << 3 | m >> 8);
+	if (value < 0.0f) msb |= 0x80;
+	buffer[8] = msb;
+	buffer[9] = (byte)m;
+}
 
 float KnxTelegram::get2ByteFloatValue() {
 	if (getPayloadLength() != 4) {
@@ -337,6 +336,90 @@ float KnxTelegram::get2ByteFloatValue() {
 	}
 
 	return (mantissa * 0.01) * pow(2.0, exponent);
+}
+
+void KnxTelegram::set3ByteTime(int weekday, int hour, int minute, int second) {
+    setPayloadLength(5);
+
+    // Wochentag um 5 byte nach links verschieben
+    weekday = weekday << 5;
+    // Buffer[8] füllen: die ersten 3 bits für wochentag, die nächsten 5 bits für stunde
+    buffer[8] = (weekday & B11100000) + (hour & B00011111);
+
+    // Buffer[9] füllen: 2 bits leer dann 6 bits für minute
+    buffer[9] =  minute & B00111111;
+    
+    // Buffer[10] füllen: 2 bits leer dann 6 bits für sekunde
+    buffer[10] = second & B00111111;
+}
+
+int KnxTelegram::get3ByteWeekdayValue(int value) {
+  if (getPayloadLength() != 5) {
+      // Wrong payload length
+      return 0;
+  }    
+  return (buffer[8] & B11100000) >> 5;
+}
+
+int KnxTelegram::get3ByteHourValue(int value) {
+  if (getPayloadLength() != 5) {
+      // Wrong payload length
+      return 0;
+  }    
+  return (buffer[8] & B00011111);
+}
+
+int KnxTelegram::get3ByteMinuteValue(int value) {
+  if (getPayloadLength() != 5) {
+      // Wrong payload length
+      return 0;
+  }    
+  return (buffer[9] & B00111111);
+}
+
+int KnxTelegram::get3ByteSecondValue(int value) {
+  if (getPayloadLength() != 5) {
+      // Wrong payload length
+      return 0;
+  }    
+  return (buffer[10] & B00111111);
+}
+
+void KnxTelegram::set3ByteDate(int day, int month, int year) {
+    setPayloadLength(5);
+
+    // Buffer[8] füllen: 3 bits leer dann 5 bits für tag
+    buffer[8] = day & B00011111;
+
+    // Buffer[9] füllen: 4 bits leer dann 4 bits für monat
+    buffer[9] =  month & B00001111;
+    
+    // Buffer[10] füllen mit jahr
+    buffer[10] = year;
+}
+
+int KnxTelegram::get3ByteDayValue(int value) {
+  if (getPayloadLength() != 5) {
+      // Wrong payload length
+      return 0;
+  }    
+  return (buffer[8] & B00011111);
+}
+
+int KnxTelegram::get3ByteMonthValue(int value) {
+  if (getPayloadLength() != 5) {
+      // Wrong payload length
+      return 0;
+  }    
+  return (buffer[9] & B00001111);
+}
+
+int KnxTelegram::get3ByteYearValue(int value) {
+  if (getPayloadLength() != 5) {
+      // Wrong payload length
+      return 0;
+  }    
+  return(buffer[10]);
 }
 
 void KnxTelegram::set4ByteFloatValue(float value) {
@@ -367,7 +450,6 @@ float KnxTelegram::get4ByteFloatValue() {
   return r;
 }
 
-
 void KnxTelegram::set14ByteValue(String value) {
   // load definieren
   char _load[15];
@@ -394,7 +476,6 @@ void KnxTelegram::set14ByteValue(String value) {
   buffer[8+13]=_load [13];
 }
 
-//
 String KnxTelegram::get14ByteValue() {
 if (getPayloadLength() != 16) {
         // Wrong payload length
@@ -416,19 +497,4 @@ if (getPayloadLength() != 16) {
 	_load[12]=buffer[8+12];
 	_load[13]=buffer[8+13];
 	return (_load); 
-}
-
-void KnxTelegram::setKNXTime(int day, int hours, int minutes, int seconds) {
-    setPayloadLength(5);
-
-    // Day um 5 byte nach links verschieben
-    day = day << 5;
-    // Buffer[8] füllen: die ersten 3 Bits day, die nächsten 5 hour
-    buffer[8] = (day & B11100000) + (hours & B00011111);
-
-    // buffer[9] füllen: 2 bits leer dann 6 bits für minuten
-    buffer[9] =  minutes & B00111111;
-    
-    // buffer[10] füllen: 2 bits leer dann 6 bits für sekunden
-    buffer[10] = seconds & B00111111;
 }
