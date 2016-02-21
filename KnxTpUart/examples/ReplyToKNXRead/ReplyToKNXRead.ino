@@ -61,7 +61,7 @@ void serialEvent1() {
       // Ist Ziel gleich Gruppenadresse 3/0/3 ?
       if (target == "3/0/3") {
         knx.groupAnswer2ByteInt("3/0/3", 1000);
-        // Ausgabe : 10
+        // Ausgabe : 1000
       }
       // Ist Ziel gleich Gruppenadresse 3/0/4 ?
       if (target == "3/0/4") {
