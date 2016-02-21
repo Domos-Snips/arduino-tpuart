@@ -51,22 +51,24 @@ public:
 	void sendNotAddressed();
 	
 	bool groupWriteBool(String, bool);
-	bool groupWrite2ByteFloat(String, float);
 	bool groupWrite1ByteInt(String, int);
 	bool groupWrite2ByteInt(String, int);
+	bool groupWrite2ByteFloat(String, float);
+	bool groupWrite3ByteTime(String, int, int, int, int);
+	bool groupWrite3ByteDate(String, int, int, int);
 	bool groupWrite4ByteFloat(String, float);
     bool groupWrite14ByteText(String, String);
 
 	bool groupAnswerBool(String, bool);
-	bool groupAnswer2ByteFloat(String, float);
 	bool groupAnswer1ByteInt(String, int);
 	bool groupAnswer2ByteInt(String, int);
+	bool groupAnswer2ByteFloat(String, float);
+	bool groupAnswer3ByteTime(String, int, int, int, int);
+	bool groupAnswer3ByteDate(String, int, int, int);
 	bool groupAnswer4ByteFloat(String, float);
     bool groupAnswer14ByteText(String, String);
 
 	bool groupRead(String);
-
-	bool groupWriteTime(String, int, int, int, int);
 
 	void addListenGroupAddress(String);
 	bool isListeningToGroupAddress(int, int, int);
