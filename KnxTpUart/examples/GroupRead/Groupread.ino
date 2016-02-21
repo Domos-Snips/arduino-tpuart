@@ -1,9 +1,9 @@
 /*
    Beispiel für Leseanfrage ARDUINO UNO -> KNX und Auswertung Antwort KNX -> ARDUINO UNO
  
- Version 0.2
+ Version 0.3
  
- 22.11.2015
+ 21.02.2016
  
  Testkonstellation = ARDUINO UNO <-> 5WG1 117-2AB12
  */
