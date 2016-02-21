@@ -51,34 +51,42 @@ void serialEvent1() {
       // Ist Ziel gleich Gruppenadresse 3/0/1 ?
       if (target == "3/0/1") {
         knx.groupAnswerBool("3/0/1", true);
+        // Ausgabe : 1
       }
       // Ist Ziel gleich Gruppenadresse 3/0/2 ?
       if (target == "3/0/2") {
         knx.groupAnswer1ByteInt("3/0/2", 126);
+        // Ausgabe : 49%
       }
       // Ist Ziel gleich Gruppenadresse 3/0/3 ?
       if (target == "3/0/3") {
         knx.groupAnswer2ByteInt("3/0/3", 1000);
+        // Ausgabe : 10
       }
       // Ist Ziel gleich Gruppenadresse 3/0/4 ?
       if (target == "3/0/4") {
         knx.groupAnswer2ByteFloat("3/0/4", 25.28);
+        // Ausgabe : 25,28
       }
       // Ist Ziel gleich Gruppenadresse 3/0/5 ?
       if (target == "3/0/5") {
-        knx.groupAnswer3ByteTime("3/0/5", 7, 0, 0, 0);
+        knx.groupAnswer3ByteTime("3/0/5", 7, 0, 0, 1);
+        // Ausgabe : Sonntag 00:00:01
       }
       // Ist Ziel gleich Gruppenadresse 3/0/6 ?
       if (target == "3/0/6") {
         knx.groupAnswer3ByteDate("3/0/6", 31, 1, 3);
+        // Ausgabe : 31.01.2003
       }
       // Ist Ziel gleich Gruppenadresse 3/0/7 ?
       if (target == "3/0/7") {
         knx.groupAnswer4ByteFloat("3/0/7", -100);
+        // Ausgabe : -100
       }
       // Ist Ziel gleich Gruppenadresse 3/0/8 ?
       if (target == "3/0/8") {
         knx.groupAnswer14ByteText("3/0/8", "Hallo");
+        // Ausgabe : "Hallo"
       }
     }
   }
