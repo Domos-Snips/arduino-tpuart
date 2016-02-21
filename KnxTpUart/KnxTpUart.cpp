@@ -285,7 +285,7 @@ bool KnxTpUart::groupAnswer3ByteTime(String Address, int weekday, int hour, int 
 	return sendMessage();
 }
 
-bool KnxTpUart::grouAnswer3ByteDate(String Address, int day, int month, int year) {
+bool KnxTpUart::groupAnswer3ByteDate(String Address, int day, int month, int year) {
 	createKNXMessageFrame(2, KNX_COMMAND_ANSWER, Address, 0);
 	_tg->setKNXTime(day, month, year);
 	_tg->createChecksum();
