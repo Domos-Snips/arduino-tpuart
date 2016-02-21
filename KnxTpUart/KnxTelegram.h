@@ -95,7 +95,15 @@ class KnxTelegram {
 		void set2ByteFloatValue(float value);
 		float get2ByteFloatValue();
 		
-		void set3ByteTime(int day, int hour, int minute, int second);
+		void set3ByteTime(int weekday, int hour, int minute, int second);
+		int get3ByteWeekdayValue();
+		int get3ByteHourValue();
+		int get3ByteMinuteValue();
+		int get3ByteSecondValue();
+		void set3ByteDate(int day, int month, int year);
+		int get3ByteDayValue();
+		int get3ByteMonthValue();
+		int get3ByteYearValue();
 		
         void set4ByteFloatValue(float value);
         float get4ByteFloatValue();
