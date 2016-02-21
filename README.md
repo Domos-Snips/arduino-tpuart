@@ -95,7 +95,7 @@ knx.groupAnswer14ByteText("1/2/3", String);
 Also init read request :
 ------------------------
 
-knx.groupRead("1/2/3);
+knx.groupRead("1/2/3");
 
 
 Also all read requests :
