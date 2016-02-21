@@ -21,7 +21,14 @@ void setup() {
 
   knx.uartReset();
   // Define group address to react on
-  knx.addListenGroupAddress("3/0/100);
+  knx.addListenGroupAddress("3/0/1");
+  knx.addListenGroupAddress("3/0/2");
+  knx.addListenGroupAddress("3/0/3");
+  knx.addListenGroupAddress("3/0/4");
+  knx.addListenGroupAddress("3/0/5");
+  knx.addListenGroupAddress("3/0/6");
+  knx.addListenGroupAddress("3/0/7");
+  knx.addListenGroupAddress("3/0/8");
 }
 
 
@@ -33,16 +40,46 @@ void serialEvent1() {
   if (eType == KNX_TELEGRAM) {
     KnxTelegram* telegram = knx.getReceivedTelegram();
 
-    // Telegrammauswertung auf KNX (bei Empfang immer notwendig)
     String target =
       String(0 + telegram->getTargetMainGroup())   + "/" +
       String(0 + telegram->getTargetMiddleGroup()) + "/" +
       String(0 + telegram->getTargetSubGroup());
 
-    // Is it a read request?
+    // Ist es eine Leseanfrage ?
     if (telegram->getCommand() == KNX_COMMAND_READ) {
-      //knx.groupAnswerBool("3/0/100", true);
-      knx.groupAnswer2ByteFloat("3/0/100", 25.28);
+    
+      // Ist Ziel gleich Gruppenadresse 3/0/1 ?
+      if (target == "3/0/1") {
+        knx.groupAnswerBool("3/0/1", true);
+      }
+      // Ist Ziel gleich Gruppenadresse 3/0/2 ?
+      if (target == "3/0/2") {
+        knx.groupAnswer1ByteInt("3/0/2", 126);
+      }
+      // Ist Ziel gleich Gruppenadresse 3/0/3 ?
+      if (target == "3/0/3") {
+        knx.groupAnswer2ByteInt("3/0/3", 1000);
+      }
+      // Ist Ziel gleich Gruppenadresse 3/0/4 ?
+      if (target == "3/0/4") {
+        knx.groupAnswer2ByteFloat("3/0/4", 25.28);
+      }
+      // Ist Ziel gleich Gruppenadresse 3/0/5 ?
+      if (target == "3/0/5") {
+        knx.groupAnswer3ByteTime("3/0/5", 7, 0, 0, 0);
+      }
+      // Ist Ziel gleich Gruppenadresse 3/0/6 ?
+      if (target == "3/0/6") {
+        knx.groupAnswer3ByteDate("3/0/6", 31, 1, 3);
+      }
+      // Ist Ziel gleich Gruppenadresse 3/0/7 ?
+      if (target == "3/0/7") {
+        knx.groupAnswer4ByteFloat("3/0/7", -100);
+      }
+      // Ist Ziel gleich Gruppenadresse 3/0/8 ?
+      if (target == "3/0/8") {
+        knx.groupAnswer14ByteText("3/0/8", "Hallo");
+      }
     }
   }
 }
