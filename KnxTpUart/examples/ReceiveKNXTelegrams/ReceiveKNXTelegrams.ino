@@ -37,7 +37,6 @@ void setup() {
   knx.addListenGroupAddress("15/0/7");
 }
 
-
 void loop() {
   // nothing in the loop. This example is only to receive telegrams
 }
