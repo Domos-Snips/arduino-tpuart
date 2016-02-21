@@ -72,8 +72,8 @@ knx.groupWrite14ByteText("1/2/3", String);
 
 
 
-Also all answer requests :
---------------------------
+Also all answers to read requests :
+-----------------------------------
 
 knx.groupAnswerBool("1/2/3", bool);
 
@@ -92,8 +92,14 @@ knx.groupAnswer4ByteFloat("1/2/3", float);
 knx.groupAnswer14ByteText("1/2/3", String);
 
 
-Also all read requests (see example groupRead):
------------------------------------------------
+Also init read request :
+------------------------
+
+knx.groupRead("1/2/3);
+
+
+Also all read requests :
+------------------------
 
 value = telegram->getBool();
 
