@@ -31,7 +31,6 @@ void setup() {
   knx.addListenGroupAddress("3/0/8");
 }
 
-
 void loop() {
 }
 
