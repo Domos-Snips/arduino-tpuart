@@ -87,31 +87,33 @@ void serialEvent1() {
 		Serial.println(received_15_0_3);
       }
       if (target == "15/0/4") {
-        int received_15_0_4_0 = telegram->get3ByteWeekdayValue();
-        int received_15_0_4_1 = telegram->get3ByteHourValue();
-        int received_15_0_4_2 = telegram->get3ByteMinuteValue();
-        int received_15_0_4_3 = telegram->get3ByteSecondValue();
+	    int received_15_0_4_0 = telegram->get3ByteWeekdayValue();
+		int received_15_0_4_1 = telegram->get3ByteHourValue();
+		int received_15_0_4_2 = telegram->get3ByteMinuteValue();
+		int received_15_0_4_3 = telegram->get3ByteSecondValue();
 		Serial.print("Empfangener Wert:");
-		Serial.println(received_15_0_4_0);
-        Serial.print("  ");
+		Serial.println("");
+		Serial.print(received_15_0_4_0);
+		Serial.print("  ");
 		Serial.print(received_15_0_4_1);
-        Serial.print(":");
+		Serial.print(":");
 		Serial.print(received_15_0_4_2);
-        Serial.print(":");
+		Serial.print(":");
 		Serial.print(received_15_0_4_3);
-        Serial.println("");
+		Serial.println("");
       }
       if (target == "15/0/5") {
-        int received_15_0_5_0 = telegram->get3ByteDayValue();
-        int received_15_0_5_1 = telegram->get3ByteMonthValue();
-        int received_15_0_5_2 = telegram->get3ByteYearValue();
+	    int received_15_0_5_0 = telegram->get3ByteDayValue();
+		int received_15_0_5_1 = telegram->get3ByteMonthValue();
+		int received_15_0_5_2 = telegram->get3ByteYearValue();
 		Serial.print("Empfangener Wert:");
+		Serial.println("");
 		Serial.println(received_15_0_5_0);
-        Serial.print(".");
+		Serial.print(".");
 		Serial.print(received_15_0_5_1);
-        Serial.print(".");
+		Serial.print(".");
 		Serial.print(received_15_0_5_2);
-        Serial.println("");
+		Serial.println("");
       }
 	  if (target == "15/0/6") {
         float received_15_0_6 = telegram->get4ByteFloatValue();
