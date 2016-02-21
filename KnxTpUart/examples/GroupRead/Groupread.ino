@@ -1,12 +1,12 @@
 /*
-   Beispiel für Leseanfrage ARDUINO UNO -> KNX und Auswertung Antwort KNX -> ARDUINO UNO
+Beispiel für Leseanfrage ARDUINO UNO -> KNX und Auswertung Antwort KNX -> ARDUINO UNO
  
- Version 0.3
+Version 0.3
  
- 21.02.2016
+21.02.2016
  
- Testkonstellation = ARDUINO UNO <-> 5WG1 117-2AB12
- */
+Testkonstellation = ARDUINO UNO <-> 5WG1 117-2AB12
+*/
 
 #include <KnxTpUart.h>
 
