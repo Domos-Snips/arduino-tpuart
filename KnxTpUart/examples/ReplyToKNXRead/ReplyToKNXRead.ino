@@ -1,3 +1,8 @@
+// File: ReplyToKNXRead.ino   
+// Author: Daniel Kleine-Albers (Since 2012) 
+// Modified: Thorsten Gehrig (Since 2014)
+// Modified: Mag Gyver (Since 2016)
+
 #include <KnxTpUart.h>
 
 // Initialize the KNX TP-UART library on the Serial1 port of Arduino Mega
