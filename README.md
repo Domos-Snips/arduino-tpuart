@@ -29,6 +29,19 @@ Bool (DPT 1 - 0 or 1)
 knx.groupWriteBool("1/2/3", bool);
 
 
+
+4 Bit Int (DPT 3 )
+
+knx.groupWrite4BitInt("1/2/3", int);
+
+
+
+4 Bit Dim (DPT 3 )
+
+knx.groupWrite4BitDim("1/2/3", direction, steps);
+
+
+
 1 Byte Int (DTP 5 - 0...255)
 
 knx.groupWrite1ByteInt("1/2/3", int);
@@ -44,7 +57,6 @@ knx.groupWrite2ByteInt("1/2/3", int);
 2 Byte Float (DPT9 - -671 088,64 to 670 760,96 )
 
 knx.groupWrite2ByteFloat("1/2/3", float);
-
 
 
 
@@ -77,6 +89,10 @@ Also all answers to read requests :
 
 knx.groupAnswerBool("1/2/3", bool);
 
+commented out -> knx.groupAnswer4BitInt("1/2/3", int);
+
+commented out -> knx.groupWrite4BitDim("1/2/3", bool, byte);
+
 knx.groupAnswer1ByteInt("1/2/3", int);
 
 knx.groupAnswer2ByteInt("1/2/3", int);
@@ -102,6 +118,12 @@ Also all read requests :
 ------------------------
 
 value = telegram->getBool();
+
+value = telegram->get4BitIntValue();
+
+value = telegram->get4BitDirectionValue();
+
+value = telegram->get4BitStepsValue();
 
 value = telegram->get1ByteIntValue();
 
