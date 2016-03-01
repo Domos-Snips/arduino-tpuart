@@ -1,3 +1,8 @@
+// File: UnitTests.ino   
+// Author: Daniel Kleine-Albers (Since 2012) 
+// Modified: Thorsten Gehrig (Since 2014)
+// Modified: Mag Gyver (Since 2016)
+
 #include <KnxTpUart.h>
 #include <ArduinoUnit.h>
 
@@ -13,10 +18,10 @@ test(knxTelegramClearAfterCreation) {
 
   for (int i = 0; i < MAX_KNX_TELEGRAM_SIZE; i++) {
     if (i != 0 && i != 5) {
-     assertEquals(0, knxTelegram->getBufferByte(i));
+      assertEquals(0, knxTelegram->getBufferByte(i));
     } 
   }  
-  
+
   assertEquals(B10111100, knxTelegram->getBufferByte(0));
   assertEquals(B11100001, knxTelegram->getBufferByte(5));
   assertEquals(9, knxTelegram->getTotalLength());  
@@ -28,10 +33,10 @@ test(knxTelegramClear) {
 
   for (int i = 0; i < MAX_KNX_TELEGRAM_SIZE; i++) {
     if (i != 0 && i != 5) {
-     assertEquals(0, knxTelegram->getBufferByte(i));
+      assertEquals(0, knxTelegram->getBufferByte(i));
     } 
   }  
-  
+
   assertEquals(B10111100, knxTelegram->getBufferByte(0));
   assertEquals(B11100001, knxTelegram->getBufferByte(5)); 
 }
@@ -39,7 +44,7 @@ test(knxTelegramClear) {
 test(repeatProperty) {
   knxTelegram->setRepeated(true);
   assertTrue(knxTelegram->isRepeated());
-  
+
   knxTelegram->setRepeated(false);
   assertTrue(! knxTelegram->isRepeated());
 }
