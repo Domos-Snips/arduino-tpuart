@@ -1,3 +1,8 @@
+// File: TemperatureReadoutOneWire.ino   
+// Author: Daniel Kleine-Albers (Since 2012) 
+// Modified: Thorsten Gehrig (Since 2014)
+// Modified: Mag Gyver (Since 2016)
+
 #include <KnxTpUart.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
@@ -39,7 +44,7 @@ void setup() {
 
   knx.uartReset();
   knx.addListenGroupAddress(READ_GROUP);
-  
+
   startTime = millis();
 }
 
@@ -62,12 +67,12 @@ void loop() {
 void serialEvent1() {
   KnxTpUartSerialEventType eType = knx.serialEvent();
   if (eType == KNX_TELEGRAM) {
-     KnxTelegram* telegram = knx.getReceivedTelegram();
+    KnxTelegram* telegram = knx.getReceivedTelegram();
 
-     // Is it a read request?
-     if (telegram->getCommand() == KNX_COMMAND_READ) {
-        knx.groupAnswer2ByteFloat(READ_GROUP, getTemp());
-     }   
+    // Is it a read request?
+    if (telegram->getCommand() == KNX_COMMAND_READ) {
+      knx.groupAnswer2ByteFloat(READ_GROUP, getTemp());
+    }   
   }
 }
 
