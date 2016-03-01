@@ -1,12 +1,8 @@
-/*
-Beispiel für Leseanfrage ARDUINO UNO -> KNX und Auswertung Antwort KNX -> ARDUINO UNO
- 
-Version 0.3
- 
-21.02.2016
- 
-Testkonstellation = ARDUINO UNO <-> 5WG1 117-2AB12
-*/
+// File: Groupread.ino
+// Author: Mag Gyver (Since 2015) 
+// Modified: Thorsten Gehrig (Since 2015)
+
+// Testkonstellation = ARDUINO UNO <-> 5WG1 117-2AB12
 
 #include <KnxTpUart.h>
 
