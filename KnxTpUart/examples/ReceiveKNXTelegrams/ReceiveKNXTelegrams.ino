@@ -1,3 +1,8 @@
+// File: ReceiveKNXTelegrams.ino
+// Author: Daniel Kleine-Albers (Since 2012) 
+// Modified: Thorsten Gehrig (Since 2014)
+// Modified: Mag Gyver (Since 2016)
+
 #include <KnxTpUart.h>
 
 // Initialize the KNX TP-UART library on the Serial1 port of Arduino Mega
@@ -35,6 +40,8 @@ void setup() {
   knx.addListenGroupAddress("15/0/5");
   knx.addListenGroupAddress("15/0/6");
   knx.addListenGroupAddress("15/0/7");
+  knx.addListenGroupAddress("15/0/8");
+  knx.addListenGroupAddress("15/0/9");
 }
 
 void loop() {
@@ -73,58 +80,105 @@ void serialEvent1() {
         }
       }
       if (target == "15/0/1") {
-        int received_15_0_1 = telegram->get1ByteIntValue();
+        int received_15_0_1 = telegram->get4BitIntValue();
         Serial.print("Empfangener Wert:");
         Serial.println(received_15_0_1);
       }
       if (target == "15/0/2") {
-        int received_15_0_2 = telegram->get2ByteIntValue();
+        int received_15_0_2_0 = telegram->get4BitDirectionValue();
+        int received_15_0_2_1 = telegram->get4BitStepsValue();
         Serial.print("Empfangener Wert:");
-        Serial.println(received_15_0_2);
+        Serial.println("");
+        switch (received_15_0_2_0) {
+        case 0:
+          Serial.print("Direction: down");
+          break;
+        case 1:
+          Serial.print("Direction: up");
+          break;
+        }
+        Serial.print("  ");
+        switch (received_15_0_2_1) {
+        case 0:
+          Serial.print("Step: stop");
+          break;
+        case 1:
+          Serial.print("Step: 100%");
+          break;
+        case 2:
+          Serial.print("Step: 50%");
+          break;
+        case 3:
+          Serial.print("Step: 25%");
+          break;
+        case 4:
+          Serial.print("Step: 12%");
+          break;
+        case 5:
+          Serial.print("Step: 6%");
+          break;
+        case 6:
+          Serial.print("Step: 3%");
+          break;
+        case 7:
+          Serial.print("Step: 1%");
+          break;
+        }
+        Serial.println("");
       }
       if (target == "15/0/3") {
-        float received_15_0_3 = telegram->get2ByteFloatValue();
+        int received_15_0_3 = telegram->get1ByteIntValue();
         Serial.print("Empfangener Wert:");
         Serial.println(received_15_0_3);
       }
       if (target == "15/0/4") {
-        int received_15_0_4_0 = telegram->get3ByteWeekdayValue();
-        int received_15_0_4_1 = telegram->get3ByteHourValue();
-        int received_15_0_4_2 = telegram->get3ByteMinuteValue();
-        int received_15_0_4_3 = telegram->get3ByteSecondValue();
+        int received_15_0_4 = telegram->get2ByteIntValue();
         Serial.print("Empfangener Wert:");
-        Serial.println("");
-        Serial.print(received_15_0_4_0);
-        Serial.print("  ");
-        Serial.print(received_15_0_4_1);
-        Serial.print(":");
-        Serial.print(received_15_0_4_2);
-        Serial.print(":");
-        Serial.print(received_15_0_4_3);
-        Serial.println("");
+        Serial.println(received_15_0_4);
       }
       if (target == "15/0/5") {
-        int received_15_0_5_0 = telegram->get3ByteDayValue();
-        int received_15_0_5_1 = telegram->get3ByteMonthValue();
-        int received_15_0_5_2 = telegram->get3ByteYearValue();
+        float received_15_0_5 = telegram->get2ByteFloatValue();
         Serial.print("Empfangener Wert:");
-        Serial.println("");
-        Serial.print(received_15_0_5_0);
-        Serial.print(".");
-        Serial.print(received_15_0_5_1);
-        Serial.print(".");
-        Serial.print(received_15_0_5_2);
-        Serial.println("");
+        Serial.println(received_15_0_5);
       }
       if (target == "15/0/6") {
-        float received_15_0_6 = telegram->get4ByteFloatValue();
+        int received_15_0_6_0 = telegram->get3ByteWeekdayValue();
+        int received_15_0_6_1 = telegram->get3ByteHourValue();
+        int received_15_0_6_2 = telegram->get3ByteMinuteValue();
+        int received_15_0_6_3 = telegram->get3ByteSecondValue();
         Serial.print("Empfangener Wert:");
-        Serial.println(received_15_0_6);
+        Serial.println("");
+        Serial.print(received_15_0_6_0);
+        Serial.print("  ");
+        Serial.print(received_15_0_6_1);
+        Serial.print(":");
+        Serial.print(received_15_0_6_2);
+        Serial.print(":");
+        Serial.print(received_15_0_6_3);
+        Serial.println("");
       }
       if (target == "15/0/7") {
-        String received_15_0_7 = telegram->get14ByteValue();
+        int received_15_0_7_0 = telegram->get3ByteDayValue();
+        int received_15_0_7_1 = telegram->get3ByteMonthValue();
+        int received_15_0_7_2 = telegram->get3ByteYearValue();
         Serial.print("Empfangener Wert:");
-        Serial.println(received_15_0_7);
+        Serial.println("");
+        Serial.print(received_15_0_7_0);
+        Serial.print(".");
+        Serial.print(received_15_0_7_1);
+        Serial.print(".");
+        Serial.print(received_15_0_7_2);
+        Serial.println("");
+      }
+      if (target == "15/0/8") {
+        float received_15_0_8 = telegram->get4ByteFloatValue();
+        Serial.print("Empfangener Wert:");
+        Serial.println(received_15_0_8);
+      }
+      if (target == "15/0/9") {
+        String received_15_0_9 = telegram->get14ByteValue();
+        Serial.print("Empfangener Wert:");
+        Serial.println(received_15_0_9);
       }
     }
   }
