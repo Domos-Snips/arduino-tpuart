@@ -1,9 +1,9 @@
 // File : KnxTpUart.h 
-// Author : Daniel Kleine-Albers (2012) 
-// Modified: Thorsten Gehrig (2014)
-// Modified: Michael Werski (2014)
-// Modified: Katja Blankenheim (2014)
-// Modified: Mag Gyver (2016)
+// Author : Daniel Kleine-Albers (Since 2012) 
+// Modified: Thorsten Gehrig (Since 2014)
+// Modified: Michael Werski (Since 2014)
+// Modified: Katja Blankenheim (Since 2014)
+// Modified: Mag Gyver (Since 2016)
 
 #ifndef KnxTpUart_h
 #define KnxTpUart_h
