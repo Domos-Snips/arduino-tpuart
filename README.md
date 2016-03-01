@@ -30,13 +30,13 @@ knx.groupWriteBool("1/2/3", bool);
 
 
 
-4 Bit Int (DPT 3 )
+4 Bit Int (DPT 3)
 
 knx.groupWrite4BitInt("1/2/3", int);
 
 
 
-4 Bit Dim (DPT 3 )
+4 Bit Dim (DPT 3)
 
 knx.groupWrite4BitDim("1/2/3", direction, steps);
 
