@@ -1,5 +1,5 @@
-// File : KnxTpUart.h 
-// Author : Daniel Kleine-Albers (Since 2012) 
+// File: KnxTpUart.h 
+// Author: Daniel Kleine-Albers (Since 2012) 
 // Modified: Thorsten Gehrig (Since 2014)
 // Modified: Michael Werski (Since 2014)
 // Modified: Katja Blankenheim (Since 2014)
