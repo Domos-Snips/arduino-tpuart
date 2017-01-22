@@ -3,6 +3,7 @@
 // Modified: Thorsten Gehrig (Since 2015)
 
 // Testkonstellation = ARDUINO UNO <-> 5WG1 117-2AB12
+// Bitte Anweisungen in "KnxTpUart.h" beachten
 
 #include <KnxTpUart.h>
 
