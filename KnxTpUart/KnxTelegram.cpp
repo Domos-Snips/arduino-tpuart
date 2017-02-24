@@ -373,7 +373,7 @@ float KnxTelegram::get2ByteFloatValue() {
     sign = -1;
   }
 
-  return (mantissa * 0.01) * pow(2.0, exponent);
+  return (mantissa * 0.01) * pow(2.0, exponent) * sign;
 }
 
 void KnxTelegram::set3ByteTime(int weekday, int hour, int minute, int second) {
