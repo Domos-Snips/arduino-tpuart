@@ -4,6 +4,7 @@
 // Modified: Michael Werski (Since 2014)
 // Modified: Katja Blankenheim (Since 2014)
 // Modified: Mag Gyver (Since 2016)
+// Modified: Rouven Raudzus (Since 2017)
 
 #include "KnxTelegram.h"
 
