@@ -359,6 +359,8 @@ void KnxTelegram::set2ByteFloatValue(float value) {
   buffer[9] = (byte)m;
 }
 
+// Thanks to Rouven Raudzus for help
+
 float KnxTelegram::get2ByteFloatValue() {
   if (getPayloadLength() != 4) {
     // Wrong payload length
@@ -368,13 +370,11 @@ float KnxTelegram::get2ByteFloatValue() {
   int exponent = (buffer[8] & B01111000) >> 3;
   int mantissa = ((buffer[8] & B00000111) << 8) | (buffer[9]);
 
-  int sign = 1;
-
   if (buffer[8] & B10000000) {
-    sign = -1;
+    return ((-2048 + mantissa) * 0.01) * pow(2.0, exponent);
   }
 
-  return (mantissa * 0.01) * pow(2.0, exponent) * sign;
+  return (mantissa * 0.01) * pow(2.0, exponent);
 }
 
 void KnxTelegram::set3ByteTime(int weekday, int hour, int minute, int second) {
