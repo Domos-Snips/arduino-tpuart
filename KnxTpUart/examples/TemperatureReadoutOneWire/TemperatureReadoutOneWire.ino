@@ -3,6 +3,8 @@
 // Modified: Thorsten Gehrig (Since 2014)
 // Modified: Mag Gyver (Since 2016)
 
+// Test constellation = ARDUINO MEGA <-> 5WG1 117-2AB12
+
 #include <KnxTpUart.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
@@ -21,7 +23,7 @@ DallasTemperature sensors(&oneWire);
 // Define send interval
 #define SEND_INTERVAL_MS 5000
 
-// Initialize the KNX TP-UART library on the Serial1 port of Arduino Mega
+// Initialize the KNX TP-UART library on the Serial1 port of ARDUINO MEGA
 KnxTpUart knx(&Serial1, "15.15.20");
 
 unsigned long startTime;
