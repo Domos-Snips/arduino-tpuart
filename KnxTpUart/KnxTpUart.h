@@ -29,17 +29,13 @@
 
 // Delay in ms between sending of packets to the bus
 // set to 0 if you keep care of that by yourself
-
-// if you choose sample "GroupRead" comment the following line
-#define SERIAL_WRITE_DELAY_MS 0
-// if you choose sample "GroupRead" uncomment the following line
-//#define SERIAL_WRITE_DELAY_MS 100
+#define SERIAL_WRITE_DELAY_MS 100
 
 // Timeout for reading a byte from TPUART
-#define SERIAL_READ_TIMEOUT_MS 10
+#define SERIAL_READ_TIMEOUT_MS 0
 
 // Maximum number of group addresses that can be listened on
-#define MAX_LISTEN_GROUP_ADDRESSES 15
+#define MAX_LISTEN_GROUP_ADDRESSES 16
 
 enum KnxTpUartSerialEventType {
   TPUART_RESET_INDICATION,
