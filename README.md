@@ -10,14 +10,18 @@ Hardware
 
 We leverage Siemens BCU 5WG1 117-2AB12 - for about ~30€
 
+
 We leverage ARDUINO MEGA (SERIAL PORT 1)
 
 -> No restrictions on the programming
 
+
 We leverage ARDUINO UNO (SERIAL PORT)
 
 -> During programming, the BCU may have no connection to the ARDUINO UNO
+
 -> After programming for communication ICSP 1 PIN 5 and ICSP PIN 6 connect, tested only with ARDUINO UNO revision 3
+
 
 Software
 --------
@@ -29,6 +33,7 @@ Issues, Comments and Suggestions
 --------------------------------
 
 If you have any, don't hesitate to contact me or use the issue tracker. You are also invited to improve the code and send me a pull request to reintegrate the changes here.
+
 
 Supported commands / telegram types
 -----------------------------------
