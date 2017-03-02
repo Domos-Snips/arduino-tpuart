@@ -3,9 +3,11 @@
 // Modified: Thorsten Gehrig (Since 2014)
 // Modified: Mag Gyver (Since 2016)
 
+// Test constellation = ARDUINO MEGA <-> 5WG1 117-2AB12
+
 #include <KnxTpUart.h>
 
-// Initialize the KNX TP-UART library on the Serial1 port of Arduino 
+// Initialize the KNX TP-UART library on the Serial1 port of ARDUINO MEGA 
 KnxTpUart knx(&Serial1, "15.15.20");
 
 // Define input pin
