@@ -2,7 +2,7 @@
 // Author: Mag Gyver (Since 2015) 
 // Modified: Thorsten Gehrig (Since 2015)
 
-// Testkonstellation = ARDUINO UNO <-> 5WG1 117-2AB12
+// Test constellation = ARDUINO UNO <-> 5WG1 117-2AB12
 
 #include <KnxTpUart.h>
 
@@ -13,24 +13,24 @@ int target_5_6_0;
 
 void setup() {
 
-  pinMode(LED, OUTPUT); // PIN 13 als Ausgang festlegen
+  pinMode(LED, OUTPUT); // PIN 13 as output
 
   Serial.begin(19200);
-  UCSR0C = UCSR0C | B00100000; // Gerade Parität
+  UCSR0C = UCSR0C | B00100000; // Even parity
 
   knx.uartReset();
 
   knx.addListenGroupAddress("2/6/0");
   knx.addListenGroupAddress("5/6/0");
 
-  // Leseanfrage auf Gruppenadresse -> alle Datentypen
+  // Read request to groups address-> all data types
 
-  // Die Funktion delay(1000) nur zur Verzögerung der Initialisierungsabfrage notwendig.
-  // Wenn man keine Initialisierungsabfrage möchte, sollte man die nächsten Zeilen bis Ende der Funktion aus kommentieren.
+  // The function delay(1000) only to delay the necessary initialization query.
+  // If you want no initialization query, you should comment on the next lines to end the function.
 
   delay(1000);
 
-  // Leseanfrage auf Gruppenadressen -> Aufruf der Funktion Leseanfrage auch in void loop() möglich
+  // Read request to group addresses -> possible call to the read request void loop() function
 
   knx.groupRead("2/6/0");
   knx.groupRead("5/6/0");
@@ -46,29 +46,29 @@ void serialEvent() {
 
   KnxTpUartSerialEventType eType = knx.serialEvent();
 
-  //Auswertung des empfangenen Telegrammes -> nur KNX-Telegramme werden akzeptiert
+  //Evaluation of the received telegram -> only KNX telegrams are accepted
 
     if (eType == KNX_TELEGRAM) {
     KnxTelegram* telegram = knx.getReceivedTelegram();
 
-    // Telegrammauswertung auf KNX (bei Empfang immer notwendig)
+    // Telegram evaluation on KNX (at reception always necessary)
 
     String target =
       String(0 + telegram->getTargetMainGroup())   + "/" +
       String(0 + telegram->getTargetMiddleGroup()) + "/" +
       String(0 + telegram->getTargetSubGroup());
 
-    // Auswertung der Gruppenadresse des empfangenen Telegrammes und Zwischenspeicherung in Variable "target"
+    // Evaluation of group address of the received telegram and caching in variable "target"
 
     if (telegram->getCommand() == KNX_COMMAND_ANSWER) {
 
-      // Auswertung der Leseanfrage in serialEvent() mit Datentypen
-      // Auswertung des empfangenen KNX-Telegrammes mit Antwort auf Leseanfrage (Flag) -> Aktion
+      // Evaluation of read request in serialEvent() with data types
+      // Evaluation of the received KNX telegram with response to read request (flag) -> action
 
       if (target == "2/6/0") {
         target_2_6_0 = telegram->getBool();
 
-        // Speicherung des Inhaltes in Variable "target_2_6_0" der Antwort auf die Leseanfrage der Gruppenadresse "2/6/0"
+        // Storage of the contents in variable "target_2_6_0" of the response to the read request of the group address "2/6/0"
 
         if (target_2_6_0) {
           digitalWrite(LED, HIGH);
@@ -77,12 +77,12 @@ void serialEvent() {
           digitalWrite(LED,LOW);
         }
 
-        // Auswertung des Inhaltes und Ausgabe des Inhaltes der Gruppenadresse "5/6/0" auf PIN 13 des ARDUINO UNO
+        // Evaluation of the content and output of the content of the group address "2/6/0" to PIN 13 of the ARDUINO UNO
       }
       else if (target == "5/6/0") {
         target_5_6_0 = telegram->get1ByteIntValue();
 
-        // Speicherung des Inhaltes in Variable "target_5_6_0" der Antwort auf die Leseanfrage der Gruppenadresse "5/6/0"
+        // Storage of the contents in a variable "target_5_6_0" of the response to the read request of the group address "5/6/0" for further processing
 
       }
     }
