@@ -89,36 +89,39 @@ public:
   int getRoutingCounter();
   void setCommand(KnxCommandType command);
   KnxCommandType getCommand();
-
+  
+// EIS 1 -> 1bit
   void setFirstDataByte(int data);
   int getFirstDataByte();
   bool getBool();
-  
+// EIS 2 -> 4 bit
   int get4BitIntValue();
   bool get4BitDirectionValue();
   byte get4BitStepsValue();
-
+// EIS 6 -> 1 byte
   void set1ByteIntValue(int value);
   int get1ByteIntValue();
-
+// EIS 10? -> 2 byte 
   void set2ByteIntValue(int value);
   int get2ByteIntValue();
+// EIS 5 -> 2 byte
   void set2ByteFloatValue(float value);
   float get2ByteFloatValue();
-
+// EIS 3 -> 3 byte
   void set3ByteTime(int weekday, int hour, int minute, int second);
   int get3ByteWeekdayValue();
   int get3ByteHourValue();
   int get3ByteMinuteValue();
   int get3ByteSecondValue();
+// EIS 4 -> 3 byte
   void set3ByteDate(int day, int month, int year);
   int get3ByteDayValue();
   int get3ByteMonthValue();
   int get3ByteYearValue();
-
+// EIS 9 -> 4 byte
   void set4ByteFloatValue(float value);
   float get4ByteFloatValue();
-
+// EIS 13? -> 14 byte
   void set14ByteValue(String value);
   String get14ByteValue();
 
