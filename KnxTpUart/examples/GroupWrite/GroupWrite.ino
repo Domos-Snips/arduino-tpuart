@@ -32,8 +32,7 @@ void setup() {
   Serial.begin(9600);
   Serial.println("TP-UART Test");  
 
-  Serial1.begin(19200);
-  UCSR1C = UCSR1C | B00100000; // Even Parity
+  Serial1.begin(19200, SERIAL_8E1);
 
   Serial.print("UCSR1A: ");
   Serial.println(UCSR1A, BIN);
