@@ -15,9 +15,7 @@ void setup() {
 
   pinMode(LED, OUTPUT); // PIN 13 as output
 
-  Serial.begin(19200);
-  UCSR0C = UCSR0C | B00100000; // Even parity
-
+  Serial.begin(19200, SERIAL_8E1);
   knx.uartReset();
 
   knx.addListenGroupAddress("2/6/0");
