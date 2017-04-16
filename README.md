@@ -20,7 +20,9 @@ We leverage ARDUINO UNO (SERIAL PORT)
 
 -> During programming, the BCU may have no connection to the ARDUINO UNO
 
--> After programming for communication with the BCU. Connect the Jumpers ICSP1 PIN 5 and ICSP1 PIN 6 together, tested only with ARDUINO UNO revision 3
+-> After programming for communication with the BCU. Connect the jumpers ICSP1 PIN 5 and ICSP1 PIN 6 together, tested only with ARDUINO UNO revision 3
+
+-> For programming the jumper ICSP1 PIN 5 and PIN must be not connected 6 ICSP1 and the voltage must be taken away for a short time. Then, you can transfer the new "sketch". 
 
 
 Software
