@@ -32,7 +32,8 @@
 #define SERIAL_WRITE_DELAY_MS 100
 
 // Timeout for reading a byte from TPUART
-#define SERIAL_READ_TIMEOUT_MS 0
+//#define SERIAL_READ_TIMEOUT_MS 0 - changed to 10ms to ensure received telegrams are complete 
+#define SERIAL_READ_TIMEOUT_MS 10
 
 // Maximum number of group addresses that can be listened on
 #define MAX_LISTEN_GROUP_ADDRESSES 16
