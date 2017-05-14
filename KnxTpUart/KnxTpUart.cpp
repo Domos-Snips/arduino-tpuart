@@ -458,16 +458,16 @@ bool KnxTpUart::sendMessage() {
   while(true) {
     confirmation = serialRead();
     if (confirmation == B10001011) {
-      (SERIAL_WRITE_DELAY_MS);
+      wait(SERIAL_WRITE_DELAY_MS);
       return true; // Sent successfully
     } 
     else if (confirmation == B00001011) {
-      delay (SERIAL_WRITE_DELAY_MS);
+      wait(SERIAL_WRITE_DELAY_MS);
       return false;
     } 
     else if (returnValueReadTimeout == 1) {
       // Read timeout
-      delay (SERIAL_WRITE_DELAY_MS);
+      wait(SERIAL_WRITE_DELAY_MS);
       return false;
     }
   }
@@ -477,22 +477,23 @@ bool KnxTpUart::sendMessage() {
 void KnxTpUart::sendAck() {
   byte sendByte = B00010001;
   _serialport->write(sendByte);
-  delay(SERIAL_WRITE_DELAY_MS);
+  wait(SERIAL_WRITE_DELAY_MS);
 }
 
 void KnxTpUart::sendNotAddressed() {
   byte sendByte = B00010000;
   _serialport->write(sendByte);
-  delay(SERIAL_WRITE_DELAY_MS);
+  wait(SERIAL_WRITE_DELAY_MS);
 }
 
 int KnxTpUart::serialRead() {
   unsigned long startTime = millis();
+  int inByte = 0;
+  int lastInByte = 0;
 #if defined(TPUART_DEBUG)
   TPUART_DEBUG_PORT.print("Available: ");
   TPUART_DEBUG_PORT.println(_serialport->available());
 #endif
-
   while (! (_serialport->available() > 0)) {
     if (abs(millis() - startTime) > SERIAL_READ_TIMEOUT_MS) {
       // Timeout
@@ -505,10 +506,16 @@ int KnxTpUart::serialRead() {
       returnValueReadTimeout = 0;
     }
   }
-  int inByte = _serialport->read();
+  inByte = _serialport->read();
+#if defined(TPUART_DEBUG)
   checkErrors();
   printByte(inByte);
-  return inByte;
+#endif
+  if (inByte == lastInByte) {
+  }
+  else {
+    return inByte;
+  }
 }
 
 void KnxTpUart::addListenGroupAddress(String address) {
@@ -534,4 +541,15 @@ bool KnxTpUart::isListeningToGroupAddress(int main, int middle, int sub) {
     }
   }
   return false;
+}
+
+void KnxTpUart::wait(unsigned long duration) {
+  unsigned long timer = millis();
+  int timeup = 0;
+  while (timeup == 0) {
+    if (millis - timer >= duration) {
+      timer = millis();
+      timeup = 1;
+    }
+  }
 }
