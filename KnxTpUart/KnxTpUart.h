@@ -5,6 +5,8 @@
 // Modified: Katja Blankenheim (Since 2014)
 // Modified: Mag Gyver (Since 2016)
 
+// Last modified: 14.05.2017
+
 #ifndef KnxTpUart_h
 #define KnxTpUart_h
 
@@ -22,7 +24,7 @@
 
 // Debugging
 // uncomment the following line to enable debugging
-//#define TPUART_DEBUG true
+//#define TPUART_DEBUG
 #define TPUART_DEBUG_PORT Serial
 
 #define TPUART_SERIAL_CLASS Stream
@@ -111,6 +113,8 @@ class KnxTpUart {
     bool sendMessage();
     bool sendNCDPosConfirm(int, int, int, int);
     int serialRead();
+    unsigned long readTimeout(unsigned long);
+    void delayWrite(unsigned long);
 };
 
 #endif
