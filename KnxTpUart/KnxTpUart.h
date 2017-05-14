@@ -91,7 +91,7 @@ public:
   bool individualAnswerAuth(int, int, int, int, int);
 
   void setListenToBroadcasts(bool);
-
+  void Wait(unsigned long duration);
 
 private:
   Stream* _serialport;
@@ -113,7 +113,6 @@ private:
   bool sendMessage();
   bool sendNCDPosConfirm(int, int, int, int);
   int serialRead();
-  void Wait(unsigned long duration);
 };
 
 
