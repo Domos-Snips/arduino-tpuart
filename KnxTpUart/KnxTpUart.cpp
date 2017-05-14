@@ -7,6 +7,8 @@
 
 #include "KnxTpUart.h"
 
+int returnValueReadTimeout = 0;
+
 KnxTpUart::KnxTpUart(TPUART_SERIAL_CLASS* sport, String address) {
   _serialport = sport;
   _source_area = address.substring(0, address.indexOf('.')).toInt();
@@ -40,9 +42,13 @@ void KnxTpUart::setIndividualAddress(int area, int line, int member) {
 
 KnxTpUartSerialEventType KnxTpUart::serialEvent() {
   while (_serialport->available() > 0) {
+#if defined(TPUART_DEBUG)
     checkErrors();
+#endif
     int incomingByte = _serialport->peek();
+#if defined(TPUART_DEBUG)
     printByte(incomingByte);
+#endif
     if (isKNXControlByte(incomingByte)) {
       bool interested = readKNXTelegram();
       if (interested) {
@@ -84,7 +90,6 @@ bool KnxTpUart::isKNXControlByte(int b) {
 }
 
 void KnxTpUart::checkErrors() {
-#if defined(TPUART_DEBUG)
 #if defined(_SAM3XA_)  // For DUE
   if (USART1->US_CSR & US_CSR_OVRE) {
     TPUART_DEBUG_PORT.println("Overrun"); 
@@ -110,11 +115,9 @@ void KnxTpUart::checkErrors() {
     TPUART_DEBUG_PORT.println("Parity Error"); 
   }
 #endif
-#endif
 }
 
 void KnxTpUart::printByte(int incomingByte) {
-#if defined(TPUART_DEBUG)
   TPUART_DEBUG_PORT.print("Incoming Byte: ");
   TPUART_DEBUG_PORT.print(incomingByte, DEC);
   TPUART_DEBUG_PORT.print(" - ");
@@ -122,7 +125,6 @@ void KnxTpUart::printByte(int incomingByte) {
   TPUART_DEBUG_PORT.print(" - ");
   TPUART_DEBUG_PORT.print(incomingByte, BIN);
   TPUART_DEBUG_PORT.println();
-#endif
 }
 
 bool KnxTpUart::readKNXTelegram() {
@@ -429,7 +431,7 @@ bool KnxTpUart::sendNCDPosConfirm(int sequenceNo, int area, int line, int member
     else if (confirmation == B00001011) {
       return false;
     } 
-    else if (confirmation == -1) {
+    else if (returnValueReadTimeout == 1) {
       // Read timeout
       return false;
     }
@@ -456,14 +458,14 @@ bool KnxTpUart::sendMessage() {
   while(true) {
     confirmation = serialRead();
     if (confirmation == B10001011) {
-      delay (SERIAL_WRITE_DELAY_MS);
+      (SERIAL_WRITE_DELAY_MS);
       return true; // Sent successfully
     } 
     else if (confirmation == B00001011) {
       delay (SERIAL_WRITE_DELAY_MS);
       return false;
     } 
-    else if (confirmation == -1) {
+    else if (returnValueReadTimeout == 1) {
       // Read timeout
       delay (SERIAL_WRITE_DELAY_MS);
       return false;
@@ -497,9 +499,11 @@ int KnxTpUart::serialRead() {
 #if defined(TPUART_DEBUG)
       TPUART_DEBUG_PORT.println("Timeout while receiving message");
 #endif
-      return -1;
+      returnValueReadTimeout = 1;
     }
-    delay(1);
+    else {
+      returnValueReadTimeout = 0;
+    }
   }
   int inByte = _serialport->read();
   checkErrors();
