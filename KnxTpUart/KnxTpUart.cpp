@@ -458,16 +458,34 @@ bool KnxTpUart::sendMessage() {
   while (true) {
     confirmation = serialRead();
     if (confirmation == B10001011) {
-      Wait(SERIAL_WRITE_DELAY_MS);
+      int serialWriteDelay = 100;
+      if ((abs(SERIAL_WRITE_DELAY_MS)) < 100) {
+      }
+      else {
+        serialWriteDelay = abs(SERIAL_WRITE_DELAY_MS);
+      }
+      delay(serialWriteDelay);
       return true; // Sent successfully
     }
     else if (confirmation == B00001011) {
-      Wait(SERIAL_WRITE_DELAY_MS);
+      int serialWriteDelay = 100;
+      if ((abs(SERIAL_WRITE_DELAY_MS)) < 100) {
+      }
+      else {
+        serialWriteDelay = abs(SERIAL_WRITE_DELAY_MS);
+      }
+      delay(serialWriteDelay);
       return false;
     }
     else if (returnValueReadTimeout == 1) {
       // Read timeout
-      Wait(SERIAL_WRITE_DELAY_MS);
+      int serialWriteDelay = 100;
+      if ((abs(SERIAL_WRITE_DELAY_MS)) < 100) {
+      }
+      else {
+        serialWriteDelay = abs(SERIAL_WRITE_DELAY_MS);
+      }
+      delay(serialWriteDelay);
       return false;
     }
   }
@@ -477,25 +495,43 @@ bool KnxTpUart::sendMessage() {
 void KnxTpUart::sendAck() {
   byte sendByte = B00010001;
   _serialport->write(sendByte);
-  Wait(SERIAL_WRITE_DELAY_MS);
+  int serialWriteDelay = 100;
+  if ((abs(SERIAL_WRITE_DELAY_MS)) < 100) {
+  }
+  else {
+    serialWriteDelay = abs(SERIAL_WRITE_DELAY_MS);
+  }
+  delay(serialWriteDelay);
 }
 
 void KnxTpUart::sendNotAddressed() {
   byte sendByte = B00010000;
   _serialport->write(sendByte);
-  Wait(SERIAL_WRITE_DELAY_MS);
+  int serialWriteDelay = 100;
+  if ((abs(SERIAL_WRITE_DELAY_MS)) < 100) {
+  }
+  else {
+    serialWriteDelay = abs(SERIAL_WRITE_DELAY_MS);
+  }
+  delay(serialWriteDelay);
 }
 
 int KnxTpUart::serialRead() {
   unsigned long startTime = millis();
   int inByte = 0;
   int lastInByte = 0;
+  int serialReadTimeout = 10;
+  if ((abs(SERIAL_READ_TIMEOUT_MS)) < 10) {
+  }
+  else {
+    serialReadTimeout = abs(SERIAL_READ_TIMEOUT_MS);
+  }
 #if defined(TPUART_DEBUG)
   TPUART_DEBUG_PORT.print("Available: ");
   TPUART_DEBUG_PORT.println(_serialport->available());
 #endif
   while (! (_serialport->available() > 0)) {
-    if (abs(millis() - startTime) > SERIAL_READ_TIMEOUT_MS) {
+    if (abs(millis() - startTime) > serialReadTimeout) {
       // Timeout
 #if defined(TPUART_DEBUG)
       TPUART_DEBUG_PORT.println("Timeout while receiving message");
@@ -541,15 +577,4 @@ bool KnxTpUart::isListeningToGroupAddress(int main, int middle, int sub) {
     }
   }
   return false;
-}
-
-void KnxTpUart::Wait(unsigned long duration) {
-  unsigned long timer = millis();
-  int timeup = 0;
-  while (timeup == 0) {
-    if (millis() - timer >= duration) {
-      timer = millis();
-      timeup = 1;
-    }
-  }
 }
