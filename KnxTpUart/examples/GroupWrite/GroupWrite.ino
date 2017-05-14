@@ -1,5 +1,5 @@
-// File: GroupWrite.ino 
-// Author: Daniel Kleine-Albers (Since 2012) 
+// File: GroupWrite.ino
+// Author: Daniel Kleine-Albers (Since 2012)
 // Modified: Thorsten Gehrig (Since 2014)
 // Modified: Mag Gyver (Since 2016)
 
@@ -7,7 +7,7 @@
 
 #include <KnxTpUart.h>
 
-// Initialize the KNX TP-UART library on the Serial1 port of ARDUINO MEGA 
+// Initialize the KNX TP-UART library on the Serial1 port of ARDUINO MEGA
 KnxTpUart knx(&Serial1, "15.15.20");
 
 // Define input pin
@@ -30,7 +30,7 @@ void setup() {
 
 
   Serial.begin(9600);
-  Serial.println("TP-UART Test");  
+  Serial.println("TP-UART Test");
 
   Serial1.begin(19200, SERIAL_8E1);
 
@@ -57,21 +57,14 @@ void loop() {
       bool success = knx.groupWriteBool("0/0/3", !onSent);
 
       Serial.print("Successfully sent: ");
-      Serial.println(success);
+      Serial.println(!onSent);
 
       onSent = !onSent;
       haveSent = true;
     }
-  } 
-  else {
-    digitalWrite(13, LOW); 
-    haveSent = false;
   }
-}
-
-void serialEvent1() {
-  KnxTpUartSerialEventType eType = knx.serialEvent();
-  if (eType == KNX_TELEGRAM) {
-    Serial.println("Event KNX_TELEGRAM");
+  else {
+    digitalWrite(13, LOW);
+    haveSent = false;
   }
 }
