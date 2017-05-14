@@ -1,5 +1,5 @@
-// File: KnxTelegram.cpp 
-// Author: Daniel Kleine-Albers (Since 2012) 
+// File: KnxTelegram.cpp
+// Author: Daniel Kleine-Albers (Since 2012)
 // Modified: Thorsten Gehrig (Since 2014)
 // Modified: Michael Werski (Since 2014)
 // Modified: Katja Blankenheim (Since 2014)
@@ -36,7 +36,7 @@ bool KnxTelegram::isRepeated() {
   // Parse Repeat Flag
   if (buffer[0] & B00100000) {
     return false;
-  } 
+  }
   else {
     return true;
   }
@@ -45,7 +45,7 @@ bool KnxTelegram::isRepeated() {
 void KnxTelegram::setRepeated(bool repeat) {
   if (repeat) {
     buffer[0] = buffer[0] & B11011111;
-  } 
+  }
   else {
     buffer[0] = buffer[0] | B00100000;
   }
@@ -213,7 +213,7 @@ void KnxTelegram::print(TPUART_SERIAL_CLASS* serial) {
     serial->print(getTargetMiddleGroup());
     serial->print("/");
     serial->println(getTargetSubGroup());
-  } 
+  }
   else {
     serial->print("Target Physical: ");
     serial->print(getTargetArea());
@@ -239,13 +239,13 @@ void KnxTelegram::print(TPUART_SERIAL_CLASS* serial) {
     serial->print("Data Byte ");
     serial->print(i);
     serial->print(": ");
-    serial->println(buffer[6+i], BIN);
+    serial->println(buffer[6 + i], BIN);
   }
 
 
   if (verifyChecksum()) {
     serial->println("Checksum matches");
-  } 
+  }
   else {
     serial->println("Checksum mismatch");
     serial->println(getChecksum(), BIN);
@@ -284,7 +284,7 @@ bool KnxTelegram::getBool() {
     return 0;
   }
 
-  return(getFirstDataByte() & B00000001);
+  return (getFirstDataByte() & B00000001);
 }
 
 int KnxTelegram::get4BitIntValue() {
@@ -293,7 +293,7 @@ int KnxTelegram::get4BitIntValue() {
     return 0;
   }
 
-  return(getFirstDataByte() & B00001111);
+  return (getFirstDataByte() & B00001111);
 }
 
 bool KnxTelegram::get4BitDirectionValue() {
@@ -302,7 +302,7 @@ bool KnxTelegram::get4BitDirectionValue() {
     return 0;
   }
 
-  return((getFirstDataByte() & B00001000)) >> 3;
+  return ((getFirstDataByte() & B00001000)) >> 3;
 }
 
 byte KnxTelegram::get4BitStepsValue() {
@@ -311,12 +311,12 @@ byte KnxTelegram::get4BitStepsValue() {
     return 0;
   }
 
-  return(getFirstDataByte() & B00000111);
+  return (getFirstDataByte() & B00000111);
 }
 
 void KnxTelegram::set1ByteIntValue(int value) {
   setPayloadLength(3);
-  buffer[8]=value;
+  buffer[8] = value;
 }
 
 int KnxTelegram::get1ByteIntValue() {
@@ -325,7 +325,7 @@ int KnxTelegram::get1ByteIntValue() {
     return 0;
   }
 
-  return(buffer[8]);
+  return (buffer[8]);
 }
 
 void KnxTelegram::set2ByteIntValue(int value) {
@@ -396,7 +396,7 @@ int KnxTelegram::get3ByteWeekdayValue() {
   if (getPayloadLength() != 5) {
     // Wrong payload length
     return 0;
-  }    
+  }
   return (buffer[8] & B11100000) >> 5;
 }
 
@@ -404,7 +404,7 @@ int KnxTelegram::get3ByteHourValue() {
   if (getPayloadLength() != 5) {
     // Wrong payload length
     return 0;
-  }    
+  }
   return (buffer[8] & B00011111);
 }
 
@@ -412,7 +412,7 @@ int KnxTelegram::get3ByteMinuteValue() {
   if (getPayloadLength() != 5) {
     // Wrong payload length
     return 0;
-  }    
+  }
   return (buffer[9] & B00111111);
 }
 
@@ -420,7 +420,7 @@ int KnxTelegram::get3ByteSecondValue() {
   if (getPayloadLength() != 5) {
     // Wrong payload length
     return 0;
-  }    
+  }
   return (buffer[10] & B00111111);
 }
 
@@ -441,7 +441,7 @@ int KnxTelegram::get3ByteDayValue() {
   if (getPayloadLength() != 5) {
     // Wrong payload length
     return 0;
-  }    
+  }
   return (buffer[8] & B00011111);
 }
 
@@ -449,7 +449,7 @@ int KnxTelegram::get3ByteMonthValue() {
   if (getPayloadLength() != 5) {
     // Wrong payload length
     return 0;
-  }    
+  }
   return (buffer[9] & B00001111);
 }
 
@@ -457,21 +457,21 @@ int KnxTelegram::get3ByteYearValue() {
   if (getPayloadLength() != 5) {
     // Wrong payload length
     return 0;
-  }    
-  return(buffer[10]);
+  }
+  return (buffer[10]);
 }
 
 void KnxTelegram::set4ByteFloatValue(float value) {
   setPayloadLength(6);
 
-  byte b[4];  
-  float *f = (float*)(void*)&(b[0]);
-  *f=value;
+  byte b[4];
+  float *f = (float*)(void*) & (b[0]);
+  *f = value;
 
-  buffer[8+3]=b[0];
-  buffer[8+2]=b[1];
-  buffer[8+1]=b[2];
-  buffer[8+0]=b[3];
+  buffer[8 + 3] = b[0];
+  buffer[8 + 2] = b[1];
+  buffer[8 + 1] = b[2];
+  buffer[8 + 0] = b[3];
 }
 
 float KnxTelegram::get4ByteFloatValue() {
@@ -480,12 +480,12 @@ float KnxTelegram::get4ByteFloatValue() {
     return 0;
   }
   byte b[4];
-  b[0]=buffer[8+3];
-  b[1]=buffer[8+2];
-  b[2]=buffer[8+1];
-  b[3]=buffer[8+0];
-  float *f=(float*)(void*)&(b[0]);
-  float  r=*f;
+  b[0] = buffer[8 + 3];
+  b[1] = buffer[8 + 2];
+  b[2] = buffer[8 + 1];
+  b[3] = buffer[8 + 0];
+  float *f = (float*)(void*) & (b[0]);
+  float  r = *f;
   return r;
 }
 
@@ -494,27 +494,27 @@ void KnxTelegram::set14ByteValue(String value) {
   char _load[15];
 
   // load mit space leeren/initialisieren
-  for (int i=0; i<14; ++i)
+  for (int i = 0; i < 14; ++i)
   {
-    _load[i]= 0;
+    _load[i] = 0;
   }
   setPayloadLength(16);
   //mache aus Value das CharArray
-  value.toCharArray(_load,15); // muss 15 sein - weil mit 0 abgeschlossen wird
-  buffer[8+0]=_load [0];
-  buffer[8+1]=_load [1];
-  buffer[8+2]=_load [2];
-  buffer[8+3]=_load [3];
-  buffer[8+4]=_load [4];
-  buffer[8+5]=_load [5];
-  buffer[8+6]=_load [6];
-  buffer[8+7]=_load [7];
-  buffer[8+8]=_load [8];
-  buffer[8+9]=_load [9];
-  buffer[8+10]=_load [10];
-  buffer[8+11]=_load [11];
-  buffer[8+12]=_load [12];
-  buffer[8+13]=_load [13];
+  value.toCharArray(_load, 15); // muss 15 sein - weil mit 0 abgeschlossen wird
+  buffer[8 + 0] = _load [0];
+  buffer[8 + 1] = _load [1];
+  buffer[8 + 2] = _load [2];
+  buffer[8 + 3] = _load [3];
+  buffer[8 + 4] = _load [4];
+  buffer[8 + 5] = _load [5];
+  buffer[8 + 6] = _load [6];
+  buffer[8 + 7] = _load [7];
+  buffer[8 + 8] = _load [8];
+  buffer[8 + 9] = _load [9];
+  buffer[8 + 10] = _load [10];
+  buffer[8 + 11] = _load [11];
+  buffer[8 + 12] = _load [12];
+  buffer[8 + 13] = _load [13];
 }
 
 String KnxTelegram::get14ByteValue() {
@@ -523,19 +523,19 @@ String KnxTelegram::get14ByteValue() {
     return "";
   }
   char _load[15];
-  _load[0]=buffer[8+0];
-  _load[1]=buffer[8+1];
-  _load[2]=buffer[8+2];
-  _load[3]=buffer[8+3];
-  _load[4]=buffer[8+4];
-  _load[5]=buffer[8+5];
-  _load[6]=buffer[8+6];
-  _load[7]=buffer[8+7];
-  _load[8]=buffer[8+8];
-  _load[9]=buffer[8+9];
-  _load[10]=buffer[8+10];
-  _load[11]=buffer[8+11];
-  _load[12]=buffer[8+12];
-  _load[13]=buffer[8+13];
-  return (_load); 
+  _load[0] = buffer[8 + 0];
+  _load[1] = buffer[8 + 1];
+  _load[2] = buffer[8 + 2];
+  _load[3] = buffer[8 + 3];
+  _load[4] = buffer[8 + 4];
+  _load[5] = buffer[8 + 5];
+  _load[6] = buffer[8 + 6];
+  _load[7] = buffer[8 + 7];
+  _load[8] = buffer[8 + 8];
+  _load[9] = buffer[8 + 9];
+  _load[10] = buffer[8 + 10];
+  _load[11] = buffer[8 + 11];
+  _load[12] = buffer[8 + 12];
+  _load[13] = buffer[8 + 13];
+  return (_load);
 }
