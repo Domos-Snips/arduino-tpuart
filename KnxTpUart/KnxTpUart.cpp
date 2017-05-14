@@ -543,13 +543,14 @@ bool KnxTpUart::isListeningToGroupAddress(int main, int middle, int sub) {
   return false;
 }
 
-void KnxTpUart::Wait(unsigned long duration) {
-  unsigned long timer = millis();
-  int timeup = 0;
-  while (timeup == 0) {
-    if (millis - timer >= duration) {
-      timer = millis();
-      timeup = 1;
+void KnxTpUart::Wait(unsigned long duration)
+{
+	unsigned long timer = millis();
+    int timeup = 0;
+    while (timeup == 0) {
+         if (millis() - timer >= duration) {
+              timer = millis();
+              timeup = 1;
+         }
     }
-  }
 }
