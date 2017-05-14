@@ -115,6 +115,4 @@ class KnxTpUart {
     int serialRead();
 };
 
-
-
 #endif
