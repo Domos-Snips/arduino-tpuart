@@ -6,6 +6,8 @@
 // Modified: Mag Gyver (Since 2016)
 // Modified: Rouven Raudzus (Since 2017)
 
+// Last modified: 14.05.2017
+
 #include "KnxTelegram.h"
 
 KnxTelegram::KnxTelegram() {
