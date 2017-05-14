@@ -113,7 +113,7 @@ private:
   bool sendMessage();
   bool sendNCDPosConfirm(int, int, int, int);
   int serialRead();
-  void wait(unsigned long);
+  void Wait(unsigned long duration);
 };
 
 
