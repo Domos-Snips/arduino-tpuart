@@ -458,16 +458,16 @@ bool KnxTpUart::sendMessage() {
   while(true) {
     confirmation = serialRead();
     if (confirmation == B10001011) {
-      wait(SERIAL_WRITE_DELAY_MS);
+      Wait(SERIAL_WRITE_DELAY_MS);
       return true; // Sent successfully
     } 
     else if (confirmation == B00001011) {
-      wait(SERIAL_WRITE_DELAY_MS);
+      Wait(SERIAL_WRITE_DELAY_MS);
       return false;
     } 
     else if (returnValueReadTimeout == 1) {
       // Read timeout
-      wait(SERIAL_WRITE_DELAY_MS);
+      Wait(SERIAL_WRITE_DELAY_MS);
       return false;
     }
   }
@@ -477,13 +477,13 @@ bool KnxTpUart::sendMessage() {
 void KnxTpUart::sendAck() {
   byte sendByte = B00010001;
   _serialport->write(sendByte);
-  wait(SERIAL_WRITE_DELAY_MS);
+  Wait(SERIAL_WRITE_DELAY_MS);
 }
 
 void KnxTpUart::sendNotAddressed() {
   byte sendByte = B00010000;
   _serialport->write(sendByte);
-  wait(SERIAL_WRITE_DELAY_MS);
+  Wait(SERIAL_WRITE_DELAY_MS);
 }
 
 int KnxTpUart::serialRead() {
@@ -543,7 +543,7 @@ bool KnxTpUart::isListeningToGroupAddress(int main, int middle, int sub) {
   return false;
 }
 
-void KnxTpUart::wait(unsigned long duration) {
+void KnxTpUart::Wait(unsigned long duration) {
   unsigned long timer = millis();
   int timeup = 0;
   while (timeup == 0) {
