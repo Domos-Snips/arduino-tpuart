@@ -28,11 +28,10 @@
 #define TPUART_SERIAL_CLASS Stream
 
 // Delay in ms between sending of packets to the bus
-// set to 0 if you keep care of that by yourself
-#define SERIAL_WRITE_DELAY_MS 100
+#define SERIAL_WRITE_DELAY_MS 100 // Negative values or values less than 100 are ignored and the default value 100 is used
 
 // Timeout for reading a byte from TPUART
-#define SERIAL_READ_TIMEOUT_MS 10
+#define SERIAL_READ_TIMEOUT_MS 10 // Negative values or values less than 10 are ignored and the default value 10 is used
 
 // Maximum number of group addresses that can be listened on
 #define MAX_LISTEN_GROUP_ADDRESSES 16
@@ -91,7 +90,6 @@ class KnxTpUart {
     bool individualAnswerAuth(int, int, int, int, int);
 
     void setListenToBroadcasts(bool);
-    void Wait(unsigned long duration);
 
   private:
     Stream* _serialport;
