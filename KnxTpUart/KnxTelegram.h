@@ -1,5 +1,5 @@
-// File: KnxTelegram.h 
-// Author: Daniel Kleine-Albers (Since 2012) 
+// File: KnxTelegram.h
+// Author: Daniel Kleine-Albers (Since 2012)
 // Modified: Thorsten Gehrig (Since 2014)
 // Modified: Michael Werski (Since 2014)
 // Modified: Katja Blankenheim (Since 2014)
@@ -60,85 +60,85 @@ enum KnxControlDataType {
 };
 
 class KnxTelegram {
-public:
-  KnxTelegram();
+  public:
+    KnxTelegram();
 
-  void clear();
-  void setBufferByte(int index, int content);
-  int getBufferByte(int index);
-  void setPayloadLength(int size);
-  int getPayloadLength();
-  void setRepeated(bool repeat);
-  bool isRepeated();
-  void setPriority(KnxPriorityType prio);
-  KnxPriorityType getPriority();
-  void setSourceAddress(int area, int line, int member);
-  int getSourceArea();
-  int getSourceLine();
-  int getSourceMember();
-  void setTargetGroupAddress(int main, int middle, int sub);
-  void setTargetIndividualAddress(int area, int line, int member);
-  bool isTargetGroup();
-  int getTargetMainGroup();
-  int getTargetMiddleGroup();
-  int getTargetSubGroup();
-  int getTargetArea();
-  int getTargetLine();
-  int getTargetMember();
-  void setRoutingCounter(int counter);
-  int getRoutingCounter();
-  void setCommand(KnxCommandType command);
-  KnxCommandType getCommand();
-  
-// DPT 1 -> 1bit
-  void setFirstDataByte(int data);
-  int getFirstDataByte();
-  bool getBool();
-// DPT 3 -> 4 bit
-  int get4BitIntValue();
-  bool get4BitDirectionValue();
-  byte get4BitStepsValue();
-// DPT 5 -> 1 byte
-  void set1ByteIntValue(int value);
-  int get1ByteIntValue();
-// DPT 7 -> 2 byte 
-  void set2ByteIntValue(int value);
-  int get2ByteIntValue();
-// DPT 9 -> 2 byte
-  void set2ByteFloatValue(float value);
-  float get2ByteFloatValue();
-// DPT 10 -> 3 byte
-  void set3ByteTime(int weekday, int hour, int minute, int second);
-  int get3ByteWeekdayValue();
-  int get3ByteHourValue();
-  int get3ByteMinuteValue();
-  int get3ByteSecondValue();
-// DPT 11 -> 3 byte
-  void set3ByteDate(int day, int month, int year);
-  int get3ByteDayValue();
-  int get3ByteMonthValue();
-  int get3ByteYearValue();
-// DPT 14 -> 4 byte
-  void set4ByteFloatValue(float value);
-  float get4ByteFloatValue();
-// DPT 16 -> 14 byte
-  void set14ByteValue(String value);
-  String get14ByteValue();
+    void clear();
+    void setBufferByte(int index, int content);
+    int getBufferByte(int index);
+    void setPayloadLength(int size);
+    int getPayloadLength();
+    void setRepeated(bool repeat);
+    bool isRepeated();
+    void setPriority(KnxPriorityType prio);
+    KnxPriorityType getPriority();
+    void setSourceAddress(int area, int line, int member);
+    int getSourceArea();
+    int getSourceLine();
+    int getSourceMember();
+    void setTargetGroupAddress(int main, int middle, int sub);
+    void setTargetIndividualAddress(int area, int line, int member);
+    bool isTargetGroup();
+    int getTargetMainGroup();
+    int getTargetMiddleGroup();
+    int getTargetSubGroup();
+    int getTargetArea();
+    int getTargetLine();
+    int getTargetMember();
+    void setRoutingCounter(int counter);
+    int getRoutingCounter();
+    void setCommand(KnxCommandType command);
+    KnxCommandType getCommand();
 
-  void createChecksum();
-  bool verifyChecksum();
-  int getChecksum();
-  void print(TPUART_SERIAL_CLASS*);
-  int getTotalLength();
-  KnxCommunicationType getCommunicationType();
-  void setCommunicationType(KnxCommunicationType);
-  int getSequenceNumber();
-  void setSequenceNumber(int);
-  KnxControlDataType getControlData();
-  void setControlData(KnxControlDataType);
-private:
-  int buffer[MAX_KNX_TELEGRAM_SIZE];
-  int calculateChecksum();
+    // DPT 1 -> 1bit
+    void setFirstDataByte(int data);
+    int getFirstDataByte();
+    bool getBool();
+    // DPT 3 -> 4 bit
+    int get4BitIntValue();
+    bool get4BitDirectionValue();
+    byte get4BitStepsValue();
+    // DPT 5 -> 1 byte
+    void set1ByteIntValue(int value);
+    int get1ByteIntValue();
+    // DPT 7 -> 2 byte
+    void set2ByteIntValue(int value);
+    int get2ByteIntValue();
+    // DPT 9 -> 2 byte
+    void set2ByteFloatValue(float value);
+    float get2ByteFloatValue();
+    // DPT 10 -> 3 byte
+    void set3ByteTime(int weekday, int hour, int minute, int second);
+    int get3ByteWeekdayValue();
+    int get3ByteHourValue();
+    int get3ByteMinuteValue();
+    int get3ByteSecondValue();
+    // DPT 11 -> 3 byte
+    void set3ByteDate(int day, int month, int year);
+    int get3ByteDayValue();
+    int get3ByteMonthValue();
+    int get3ByteYearValue();
+    // DPT 14 -> 4 byte
+    void set4ByteFloatValue(float value);
+    float get4ByteFloatValue();
+    // DPT 16 -> 14 byte
+    void set14ByteValue(String value);
+    String get14ByteValue();
+
+    void createChecksum();
+    bool verifyChecksum();
+    int getChecksum();
+    void print(TPUART_SERIAL_CLASS*);
+    int getTotalLength();
+    KnxCommunicationType getCommunicationType();
+    void setCommunicationType(KnxCommunicationType);
+    int getSequenceNumber();
+    void setSequenceNumber(int);
+    KnxControlDataType getControlData();
+    void setControlData(KnxControlDataType);
+  private:
+    int buffer[MAX_KNX_TELEGRAM_SIZE];
+    int calculateChecksum();
 
 };
 
