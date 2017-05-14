@@ -5,6 +5,8 @@
 // Modified: Katja Blankenheim (Since 2014)
 // Modified: Mag Gyver (Since 2016)
 
+// Last modified: 14.05.2017
+
 #ifndef KnxTelegram_h
 #define KnxTelegram_h
 
