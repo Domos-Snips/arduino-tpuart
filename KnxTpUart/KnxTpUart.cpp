@@ -5,7 +5,7 @@
 // Modified: Katja Blankenheim (Since 2014)
 // Modified: Mag Gyver (Since 2016)
 
-// Last modified: 14.05.2017
+// Last modified: 17.05.2017
 
 #include "KnxTpUart.h"
 
@@ -546,21 +546,24 @@ bool KnxTpUart::isListeningToGroupAddress(int main, int middle, int sub) {
 }
 
 unsigned long KnxTpUart::readTimeout(unsigned long value) {
-  if ((abs(value)) < 10) { // Default value for serial read timeout
-    value = 10; // Default value for serial read timeout
+  if ((abs(value)) < 10) {
+    value = 10; // Default min value for serial read timeout
+  }
+  else if ((abs(value)) > 1000) {
+	value = 1000; // Default max value for serial read timeout
   }
   else {
-    value = abs(value);
+    value = abs(value); // User-defined value for serial read timeout in the range between 10 and 1000
   }
   return value;
 }
 
 void KnxTpUart::delayWrite(unsigned long value) {
-  if ((abs(value)) < 100) { // Default value for serial write delay
-    value = 100; // Default value for serial write delay
+  if ((abs(value)) < 100) {
+    value = 100; // Default min value for serial write delay
   }
   else {
-    value = abs(value);
+    value = abs(value); // User-defined value for serial write delay minimum value 100
   }
   unsigned long timer = millis();
   int timeup = 0;
