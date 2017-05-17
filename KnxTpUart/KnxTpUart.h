@@ -35,6 +35,7 @@
 // Timeout for reading a byte from TPUART
 #define SERIAL_READ_TIMEOUT_MS 10 // Negative values or values less than 10 are ignored and the default value 10 is used
                                   // Range of values from 10 to 1000 possible
+
 // Maximum number of group addresses that can be listened on
 #define MAX_LISTEN_GROUP_ADDRESSES 16
 
