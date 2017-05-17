@@ -30,10 +30,13 @@
 #define TPUART_SERIAL_CLASS Stream
 
 // Delay in ms between sending of packets to the bus
-#define SERIAL_WRITE_DELAY_MS 100 // Negative values or values less than 100 are ignored and the default value 100 is used
+#define SERIAL_WRITE_DELAY_MS 100 
+                                  // Negative values or values less than 100 are ignored and the default min value 100 is used
 
 // Timeout for reading a byte from TPUART
-#define SERIAL_READ_TIMEOUT_MS 10 // Negative values or values less than 10 are ignored and the default value 10 is used
+#define SERIAL_READ_TIMEOUT_MS 10 
+                                  // Negative values or values less than 10 are ignored and the default min value 10 is used
+                                  // Negative values or values greater than 1000 are ignored, and the default max value of 1000 is used
                                   // Range of values from 10 to 1000 possible
 
 // Maximum number of group addresses that can be listened on
