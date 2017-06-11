@@ -11,6 +11,8 @@ Hardware
 
 We leverage Siemens BCU 5WG1 117-2AB12 - for about ~30€
 
+-> Please note: When using an additional power supply galvanic separation between ARDUINO and BCU is necessary.
+
 
 We leverage ARDUINO MEGA (SERIAL PORT 1)
 
@@ -25,7 +27,6 @@ We leverage ARDUINO UNO (SERIAL PORT)
 
 -> For programming the jumper ICSP1 PIN 5 and ICSP1 PIN 6 must be not connected together and the voltage must be taken away for a short time. Then, you can transfer the new "sketch". 
 
--> Please note: When using an additional power supply galvanic separation between ARDUINO and BCU is necessary.
 
 Software (library was tested with IDE 1.0.5-R2 and IDE 1.6.9 by arduino.cc)
 ---------------------------------------------------------------------------
