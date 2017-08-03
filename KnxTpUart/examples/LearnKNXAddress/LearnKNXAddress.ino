@@ -1,9 +1,17 @@
-// File: LearnKNXAddress.ino  
-// Author: Daniel Kleine-Albers (Since 2012) 
-// Modified: Thorsten Gehrig (Since 2014)
-// Modified: Mag Gyver (Since 2016)
+/*
 
-// Test constellation = ARDUINO MEGA <-> 5WG1 117-2AB12
+   File: LearnKNXAddress.ino
+
+   Author: Daniel Kleine-Albers (Since 2012)
+   Modified: Thorsten Gehrig (Since 2014)
+   Modified: Mag Gyver (Since 2016)
+
+   Last modified: 03.08.2017
+   Reason: Clarity
+
+   Test constellation = ARDUINO MEGA <-> 5WG1 117-2AB12
+
+*/
 
 #include <KnxTpUart.h>
 
@@ -15,7 +23,7 @@ boolean programmingMode = true;
 
 void setup() {
   Serial.begin(115200);
-  Serial.println("TP-UART Test");  
+  Serial.println("TP-UART Test");
 
   Serial1.begin(19200, SERIAL_8E1); // Even parity
 
@@ -44,29 +52,31 @@ void serialEvent1() {
       Serial.print(".");
       Serial.print(line);
       Serial.print(".");
-      Serial.println(member);   
+      Serial.println(member);
 
-      knx.setIndividualAddress(area, line, member);    
+      knx.setIndividualAddress(area, line, member);
 
-      // Here the new address could be stored to EEPROM and be reloaded after restart of Arduino   
-    } 
+      // Here the new address could be stored to EEPROM and be reloaded after restart of Arduino
+    }
     else if (telegram->getCommand() == KNX_COMMAND_MASK_VERSION_READ) {
-      // Request for mask version (version of bus interface
+      // Request for mask version (Version of bus interface)
       knx.individualAnswerMaskVersion(telegram->getSourceArea(), telegram->getSourceLine(), telegram->getSourceMember());
-    } 
+    }
     else if (telegram->getCommand() == KNX_COMMAND_INDIVIDUAL_ADDR_REQUEST && programmingMode) {
       // Broadcast request for individual addresses of all devices in programming mode
-      knx.individualAnswerAddress(); 
-    } 
+      knx.individualAnswerAddress();
+    }
     else if (telegram->getFirstDataByte() == KNX_EXT_COMMAND_AUTH_REQUEST && programmingMode) {
       // Authentication request to allow memory access
       knx.individualAnswerAuth(15, telegram->getSequenceNumber(), telegram->getSourceArea(), telegram->getSourceLine(), telegram->getSourceMember());
-    } 
+    }
     else if (telegram->getCommand() == KNX_COMMAND_RESTART && programmingMode) {
-      // Restart the device -> end programming mode
+      // Restart the device -> End programming mode
       programmingMode = false;
       knx.setListenToBroadcasts(false);
-      Serial.println("Received restart, ending programming mode"); 
+      Serial.println("Received restart, ending programming mode");
     }
   }
 }
+
+/* End of LearnKNXAddress.ino */
