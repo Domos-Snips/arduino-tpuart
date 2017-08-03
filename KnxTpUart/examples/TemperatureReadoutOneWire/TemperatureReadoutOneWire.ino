@@ -1,13 +1,21 @@
-// File: TemperatureReadoutOneWire.ino   
-// Author: Daniel Kleine-Albers (Since 2012) 
-// Modified: Thorsten Gehrig (Since 2014)
-// Modified: Mag Gyver (Since 2016)
+/*
 
-// Test constellation = ARDUINO MEGA <-> 5WG1 117-2AB12
+   File: TemperatureReadoutOneWire.ino
+
+   Author: Daniel Kleine-Albers (Since 2012)
+   Modified: Thorsten Gehrig (Since 2014)
+   Modified: Mag Gyver (Since 2016)
+
+   Last modfified: 03.08.2017
+   Reason: Clarity
+
+   Test constellation = ARDUINO MEGA <-> 5WG1 117-2AB12
+
+*/
 
 #include <KnxTpUart.h>
-#include <OneWire.h>
-#include <DallasTemperature.h>
+#include <OneWire.h> // https://github.com/PaulStoffregen/OneWire
+#include <DallasTemperature.h> // https://github.com/milesburton/Arduino-Temperature-Control-Library
 
 // Initialize OneWire and DallasTemperature libs
 #define ONE_WIRE_BUS 53
@@ -15,7 +23,7 @@ OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
 
 // Define group address to react on (for read requests)
-#define READ_GROUP "0/0/100""
+#define READ_GROUP "0/0/100"
 
 // Define group address to send temperature to
 #define WRITE_GROUP "0/0/101"
@@ -30,7 +38,7 @@ unsigned long startTime;
 
 void setup() {
   Serial.begin(9600);
-  Serial.println("TP-UART Test");  
+  Serial.println("TP - UART Test");
 
   Serial1.begin(19200, SERIAL_8E1);
 
@@ -59,7 +67,7 @@ void loop() {
   startTime = millis();
   float temp = getTemp();
   Serial.print("Sending temp: ");
-  Serial.println(temp);  
+  Serial.println(temp);
   bool result = knx.groupWrite2ByteFloat(WRITE_GROUP, temp);
   Serial.print("Sent successfully: ");
   Serial.println(result);
@@ -73,7 +81,7 @@ void serialEvent1() {
     // Is it a read request?
     if (telegram->getCommand() == KNX_COMMAND_READ) {
       knx.groupAnswer2ByteFloat(READ_GROUP, getTemp());
-    }   
+    }
   }
 }
 
@@ -81,3 +89,5 @@ float getTemp() {
   sensors.requestTemperatures();
   return sensors.getTempCByIndex(0);
 }
+
+/* End of TemperatureReadoutOneWire.ino */
