@@ -1,9 +1,17 @@
-// File: GroupWrite.ino
-// Author: Daniel Kleine-Albers (Since 2012)
-// Modified: Thorsten Gehrig (Since 2014)
-// Modified: Mag Gyver (Since 2016)
+/*
 
-// Test constellation = ARDUINO MEGA <-> 5WG1 117-2AB12
+   File: GroupWrite.ino
+
+   Author: Daniel Kleine-Albers (Since 2012)
+   Modified: Thorsten Gehrig (Since 2014)
+   Modified: Mag Gyver (Since 2016)
+
+   Last modified: 03.08.2017
+   Reason: Clarity
+
+   Test constellation = ARDUINO MEGA <-> 5WG1 117-2AB12
+
+*/
 
 #include <KnxTpUart.h>
 
@@ -32,7 +40,7 @@ void setup() {
   Serial.begin(9600);
   Serial.println("TP-UART Test");
 
-  Serial1.begin(19200, SERIAL_8E1);
+  Serial1.begin(19200, SERIAL_8E1); // Even parity
 
   Serial.print("UCSR1A: ");
   Serial.println(UCSR1A, BIN);
@@ -48,16 +56,18 @@ void setup() {
 
 
 void loop() {
+  // No debounce included
   if (digitalRead(inPin) == LOW) {
-    // Button is pressed
+    // If button is pressed
     digitalWrite(13, HIGH);
 
     if (!haveSent) {
       // Send the opposite of what we have sent last
       bool success = knx.groupWriteBool("0/0/3", !onSent);
 
+      // For display serial port
       Serial.print("Successfully sent: ");
-      Serial.println(!onSent);
+      Serial.println(!success);
 
       onSent = !onSent;
       haveSent = true;
@@ -68,3 +78,5 @@ void loop() {
     haveSent = false;
   }
 }
+
+/* End of GroupWrite.ino */
