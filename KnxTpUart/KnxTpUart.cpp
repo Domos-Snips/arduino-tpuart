@@ -1,11 +1,17 @@
-// File: KnxTpUart.cpp
-// Author: Daniel Kleine-Albers (Since 2012)
-// Modified: Thorsten Gehrig (Since 2014)
-// Modified: Michael Werski (Since 2014)
-// Modified: Katja Blankenheim (Since 2014)
-// Modified: Mag Gyver (Since 2016)
+/*
 
-// Last modified: 06.06.2017
+   File: KnxTpUart.cpp
+
+   Author: Daniel Kleine-Albers (Since 2012)
+   Modified: Thorsten Gehrig (Since 2014)
+   Modified: Michael Werski (Since 2014)
+   Modified: Katja Blankenheim (Since 2014)
+   Modified: Mag Gyver (Since 2016)
+
+   Last modified: 03.08.2017
+   Reason: Clarity
+
+*/
 
 #include "KnxTpUart.h"
 
@@ -25,13 +31,11 @@ void KnxTpUart::setListenToBroadcasts(bool listen) {
 }
 
 void KnxTpUart::uartReset() {
-  byte sendByte = 0x01;
-  _serialport->write(sendByte);
+  _serialport->write(TPUART_RESET_REQUEST); /* Thanks to Mag Gyver for the help */
 }
 
 void KnxTpUart::uartStateRequest() {
-  byte sendByte = 0x02;
-  _serialport->write(sendByte);
+  _serialport->write(TPUART_STATE_REQUEST); /* Thanks to Mag Gyver for the help */
 }
 
 void KnxTpUart::setIndividualAddress(int area, int line, int member) {
@@ -90,7 +94,7 @@ bool KnxTpUart::isKNXControlByte(int b) {
 
 void KnxTpUart::checkErrors() {
 #if defined(TPUART_DEBUG)
-#if defined(_SAM3XA_)  // For DUE
+#if defined(_SAM3XA_) // For DUE
   if (USART1->US_CSR & US_CSR_OVRE) {
     TPUART_DEBUG_PORT.println("Overrun");
   }
@@ -158,13 +162,15 @@ bool KnxTpUart::readKNXTelegram() {
   _tg->print(&TPUART_DEBUG_PORT);
 #endif
 
-  // Verify if we are interested in this message - GroupAddress
+  // Verify if we are interested in this message
+
+  // Group address
   bool interested = _tg->isTargetGroup() && isListeningToGroupAddress(_tg->getTargetMainGroup(), _tg->getTargetMiddleGroup(), _tg->getTargetSubGroup());
 
   // Physical address
   interested = interested || ((!_tg->isTargetGroup()) && _tg->getTargetArea() == _source_area && _tg->getTargetLine() == _source_line && _tg->getTargetMember() == _source_member);
 
-  // Broadcast (Programming Mode)
+  // Broadcast (programming mode)
   interested = interested || (_listen_to_broadcasts && _tg->isTargetGroup() && _tg->getTargetMainGroup() == 0 && _tg->getTargetMiddleGroup() == 0 && _tg->getTargetSubGroup() == 0);
 
   if (interested) {
@@ -186,7 +192,7 @@ bool KnxTpUart::readKNXTelegram() {
     TPUART_DEBUG_PORT.println(" received");
 #endif
     if (interested) {
-      sendNCDPosConfirm(_tg->getSequenceNumber(), _tg->getSourceArea(), _tg->getSourceLine(), _tg->getSourceMember()); // Thanks to Katja Blankenheim for the help
+      sendNCDPosConfirm(_tg->getSequenceNumber(), _tg->getSourceArea(), _tg->getSourceLine(), _tg->getSourceMember()); /* Thanks to Katja Blankenheim for the help */
     }
   }
 
@@ -210,7 +216,7 @@ bool KnxTpUart::groupWriteBool(String Address, bool value) {
   return sendMessage();
 }
 
-bool KnxTpUart::groupWrite4BitInt(String Address, int value) {
+bool KnxTpUart::groupWrite4BitInt(String Address, int value) { /* Thanks to Mag Gyver for the help */
   int out_value = 0;
   if (value) {
     out_value = value & B00001111;
@@ -220,7 +226,7 @@ bool KnxTpUart::groupWrite4BitInt(String Address, int value) {
   return sendMessage();
 }
 
-bool KnxTpUart::groupWrite4BitDim(String Address, bool direction, byte steps) {
+bool KnxTpUart::groupWrite4BitDim(String Address, bool direction, byte steps) { /* Thanks to Mag Gyver for the help */
   int value = 0;
   if (direction || steps) {
     value = (direction << 3) + (steps & B00000111);
@@ -230,14 +236,14 @@ bool KnxTpUart::groupWrite4BitDim(String Address, bool direction, byte steps) {
   return sendMessage();
 }
 
-bool KnxTpUart::groupWrite1ByteInt(String Address, int value) {
+bool KnxTpUart::groupWrite1ByteInt(String Address, int value) { /* Thanks to Thorsten Gehrig for the help */
   createKNXMessageFrame(2, KNX_COMMAND_WRITE, Address, 0);
   _tg->set1ByteIntValue(value);
   _tg->createChecksum();
   return sendMessage();
 }
 
-bool KnxTpUart::groupWrite2ByteInt(String Address, int value) {
+bool KnxTpUart::groupWrite2ByteInt(String Address, int value) { /* Thanks to Thorsten Gehrig for the help */
   createKNXMessageFrame(2, KNX_COMMAND_WRITE, Address, 0);
   _tg->set2ByteIntValue(value);
   _tg->createChecksum();
@@ -251,28 +257,28 @@ bool KnxTpUart::groupWrite2ByteFloat(String Address, float value) {
   return sendMessage();
 }
 
-bool KnxTpUart::groupWrite3ByteTime(String Address, int weekday, int hour, int minute, int second) {
+bool KnxTpUart::groupWrite3ByteTime(String Address, int weekday, int hour, int minute, int second) { /* Thanks to Thorsten Gehrig for the help */
   createKNXMessageFrame(2, KNX_COMMAND_WRITE, Address, 0);
   _tg->set3ByteTime(weekday, hour, minute, second);
   _tg->createChecksum();
   return sendMessage();
 }
 
-bool KnxTpUart::groupWrite3ByteDate(String Address, int day, int month, int year) {
+bool KnxTpUart::groupWrite3ByteDate(String Address, int day, int month, int year) { /* Thanks to Mag Gyver for the help */
   createKNXMessageFrame(2, KNX_COMMAND_WRITE, Address, 0);
   _tg->set3ByteDate(day, month, year);
   _tg->createChecksum();
   return sendMessage();
 }
 
-bool KnxTpUart::groupWrite4ByteFloat(String Address, float value) {
+bool KnxTpUart::groupWrite4ByteFloat(String Address, float value) { /* Thanks to Thorsten Gehrig for the help */
   createKNXMessageFrame(2, KNX_COMMAND_WRITE, Address, 0);
   _tg->set4ByteFloatValue(value);
   _tg->createChecksum();
   return sendMessage();
 }
 
-bool KnxTpUart::groupWrite14ByteText(String Address, String value) {
+bool KnxTpUart::groupWrite14ByteText(String Address, String value) { /* Thanks to Thorsten Gehrig for the help */
   createKNXMessageFrame(2, KNX_COMMAND_WRITE, Address, 0);
   _tg->set14ByteValue(value);
   _tg->createChecksum();
@@ -290,6 +296,10 @@ bool KnxTpUart::groupAnswerBool(String Address, bool value) {
   createKNXMessageFrame(2, KNX_COMMAND_ANSWER, Address, valueAsInt);
   return sendMessage();
 }
+
+// Very rare to no need, but in case someone needs it
+
+/* Thanks to Mag Gyver for the help */
 
 /*
   bool KnxTpUart::groupAnswerBitInt(String Address, int value) {
@@ -313,14 +323,14 @@ bool KnxTpUart::groupAnswerBool(String Address, bool value) {
   }
 */
 
-bool KnxTpUart::groupAnswer1ByteInt(String Address, int value) {
+bool KnxTpUart::groupAnswer1ByteInt(String Address, int value) { /* Thanks to Thorsten Gehrig for the help */
   createKNXMessageFrame(2, KNX_COMMAND_ANSWER, Address, 0);
   _tg->set1ByteIntValue(value);
   _tg->createChecksum();
   return sendMessage();
 }
 
-bool KnxTpUart::groupAnswer2ByteInt(String Address, int value) {
+bool KnxTpUart::groupAnswer2ByteInt(String Address, int value) { /* Thanks to Thorsten Gehrig for the help */
   createKNXMessageFrame(2, KNX_COMMAND_ANSWER, Address, 0);
   _tg->set2ByteIntValue(value);
   _tg->createChecksum();
@@ -334,27 +344,27 @@ bool KnxTpUart::groupAnswer2ByteFloat(String Address, float value) {
   return sendMessage();
 }
 
-bool KnxTpUart::groupAnswer3ByteTime(String Address, int weekday, int hour, int minute, int second) {
+bool KnxTpUart::groupAnswer3ByteTime(String Address, int weekday, int hour, int minute, int second) { /* Thanks to Thorsten Gehrig for the help */
   createKNXMessageFrame(2, KNX_COMMAND_ANSWER, Address, 0);
   _tg->set3ByteTime(weekday, hour, minute, second);
   _tg->createChecksum();
   return sendMessage();
 }
 
-bool KnxTpUart::groupAnswer3ByteDate(String Address, int day, int month, int year) {
+bool KnxTpUart::groupAnswer3ByteDate(String Address, int day, int month, int year) { /* Thanks to Mag Gyver for the help */
   createKNXMessageFrame(2, KNX_COMMAND_ANSWER, Address, 0);
   _tg->set3ByteDate(day, month, year);
   _tg->createChecksum();
   return sendMessage();
 }
-bool KnxTpUart::groupAnswer4ByteFloat(String Address, float value) {
+bool KnxTpUart::groupAnswer4ByteFloat(String Address, float value) { /* Thanks to Thorsten Gehrig for the help */
   createKNXMessageFrame(2, KNX_COMMAND_ANSWER, Address, 0);
   _tg->set4ByteFloatValue(value);
   _tg->createChecksum();
   return sendMessage();
 }
 
-bool KnxTpUart::groupAnswer14ByteText(String Address, String value) {
+bool KnxTpUart::groupAnswer14ByteText(String Address, String value) { /* Thanks to Thorsten Gehrig for the help */
   createKNXMessageFrame(2, KNX_COMMAND_ANSWER, Address, 0);
   _tg->set14ByteValue(value);
   _tg->createChecksum();
@@ -363,7 +373,7 @@ bool KnxTpUart::groupAnswer14ByteText(String Address, String value) {
 
 // Command Read
 
-bool KnxTpUart::groupRead(String Address) {
+bool KnxTpUart::groupRead(String Address) { /* Thanks to Mag Gyver for the help */
   createKNXMessageFrame(2, KNX_COMMAND_READ, Address, 0);
   _tg->createChecksum();
   return sendMessage();
@@ -435,10 +445,10 @@ bool KnxTpUart::sendNCDPosConfirm(int sequenceNo, int area, int line, int member
   uint8_t sendbuf[2];
   for (int i = 0; i < messageSize; i++) {
     if (i == (messageSize - 1)) {
-      sendbuf[0] = TPUART_DATA_END;
+      sendbuf[0] = TPUART_DATA_END_REQUEST; /* Thanks to Mag Gyver for the help */
     }
     else {
-      sendbuf[0] = TPUART_DATA_START_CONTINUE;
+      sendbuf[0] = TPUART_DATA_START_CONTINUE_REQUEST; /* Thanks to Mag Gyver for the help */
     }
 
     sendbuf[0] |= i;
@@ -451,15 +461,15 @@ bool KnxTpUart::sendNCDPosConfirm(int sequenceNo, int area, int line, int member
   int confirmation;
   while (true) {
     confirmation = serialRead();
-    if (confirmation == B10001011) {
+    if (confirmation == TPUART_DATA_CONFIRM_SUCCESS_BYTE) { /* Thanks to Mag Gyver for the help */
       return true; // Sent successfully
     }
-    else if (confirmation == B00001011) {
-      return false;
+    else if (confirmation == TPUART_DATA_CONFIRM_FAILED_BYTE) { /* Thanks to Mag Gyver for the help */
+      return false; // Sent unsuccessfully
     }
-    else if (confirmation == -1) {
-      // Read timeout
-      return false;
+    else if (_confirmation_timeout == -1) { /* Thanks to Mag Gyver for the help */
+      _confirmation_timeout = 0;
+      return false;  // Read timeout while waiting for confirm
     }
   }
 
@@ -472,10 +482,10 @@ bool KnxTpUart::sendMessage() {
   uint8_t sendbuf[2];
   for (int i = 0; i < messageSize; i++) {
     if (i == (messageSize - 1)) {
-      sendbuf[0] = TPUART_DATA_END;
+      sendbuf[0] = TPUART_DATA_END_REQUEST; /* Thanks to Mag Gyver for the help */
     }
     else {
-      sendbuf[0] = TPUART_DATA_START_CONTINUE;
+      sendbuf[0] = TPUART_DATA_START_CONTINUE_REQUEST; /* Thanks to Mag Gyver for the help */
     }
 
     sendbuf[0] |= i;
@@ -488,18 +498,18 @@ bool KnxTpUart::sendMessage() {
   int confirmation;
   while (true) {
     confirmation = serialRead();
-    if (confirmation == B10001011) {
-      delay (SERIAL_WRITE_DELAY_MS);
+    if (confirmation == TPUART_DATA_CONFIRM_SUCCESS_BYTE) { /* Thanks to Mag Gyver for the help */
+      delay (SERIAL_WRITE_DELAY_MS); /* Thanks to Michael Werski for the help */
       return true; // Sent successfully
     }
-    else if (confirmation == B00001011) {
-      delay (SERIAL_WRITE_DELAY_MS);
-      return false;
+    else if (confirmation == TPUART_DATA_CONFIRM_FAILED_BYTE) { /* Thanks to Mag Gyver for the help */
+      delay (SERIAL_WRITE_DELAY_MS); /* Thanks to Michael Werski for the help */
+      return false; // Sent unsuccessfully
     }
-    else if (confirmation == -1) {
-      // Read timeout
-      delay (SERIAL_WRITE_DELAY_MS);
-      return false;
+    else if (_confirmation_timeout == -1) { /* Thanks to Mag Gyver for the help */
+      delay (SERIAL_WRITE_DELAY_MS); /* Thanks to Michael Werski for the help */
+      _confirmation_timeout = 0;
+      return false; // Read timeout while waiting for confirm
     }
   }
 
@@ -507,15 +517,13 @@ bool KnxTpUart::sendMessage() {
 }
 
 void KnxTpUart::sendAck() {
-  byte sendByte = B00010001;
-  _serialport->write(sendByte);
-  delay(SERIAL_WRITE_DELAY_MS);
+  _serialport->write(TPUART_ACK_SERVICE_ADDRESSED); /* Thanks to Mag Gyver for the help */
+  delay(SERIAL_WRITE_DELAY_MS); /* Thanks to Michael Werski for the help */
 }
 
 void KnxTpUart::sendNotAddressed() {
-  byte sendByte = B00010000;
-  _serialport->write(sendByte);
-  delay(SERIAL_WRITE_DELAY_MS);
+  _serialport->write(TPUART_ACK_SERVICE_NOT_ADDRESSED); /* Thanks to Mag Gyver for the help */
+  delay(SERIAL_WRITE_DELAY_MS); /* Thanks to Michael Werski for the help */
 }
 
 int KnxTpUart::serialRead() {
@@ -527,11 +535,10 @@ int KnxTpUart::serialRead() {
 
   while (! (_serialport->available() > 0)) {
     if (abs(millis() - startTime) > SERIAL_READ_TIMEOUT_MS) {
-      // Timeout
 #if defined(TPUART_DEBUG)
       TPUART_DEBUG_PORT.println("Timeout while receiving message");
 #endif
-      return -1;
+      _confirmation_timeout = -1; // Timeout
     }
     delay(1);
   }
@@ -570,3 +577,5 @@ bool KnxTpUart::isListeningToGroupAddress(int main, int middle, int sub) {
 
   return false;
 }
+
+/* End of KnxTpUart.cpp */
