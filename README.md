@@ -4,7 +4,8 @@ Arduino EIB/KNX Interface via TP-UART
 
 This is a very first version of an interface between Arduino and EIB/KNX using the TP-UART interface and Arduino library.
 
-Last modified 11.06.2017
+Last modified: 03.08.2017
+Reason: Clarity
 
 Hardware
 --------
@@ -28,7 +29,7 @@ We leverage ARDUINO UNO (SERIAL PORT)
 -> For programming the jumper ICSP1 PIN 5 and ICSP1 PIN 6 must be not connected together and the voltage must be taken away for a short time. Then, you can transfer the new "sketch". 
 
 
-Software (library was tested with IDE 1.0.5-R2 and IDE 1.6.9 by arduino.cc)
+Software (library was tested with IDE 1.0.5-R2 , IDE 1.6.9  and IDE 1.8.1 by arduino.cc)
 ---------------------------------------------------------------------------
 
 The Arduino library is found in the directory `KnxTpUart` and can be directly placed in Arduino's library folder. 
@@ -63,43 +64,43 @@ knx.groupWrite4BitDim("1/2/3", direction, steps);
 
 
 
-1 Byte Int (DTP 5 - 0...255)
+1 Byte Int (DPT 5 - 0...255)
 
 knx.groupWrite1ByteInt("1/2/3", int);
 
 
 
-2 Byte Int (DTP 7 - 0…65 535])
+2 Byte Int (DPT 7 - 0…65 535])
 
 knx.groupWrite2ByteInt("1/2/3", int);
 
 
 
-2 Byte Float (DPT9 - -671 088,64 to 670 760,96 )
+2 Byte Float (DPT 9 - -671 088,64 to 670 760,96 )
 
 knx.groupWrite2ByteFloat("1/2/3", float);
 
 
 
-3 Byte Time (DTP 10)
+3 Byte Time (DPT 10)
 
 groupWrite3ByteTime("1/2/3", Weekday, Hour, Minute, Second);
 
 
 
-3 Byte Date (DTP 11)
+3 Byte Date (DPT 11)
 
 groupWrite3ByteDate("1/2/3", Day, Month, Year);
 
 
 
-4 byte Float (DTP 14 - -2147483648 to 2147483647) 
+4 byte Float (DPT 14 - -2147483648 to 2147483647) 
 
 knx.groupWrite4ByteFloat("1/2/3", float);
 
 
 
-14 Byte Text (DTP 16)
+14 Byte Text (DPT 16)
 
 knx.groupWrite14ByteText("1/2/3", String);
 
@@ -126,48 +127,48 @@ commented out -> knx.groupWrite4BitDim("1/2/3", bool, byte);
 
 
 
-1 Byte Int (DTP 5 - 0...255)
+1 Byte Int (DPT 5 - 0...255)
 
 knx.groupAnswer1ByteInt("1/2/3", int);
 
 
 
-2 Byte Int (DTP 7 - 0…65 535])
+2 Byte Int (DPT 7 - 0…65 535])
 
 knx.groupAnswer2ByteInt("1/2/3", int);
 
 
 
-2 Byte Float (DPT9 - -671 088,64 to 670 760,96 )
+2 Byte Float (DPT 9 - -671 088,64 to 670 760,96 )
 
 knx.groupAnswer2ByteFloat("1/2/3", float);
 
 
 
-3 Byte Time (DTP 10)
+3 Byte Time (DPT 10)
 
 knx.groupAnswer3ByteTime("1/2/3", int, int, int, int);
 
 
 
-3 Byte Date (DTP 11)
+3 Byte Date (DPT 11)
 
 knx.groupAnswer3ByteDate("1/2/3", int, int, int);
 
 
 
-4 byte Float (DTP 14 - -2147483648 to 2147483647)
+4 byte Float (DPT 14 - -2147483648 to 2147483647)
 
 knx.groupAnswer4ByteFloat("1/2/3", float);
 
 
 
-14 Byte Text (DTP 16)
+14 Byte Text (DPT 16)
 
 knx.groupAnswer14ByteText("1/2/3", String);
 
 
-Once for all DTP -> commando (read) to bus :
+Once for all DPT -> commando (read) to bus :
 --------------------------------------------
 
 knx.groupRead("1/2/3");
@@ -201,71 +202,71 @@ value = telegram->get4BitStepsValue();
 
 
 
-1 Byte Int (DTP 5 - 0...255)
+1 Byte Int (DPT 5 - 0...255)
 
 value = telegram->get1ByteIntValue();
 
 
 
-2 Byte Int (DTP 7 - 0…65 535])
+2 Byte Int (DPT 7 - 0…65 535])
 
 value = telegram->get2ByteIntValue();
 
 
 
-2 Byte Float (DPT9 - -671 088,64 to 670 760,96 )
+2 Byte Float (DPT 9 - -671 088,64 to 670 760,96 )
 
 value = telegram->get2ByteFloatValue();
 
 
 
-3 Byte Time (DTP 10)
+3 Byte Time (DPT 10)
 
 value = telegram->get3ByteWeekdayValue();
 
 
 
-3 Byte Time (DTP 10)
+3 Byte Time (DPT 10)
 
 value = telegram->get3ByteHourValue();
 
 
 
-3 Byte Time (DTP 10)
+3 Byte Time (DPT 10)
 
 value = telegram->get3ByteMinuteValue();
 
 
 
-3 Byte Time (DTP 10)
+3 Byte Time (DPT 10)
 
 value = telegram->get3ByteSecondValue();
 
 
 
-3 Byte Time (DTP 11)
+3 Byte Time (DPT 11)
 
 value = telegram->get3ByteDayValue();
 
 
-3 Byte Time (DTP 11)
+3 Byte Time (DPT 11)
 
 value = telegram->get3ByteMonthValue();
 
 
 
-3 Byte Time (DTP 11)
+3 Byte Time (DPT 11)
 
 value = telegram->get3ByteYearValue();
 
 
 
-4 byte Float (DTP 14 - -2147483648 to 2147483647)
+4 byte Float (DPT 14 - -2147483648 to 2147483647)
 
 value = telegram->get4ByteFloatValue();
 
 
 
-14 Byte Text (DTP 16)
+14 Byte Text (DPT 16)
 
 value = telegram->get14ByteValue();
