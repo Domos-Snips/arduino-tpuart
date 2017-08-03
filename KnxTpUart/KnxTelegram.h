@@ -1,11 +1,17 @@
-// File: KnxTelegram.h
-// Author: Daniel Kleine-Albers (Since 2012)
-// Modified: Thorsten Gehrig (Since 2014)
-// Modified: Michael Werski (Since 2014)
-// Modified: Katja Blankenheim (Since 2014)
-// Modified: Mag Gyver (Since 2016)
+/*
 
-// Last modified: 06.06.2017
+   File: KnxTelegram.h
+
+   Author: Daniel Kleine-Albers (Since 2012)
+   Modified: Thorsten Gehrig (Since 2014)
+   Modified: Michael Werski (Since 2014)
+   Modified: Katja Blankenheim (Since 2014)
+   Modified: Mag Gyver (Since 2016)
+
+   Last modified: 03.08.2017
+   Reason: Clarity
+
+*/
 
 #ifndef KnxTelegram_h
 #define KnxTelegram_h
@@ -15,7 +21,7 @@
 #define MAX_KNX_TELEGRAM_SIZE 23
 #define KNX_TELEGRAM_HEADER_SIZE 6
 
-#define TPUART_SERIAL_CLASS Stream
+#define TPUART_SERIAL_CLASS Stream /* Thanks to Michael Werski for the help */
 
 // KNX priorities
 enum KnxPriorityType {
@@ -55,13 +61,15 @@ enum KnxCommunicationType {
 
 // KNX Control Data (for UCD / NCD packets)
 enum KnxControlDataType {
-  KNX_CONTROLDATA_CONNECT = B00,      // UCD
-  KNX_CONTROLDATA_DISCONNECT = B01,   // UCD
-  KNX_CONTROLDATA_POS_CONFIRM = B10,  // NCD
-  KNX_CONTROLDATA_NEG_CONFIRM = B11   // NCD
+  KNX_CONTROLDATA_CONNECT = B00, // UCD
+  KNX_CONTROLDATA_DISCONNECT = B01, // UCD
+  KNX_CONTROLDATA_POS_CONFIRM = B10, // NCD
+  KNX_CONTROLDATA_NEG_CONFIRM = B11 // NCD
 };
 
 class KnxTelegram {
+
+
   public:
     KnxTelegram();
 
@@ -96,33 +104,33 @@ class KnxTelegram {
     int getFirstDataByte();
     bool getBool();
 
-    int get4BitIntValue();
-    bool get4BitDirectionValue();
-    byte get4BitStepsValue();
+    int get4BitIntValue(); /* Thanks to Mag Gyver for the help */
+    bool get4BitDirectionValue(); /* Thanks to Mag Gyver for the help */
+    byte get4BitStepsValue(); /* Thanks to Mag Gyver for the help */
 
-    void set1ByteIntValue(int value);
-    int get1ByteIntValue();
+    void set1ByteIntValue(int value); /* Thanks to Thorsten Gehrig for the help */
+    int get1ByteIntValue(); /* Thanks to Thorsten Gehrig for the help */
 
-    void set2ByteIntValue(int value);
-    int get2ByteIntValue();
+    void set2ByteIntValue(int value); /* Thanks to Thorsten Gehrig for the help */
+    int get2ByteIntValue(); /* Thanks to Thorsten Gehrig for the help */
     void set2ByteFloatValue(float value);
     float get2ByteFloatValue();
 
-    void set3ByteTime(int weekday, int hour, int minute, int second);
-    int get3ByteWeekdayValue();
-    int get3ByteHourValue();
-    int get3ByteMinuteValue();
-    int get3ByteSecondValue();
-    void set3ByteDate(int day, int month, int year);
-    int get3ByteDayValue();
-    int get3ByteMonthValue();
-    int get3ByteYearValue();
+    void set3ByteTime(int weekday, int hour, int minute, int second); /* Thanks to Thorsten Gehrig for the help */
+    int get3ByteWeekdayValue(); /* Thanks to Mag Gyver for the help */
+    int get3ByteHourValue(); /* Thanks to Mag Gyver for the help */
+    int get3ByteMinuteValue(); /* Thanks to Mag Gyver for the help */
+    int get3ByteSecondValue(); /* Thanks to Mag Gyver for the help */
+    void set3ByteDate(int day, int month, int year); /* Thanks to Mag Gyver for the help */
+    int get3ByteDayValue(); /* Thanks to Mag Gyver for the help */
+    int get3ByteMonthValue(); /* Thanks to Mag Gyver for the help */
+    int get3ByteYearValue(); /* Thanks to Mag Gyver for the help */
 
-    void set4ByteFloatValue(float value);
-    float get4ByteFloatValue();
+    void set4ByteFloatValue(float value); /* Thanks to Thorsten Gehrig for the help */
+    float get4ByteFloatValue(); /* Thanks to Thorsten Gehrig for the help */
 
-    void set14ByteValue(String value);
-    String get14ByteValue();
+    void set14ByteValue(String value); /* Thanks to Thorsten Gehrig for the help */
+    String get14ByteValue(); /* Thanks to Thorsten Gehrig for the help */
 
     void createChecksum();
     bool verifyChecksum();
@@ -135,6 +143,8 @@ class KnxTelegram {
     void setSequenceNumber(int);
     KnxControlDataType getControlData();
     void setControlData(KnxControlDataType);
+
+
   private:
     int buffer[MAX_KNX_TELEGRAM_SIZE];
     int calculateChecksum();
@@ -142,3 +152,5 @@ class KnxTelegram {
 };
 
 #endif
+
+/* End of KnxTelegram.h */
