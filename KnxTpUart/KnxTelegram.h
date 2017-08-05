@@ -8,8 +8,8 @@
    Modified: Katja Blankenheim (Since 2014)
    Modified: Mag Gyver (Since 2016)
 
-   Last modified: 03.08.2017
-   Reason: Clarity
+   Last modified: 05.08.2017
+   Reason: Fixed error on initialization of serial port
 
 */
 
