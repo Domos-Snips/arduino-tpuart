@@ -6,8 +6,8 @@
    Modified: Thorsten Gehrig (Since 2014)
    Modified: Mag Gyver (Since 2016)
 
-   Last modified: 03.08.2017
-   Reason: Clarity
+   Last modified: 05.08.2017
+   Reason: Fixed error on initialization of serial port
 
    Test constellation = ARDUINO MEGA <-> 5WG1 117-2AB12
 
@@ -38,7 +38,9 @@ void setup() {
   Serial.print("UCSR1C: ");
   Serial.println(UCSR1C, BIN);
 
-  knx.uartReset();
+  if (Serial.available()) {
+    knx.uartReset();
+  }
 
   knx.addListenGroupAddress("15/0/0");
   knx.addListenGroupAddress("15/0/1");
