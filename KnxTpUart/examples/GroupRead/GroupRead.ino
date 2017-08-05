@@ -5,8 +5,8 @@
    Author: Mag Gyver (Since 2015)
    Modified: Thorsten Gehrig (Since 2015)
 
-   Last modified: 03.08.2017
-   Reason: Clarity
+   Last modified: 05.08.2017
+   Reason: Fixed error on initialization of serial port
 
    Test constellation = ARDUINO UNO <-> 5WG1 117-2AB12
 
@@ -28,7 +28,10 @@ void setup() {
   pinMode(LED, OUTPUT); // PIN 13 as output
 
   Serial.begin(19200, SERIAL_8E1); // Even parity
-  knx.uartReset();
+  
+  if (Serial.available()) {
+    knx.uartReset();
+  }
 
   knx.addListenGroupAddress("2/6/0");
   knx.addListenGroupAddress("5/6/0");
