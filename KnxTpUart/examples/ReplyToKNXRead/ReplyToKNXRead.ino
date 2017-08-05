@@ -33,7 +33,7 @@ void setup() {
   Serial.print("UCSR1C: ");
   Serial.println(UCSR1C, BIN);
 
-  if (Serial.available()) {
+  if (Serial1.available()) {
     knx.uartReset();
   }
   
