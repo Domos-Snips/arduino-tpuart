@@ -6,7 +6,7 @@
    Modified: Thorsten Gehrig (Since 2014)
    Modified: Mag Gyver (Since 2016)
 
-   Last modfified: 05.08.2017
+   Last modfified: 09.08.2017
    Reason: Fixed error on initialization of serial port
 
    Test constellation = ARDUINO MEGA <-> 5WG1 117-2AB12
@@ -22,6 +22,9 @@
 OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
 
+// Define physical address
+#define KNX_PA "15.15.20"
+
 // Define group address to react on (for read requests)
 #define READ_GROUP "0/0/100"
 
@@ -32,13 +35,13 @@ DallasTemperature sensors(&oneWire);
 #define SEND_INTERVAL_MS 5000
 
 // Initialize the KNX TP-UART library on the Serial1 port of ARDUINO MEGA
-KnxTpUart knx(&Serial1, "15.15.20");
+KnxTpUart knx(&Serial1, KNX_PA);
 
 unsigned long startTime;
 
 void setup() {
   Serial.begin(9600);
-  Serial.println("TP - UART Test");
+  Serial.println("TP-UART VERSION 09.08.2017");
 
   Serial1.begin(19200, SERIAL_8E1);
 
@@ -51,9 +54,9 @@ void setup() {
   Serial.print("UCSR1C: ");
   Serial.println(UCSR1C, BIN);
 
-  if (Serial1.available()) {
-    knx.uartReset();
+  while (!Serial1) {
   }
+  knx.uartReset();
   
   knx.addListenGroupAddress(READ_GROUP);
 
