@@ -9,7 +9,7 @@
    Modified: Mag Gyver (Since 2016)
    Bug noted: Rouven Raudzus (Since 2017)
 
-   Last modified: 05.08.2017
+   Last modified: 09.08.2017
    Reason: Fixed error on initialization of serial port
 
 */
