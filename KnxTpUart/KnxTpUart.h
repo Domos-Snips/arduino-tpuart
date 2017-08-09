@@ -8,7 +8,7 @@
    Modified: Katja Blankenheim (Since 2014)
    Modified: Mag Gyver (Since 2016)
 
-   Last modified: 05.08.2017
+   Last modified: 09.08.2017
    Reason: Fixed error on initialization of serial port
 
 */
