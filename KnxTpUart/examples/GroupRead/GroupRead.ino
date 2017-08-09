@@ -42,6 +42,15 @@ void setup() {
   knx.addListenGroupAddress("2/6/0");
   knx.addListenGroupAddress("5/6/0");
 
+/*
+
+  Read request to groups address-> all data types
+
+  Read request to group addresses -> possible call to the read request void loop() function
+  The next two lines must be commented out if no initial query is desired
+  
+*/
+
   knx.groupRead("2/6/0");
   knx.groupRead("5/6/0");
 }
