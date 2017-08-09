@@ -6,7 +6,7 @@
    Modified: Thorsten Gehrig (Since 2014)
    Modified: Mag Gyver (Since 2016)
 
-   Last modfified: 05.08.2017
+   Last modfified: 09.08.2017
    Reason: Fixed error on initialization of serial port
 
    Test constellation = ARDUINO MEGA <-> 5WG1 117-2AB12
@@ -15,12 +15,15 @@
 
 #include <KnxTpUart.h>
 
+// Define physical address
+#define KNX_PA "1.1.15"
+
 // Initialize the KNX TP-UART library on the Serial1 port of ARDUINO MEGA
-KnxTpUart knx(&Serial1, "1.1.15");
+KnxTpUart knx(&Serial1, KNX_PA);
 
 void setup() {
   Serial.begin(9600);
-  Serial.println("TP-UART Test");
+  Serial.println("TP-UART VERSION 09.08.2017");
 
   Serial1.begin(19200, SERIAL_8E1); // Even parity
 
@@ -33,9 +36,9 @@ void setup() {
   Serial.print("UCSR1C: ");
   Serial.println(UCSR1C, BIN);
 
-  if (Serial1.available()) {
-    knx.uartReset();
+  while (!Serial1) {
   }
+  knx.uartReset();
   
   // Define group address to react on
   knx.addListenGroupAddress("3/0/0");
