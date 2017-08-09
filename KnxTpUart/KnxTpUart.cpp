@@ -8,7 +8,7 @@
    Modified: Katja Blankenheim (Since 2014)
    Modified: Mag Gyver (Since 2016)
 
-   Last modified: 05.08.2017
+   Last modified: 09.08.2017
    Reason: Fixed error on initialization of serial port
 
 */
@@ -32,6 +32,7 @@ void KnxTpUart::setListenToBroadcasts(bool listen) {
 
 void KnxTpUart::uartReset() {
   _serialport->write(TPUART_RESET_REQUEST); /* Thanks to Mag Gyver for the help */
+  delay(100); /* Thanks to Mag Gyver for the help */
 }
 
 void KnxTpUart::uartStateRequest() {
