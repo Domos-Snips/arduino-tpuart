@@ -5,7 +5,7 @@
    Author: Mag Gyver (Since 2015)
    Modified: Thorsten Gehrig (Since 2015)
 
-   Last modified: 05.08.2017
+   Last modified: 09.08.2017
    Reason: Fixed error on initialization of serial port
 
    Test constellation = ARDUINO UNO <-> 5WG1 117-2AB12
@@ -18,7 +18,11 @@
 
 #include <KnxTpUart.h>
 
-KnxTpUart knx(&Serial, "1.1.199");
+// Define physical address
+#define KNX_PA "1.1.199"
+
+KnxTpUart knx(&Serial, KNX_PA);
+
 int LED = 13;
 int target_2_6_0;
 int target_5_6_0;
@@ -29,24 +33,15 @@ void setup() {
 
   Serial.begin(19200, SERIAL_8E1); // Even parity
   
-  if (Serial.available()) {
-    knx.uartReset();
+  while (!Serial) {
   }
+  knx.uartReset();
+  
+  // TP-UART VERSION 09.08.2017
 
   knx.addListenGroupAddress("2/6/0");
   knx.addListenGroupAddress("5/6/0");
 
-  /*
-
-     Read request to groups address-> all data types
-
-     Read request to group addresses -> possible call to the read request void loop() function
-     The function delay(1000) only to delay the necessary initialization query
-     The next three lines must be commented out if no initial query is desired
-
-  */
-
-  delay(1000);
   knx.groupRead("2/6/0");
   knx.groupRead("5/6/0");
 }
