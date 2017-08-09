@@ -6,7 +6,7 @@
    Modified: Thorsten Gehrig (Since 2014)
    Modified: Mag Gyver (Since 2016)
 
-   Last modified: 05.08.2017
+   Last modified: 09.08.2017
    Reason: Fixed error on initialization of serial port
 
    Test constellation = ARDUINO MEGA <-> 5WG1 117-2AB12
@@ -23,17 +23,16 @@ boolean programmingMode = true;
 
 void setup() {
   Serial.begin(115200);
-  Serial.println("TP-UART Test");
+  Serial.println("TP-UART VERSION 09.08.2017");
 
   Serial1.begin(19200, SERIAL_8E1); // Even parity
 
-  if (Serial1.available()) {
-    knx.uartReset();
+  while (!Serial1) {
   }
+  knx.uartReset();
   
   knx.setListenToBroadcasts(true);
 }
-
 
 void loop() {
 }
