@@ -6,14 +6,14 @@
    Modified: Thorsten Gehrig (Since 2014)
    Modified: Mag Gyver (Since 2016)
 
-   Last modfified: 09.08.2017
-   Reason: Fixed error on initialization of serial port
+   Last modfified: 12.08.2017
+   Reason: Added link to library
 
    Test constellation = ARDUINO MEGA <-> 5WG1 117-2AB12
 
 */
 
-#include <KnxTpUart.h>
+#include <KnxTpUart.h> // https://bitbucket.org/thorstengehrig/arduino-tpuart-knx-user-forum
 #include <OneWire.h> // https://github.com/PaulStoffregen/OneWire
 #include <DallasTemperature.h> // https://github.com/milesburton/Arduino-Temperature-Control-Library
 
@@ -41,7 +41,7 @@ unsigned long startTime;
 
 void setup() {
   Serial.begin(9600);
-  Serial.println("TP-UART VERSION 09.08.2017");
+  Serial.println("TP-UART VERSION 12.08.2017");
 
   Serial1.begin(19200, SERIAL_8E1);
 
