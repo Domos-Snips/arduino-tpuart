@@ -13,7 +13,7 @@
 
 */
 
-#include <KnxTpUart.h> // https://bitbucket.org/thorstengehrig/arduino-tpuart-knx-user-forum/overview
+#include <KnxTpUart.h> // https://bitbucket.org/thorstengehrig/arduino-tpuart-knx-user-forum
 #include <ArduinoUnit.h> // The library is not findable, compiled with errors
 
 TestSuite suite;
