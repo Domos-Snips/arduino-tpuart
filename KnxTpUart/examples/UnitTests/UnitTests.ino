@@ -6,14 +6,14 @@
    Modified: Thorsten Gehrig (Since 2014)
    Modified: Mag Gyver (Since 2016)
 
-   Last modfified: 09.08.2017
+   Last modfified: 12.08.2017
    Reason: Will not be pursued !!!!!!
 
    Test constellation = Not tested
 
 */
 
-#include <KnxTpUart.h>
+#include <KnxTpUart.h> // https://bitbucket.org/thorstengehrig/arduino-tpuart-knx-user-forum/overview
 #include <ArduinoUnit.h> // The library is not findable, compiled with errors
 
 TestSuite suite;
