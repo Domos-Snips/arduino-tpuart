@@ -8,8 +8,10 @@
    Modified: Katja Blankenheim (Since 2014)
    Modified: Mag Gyver (Since 2016)
 
-   Last modified: 09.08.2017
-   Reason: Fixed error on initialization of serial port
+   Last modified: 12.08.2017
+   Reason: Added link to library
+   
+   https://bitbucket.org/thorstengehrig/arduino-tpuart-knx-user-forum
 
 */
 
