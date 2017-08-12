@@ -5,8 +5,8 @@
    Author: Mag Gyver (Since 2015)
    Modified: Thorsten Gehrig (Since 2015)
 
-   Last modified: 09.08.2017
-   Reason: Fixed error on initialization of serial port
+   Last modified: 12.08.2017
+   Reason: Added link to library
 
    Test constellation = ARDUINO UNO <-> 5WG1 117-2AB12
 
@@ -16,7 +16,7 @@
 
 */
 
-#include <KnxTpUart.h>
+#include <KnxTpUart.h> // https://bitbucket.org/thorstengehrig/arduino-tpuart-knx-user-forum
 
 // Define physical address
 #define KNX_PA "1.1.199"
@@ -37,7 +37,7 @@ void setup() {
   }
   knx.uartReset();
   
-  // TP-UART VERSION 09.08.2017
+  // TP-UART VERSION 12.08.2017
 
   knx.addListenGroupAddress("2/6/0");
   knx.addListenGroupAddress("5/6/0");
