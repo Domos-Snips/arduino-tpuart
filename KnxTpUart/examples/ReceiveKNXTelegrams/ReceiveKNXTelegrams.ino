@@ -6,14 +6,14 @@
    Modified: Thorsten Gehrig (Since 2014)
    Modified: Mag Gyver (Since 2016)
 
-   Last modified: 09.08.2017
-   Reason: Fixed error on initialization of serial port
+   Last modified: 12.08.2017
+   Reason: Added link to library
 
    Test constellation = ARDUINO MEGA <-> 5WG1 117-2AB12
 
 */
 
-#include <KnxTpUart.h>
+#include <KnxTpUart.h> // https://bitbucket.org/thorstengehrig/arduino-tpuart-knx-user-forum
 
 // Define physical address
 #define KNX_PA "15.15.20"
@@ -28,7 +28,7 @@ void setup() {
   digitalWrite(LED, LOW);
 
   Serial.begin(9600);
-  Serial.println("TP-UART VERSION 09.08.2017");
+  Serial.println("TP-UART VERSION 12.08.2017");
 
   Serial1.begin(19200, SERIAL_8E1); // Even parity
 
