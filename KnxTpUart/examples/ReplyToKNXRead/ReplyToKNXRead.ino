@@ -13,7 +13,7 @@
 
 */
 
-#include <KnxTpUart.h> // https://bitbucket.org/thorstengehrig/arduino-tpuart-knx-user-forum/overview
+#include <KnxTpUart.h> // https://bitbucket.org/thorstengehrig/arduino-tpuart-knx-user-forum
 
 // Define physical address
 #define KNX_PA "1.1.15"
