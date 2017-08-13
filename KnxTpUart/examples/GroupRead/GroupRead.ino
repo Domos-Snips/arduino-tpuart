@@ -36,6 +36,7 @@ void setup() {
   while (!Serial) {
   }
   knx.uartReset();
+  delay(100);
   
   // TP-UART VERSION 12.08.2017
 
