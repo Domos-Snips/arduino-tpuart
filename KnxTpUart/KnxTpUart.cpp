@@ -34,7 +34,6 @@ void KnxTpUart::setListenToBroadcasts(bool listen) {
 
 void KnxTpUart::uartReset() {
   _serialport->write(TPUART_RESET_REQUEST); /* Thanks to Mag Gyver for the help */
-  delay(100); /* Thanks to Mag Gyver for the help */
 }
 
 void KnxTpUart::uartStateRequest() {
